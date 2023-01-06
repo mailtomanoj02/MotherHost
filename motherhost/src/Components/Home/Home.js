@@ -1,20 +1,16 @@
 import * as React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet
-} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import HomeUserTrackingView from '../Home/HomeUserTrackingView.js';
 import DomainHomeView from '../Home/DomainHomeView.js';
-import WebsiteHostingHomeView from '../Home/WebsiteHostingHomeView.js'
+import WebsiteHostingHomeView from '../Home/WebsiteHostingHomeView.js';
 import Colors from '../../Themes/Colors.js';
-import { FONT_FAMILY } from '../../Config/Constant.js';
-import { ScrollView } from 'react-native-gesture-handler';
+import {FONT_FAMILY} from '../../Config/Constant.js';
+import {ScrollView} from 'react-native-gesture-handler';
 import AppBar from '../AppBar.js';
-userTrackingView = () => {
+const userTrackingView = () => {
   return (
-    <View style={{ flexDirection: 'column' }}>
-      <View style={{ flexDirection: 'row' }}>
+    <View style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'row'}}>
         <HomeUserTrackingView
           title={'Services'}
           count={'0'}
@@ -26,7 +22,7 @@ userTrackingView = () => {
           img={require('../../Images/Home/domain.png')}
         />
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{flexDirection: 'row'}}>
         <HomeUserTrackingView
           title={'Tickets'}
           count={'0'}
@@ -39,11 +35,11 @@ userTrackingView = () => {
         />
       </View>
     </View>
-  )
-}
-domainInView = () => {
+  );
+};
+const domainInView = () => {
   return (
-    <View style={{ flexDirection: 'row', margin: 5 }}>
+    <View style={{flexDirection: 'row', margin: 5}}>
       <DomainHomeView
         img={require('../../Images/Home/domain_in.png')}
         color={Colors.HOME_IN_COLOR}
@@ -57,9 +53,9 @@ domainInView = () => {
         color={Colors.HOME_NET_COLOR}
       />
     </View>
-  )
-}
-websiteHostingView = () => {
+  );
+};
+const websiteHostingView = () => {
   return (
     <View style={homeStyle.websiteHostinViewStyle}>
       <WebsiteHostingHomeView
@@ -87,9 +83,9 @@ websiteHostingView = () => {
         price={'25/m'}
       />
     </View>
-  )
-}
-resellerHostingHomeView = () => {
+  );
+};
+const resellerHostingHomeView = () => {
   return (
     <View>
       <View style={homeStyle.websiteHostinViewStyle}>
@@ -121,9 +117,9 @@ resellerHostingHomeView = () => {
         />
       </View>
     </View>
-  )
-}
-emailForBusinessView = () => {
+  );
+};
+const emailForBusinessView = () => {
   return (
     <View style={homeStyle.websiteHostinViewStyle}>
       <WebsiteHostingHomeView
@@ -140,8 +136,8 @@ emailForBusinessView = () => {
       />
     </View>
   );
-}
-securityView = () => {
+};
+const securityView = () => {
   return (
     <View>
       <View style={homeStyle.websiteHostinViewStyle}>
@@ -174,69 +170,66 @@ securityView = () => {
       </View>
     </View>
   );
-}
-hostHeder = (title) => {
+};
+const hostHeder = title => {
   return (
     <View style={homeStyle.titleContainer}>
       <Text style={homeStyle.titleStyle}>{title}</Text>
     </View>
   );
-}
+};
 
 const HomeScreen = () => {
   return (
     <View>
       <AppBar />
       <ScrollView>
-      <View>
-        {userTrackingView()}
-        {domainInView()}
-        {hostHeder('Web Site Hosting')}
-        {websiteHostingView()}
-        {hostHeder('Reseller Hosting')}
-        {resellerHostingHomeView()}
-        {hostHeder('Email For Business')}
-        {emailForBusinessView()}
-        {hostHeder('Security')}
-        {securityView()}
-      </View>
-    </ScrollView>
+        <View>
+          {userTrackingView()}
+          {domainInView()}
+          {hostHeder('Web Site Hosting')}
+          {websiteHostingView()}
+          {hostHeder('Reseller Hosting')}
+          {resellerHostingHomeView()}
+          {hostHeder('Email For Business')}
+          {emailForBusinessView()}
+          {hostHeder('Security')}
+          {securityView()}
+        </View>
+      </ScrollView>
     </View>
-
   );
-
-
-}
+};
 
 const homeStyle = StyleSheet.create({
   titleContainer: {
     padding: 10,
     borderBottomColor: Colors.black,
-    borderBottomWidth: 0.4
+    borderBottomWidth: 0.4,
   },
   titleStyle: {
     fontSize: 14,
     fontFamily: FONT_FAMILY.REGULAR,
-    color: Colors.black
+    color: Colors.black,
   },
   websiteHostinViewStyle: {
     flexDirection: 'row',
-    margin: 5
+    margin: 5,
   },
-  websiteHostinViewStyleImgStyle1:{
+  websiteHostinViewStyleImgStyle1: {
     height: 30,
     width: 30,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
-  websiteHostinViewStyleImgStyle2:{
+  websiteHostinViewStyleImgStyle2: {
     height: 50,
     width: 90,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
-  websiteHostinViewStyleImgStyle3:{
+  websiteHostinViewStyleImgStyle3: {
     height: 30,
     width: 30,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
 });
 
