@@ -3,24 +3,29 @@ import {Text, View, Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 import Colors from '../../Themes/Colors.js';
 import {FONT_FAMILY} from '../../Config/Constant.js';
+import {TouchableOpacity} from 'react-native';
 const HomeUserTrackingView = props => {
   return (
-    <View style={styles.viewStyle}>
-      <View style={styles.titleViewStyle}>
-        <Text style={styles.countTxtStyle}>{props.count}</Text>
-        <Text style={styles.titleTxtStyle}>{props.title}</Text>
+    <TouchableOpacity
+      style={{flex: 1}}
+      onPress={() => props.navigation.navigate(props.screenName)}>
+      <View style={styles.viewStyle}>
+        <View style={styles.titleViewStyle}>
+          <Text style={styles.countTxtStyle}>{props.count}</Text>
+          <Text style={styles.titleTxtStyle}>{props.title}</Text>
+        </View>
+        <Image
+          style={{
+            width: 30,
+            height: 30,
+            tintColor: Colors.headerBlue,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          source={props.img}
+        />
       </View>
-      <Image
-        style={{
-          width: 30,
-          height: 30,
-          tintColor: Colors.headerBlue,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        source={props.img}
-      />
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

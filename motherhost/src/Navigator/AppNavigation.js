@@ -8,6 +8,9 @@ import InvoiceScreen from '../Components/InvoiceScreen';
 import SideMenu from '../Components/SideMenu';
 import WebviewScreen from '../Components/WebviewScreen.js';
 import {SCREEN_NAMES} from '../Config/Constant.js';
+import ServiceScreen from '../Components/ServiceScreen';
+import {Provider} from 'react-redux';
+import {Store} from "../redux/store";
 const Stack = createNativeStackNavigator();
 
 const MotherHostStackNavigator = () => {
@@ -31,27 +34,37 @@ const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        drawerContent={props => <SideMenu {...props} />}
-        initialRouteName={SCREEN_NAMES.HOME_SCREEN}
-        screenOptions={{headerShown: false}}>
-        <Drawer.Screen name={SCREEN_NAMES.HOME_SCREEN} component={HomeScreen} />
-        <Drawer.Screen
-          name={SCREEN_NAMES.DOMAIN_SCREEN}
-          component={DomainScreen}
-        />
-        <Drawer.Screen
-          name={SCREEN_NAMES.WEBVIEW_SCREEN}
-          component={WebviewScreen}
-        />
-        <Stack.Screen
-          name={SCREEN_NAMES.INVOICE_SCREEN}
-          component={InvoiceScreen}
-          options={{title: ''}}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Drawer.Navigator
+          drawerContent={props => <SideMenu {...props} />}
+          initialRouteName={SCREEN_NAMES.HOME_SCREEN}
+          screenOptions={{headerShown: false}}>
+          <Drawer.Screen
+            name={SCREEN_NAMES.HOME_SCREEN}
+            component={HomeScreen}
+          />
+          <Drawer.Screen
+            name={SCREEN_NAMES.DOMAIN_SCREEN}
+            component={DomainScreen}
+          />
+          <Drawer.Screen
+            name={SCREEN_NAMES.WEBVIEW_SCREEN}
+            component={WebviewScreen}
+          />
+          <Stack.Screen
+            name={SCREEN_NAMES.INVOICE_SCREEN}
+            component={InvoiceScreen}
+            options={{title: ''}}
+          />
+          <Stack.Screen
+            name={SCREEN_NAMES.SERVICE_SCREEN}
+            component={ServiceScreen}
+            options={{title: ''}}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

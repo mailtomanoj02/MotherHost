@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   containerStyle: {
-    height: 80,
+    height: 65,
     backgroundColor: Colors.headerBlue,
     flexDirection: 'row',
   },

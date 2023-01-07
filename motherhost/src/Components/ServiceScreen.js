@@ -8,13 +8,13 @@ import {FONT_FAMILY} from '../Config/Constant';
 const renderItem = ({item}) => {
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.innerViewTop}>
-        <Text style={styles.idText}>{item.host}</Text>
-      </View>
+      <Text style={styles.tileHeadingStyle}>Personal</Text>
+      <Text style={styles.nameStyle}>{item.name}</Text>
+      <Text style={styles.nameStyle}>{item.host}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
-          <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
-          <Text style={styles.dateText}>{`Due Date\t: ${item.date}`}</Text>
+          <Text style={styles.dateText}>{`Next Due Date\t: ${item.nextDueDate}`}</Text>
+          <Text style={styles.dateText}>{`Billing Cycle\t\t: ${item.cycle}`}</Text>
         </View>
         <View style={styles.statusBox}>
           <Text
@@ -31,42 +31,22 @@ const renderItem = ({item}) => {
   );
 };
 
-const DomainScreen = () => {
+const ServiceScreen = () => {
   const data = [
     {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
+      cycle: 'Annually',
+      nextDueDate: '21/10/2000',
+      name: 'Wordpress Hosting',
       id: '# 12345',
       host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
       status: 'Active',
-      id: '# 12341',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12342',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12343',
-      host: 'maduraihost.com',
     },
   ];
 
   return (
     <View style={styles.totalContainer}>
       <AppBar />
-      <ScreenTitle title="My Domains" />
+      <ScreenTitle title="My Services" />
       <FlatList
         data={data}
         keyExtractor={item => item.id}
@@ -76,7 +56,7 @@ const DomainScreen = () => {
   );
 };
 
-export default DomainScreen;
+export default ServiceScreen;
 
 const styles = StyleSheet.create({
   totalContainer: {
@@ -96,10 +76,23 @@ const styles = StyleSheet.create({
     elevation: 10,
     shadowOpacity: 0.2,
   },
-  innerViewTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
+  tileHeadingStyle: {
+    alignSelf: 'center',
+    color: Colors.headerBlue,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontSize: 14,
+  },
+  nameStyle: {
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontSize: 14,
+    marginTop: 8,
+    marginHorizontal: 5,
+  },
+  dateText: {
+    marginHorizontal: 5,
+    marginTop: 8,
+    color: Colors.DARK_GREY,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   statusBox: {
     minWidth: 70,
@@ -116,14 +109,5 @@ const styles = StyleSheet.create({
   },
   statusTextColorRed: {
     color: Colors.RED,
-  },
-  idText: {
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: Colors.headerBlue,
-  },
-  dateText: {
-    marginTop: 8,
-    color: Colors.DARK_GREY,
-    fontFamily: FONT_FAMILY.REGULAR,
   },
 });

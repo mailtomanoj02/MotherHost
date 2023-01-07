@@ -4,22 +4,27 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
+import {fetchInvoiceData} from '../redux/Action';
+import {useEffect} from 'react';
+import {connect} from 'react-redux';
 
 const renderItem = ({item}) => {
+  console.log('ITEM+====' + item);
   return (
     <View style={styles.itemContainer}>
       <View style={styles.innerViewTop}>
-        <Text style={styles.idText}>{item.host}</Text>
+        <Text style={styles.idText}>{item.id}</Text>
+        <Text style={styles.amountStyle}>{item.amount}</Text>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
           <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
-          <Text style={styles.dateText}>{`Due Date\t: ${item.date}`}</Text>
+          <Text style={styles.dateText}>{`Due Date\t: ${item.duedate}`}</Text>
         </View>
         <View style={styles.statusBox}>
           <Text
             style={
-              item.status === 'Active'
+              item.status.toLowerCase() === 'paid'
                 ? styles.statusTextColorGreen
                 : styles.statusTextColorRed
             }>
@@ -31,44 +36,18 @@ const renderItem = ({item}) => {
   );
 };
 
-const DomainScreen = () => {
-  const data = [
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12345',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12341',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12342',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12343',
-      host: 'maduraihost.com',
-    },
-  ];
+const InvoiceScreen = props => {
+  useEffect(() => {
+    props.fetchData;
+    console.log('jjj', props.data);
+  }, [props.data]);
 
   return (
     <View style={styles.totalContainer}>
       <AppBar />
-      <ScreenTitle title="My Domains" />
+      <ScreenTitle title="My Invoices" />
       <FlatList
-        data={data}
+        data={props.data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
@@ -76,7 +55,19 @@ const DomainScreen = () => {
   );
 };
 
-export default DomainScreen;
+const mapStateToProps = state => {
+  return {
+    data: state.data,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchData: dispatch(fetchInvoiceData),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {
@@ -118,12 +109,16 @@ const styles = StyleSheet.create({
     color: Colors.RED,
   },
   idText: {
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
     color: Colors.headerBlue,
   },
   dateText: {
-    marginTop: 8,
+    marginTop: 5,
     color: Colors.DARK_GREY,
     fontFamily: FONT_FAMILY.REGULAR,
+  },
+  amountStyle: {
+    color: Colors.black,
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
 });

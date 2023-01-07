@@ -4,10 +4,11 @@ import HomeUserTrackingView from '../Home/HomeUserTrackingView.js';
 import DomainHomeView from '../Home/DomainHomeView.js';
 import WebsiteHostingHomeView from '../Home/WebsiteHostingHomeView.js';
 import Colors from '../../Themes/Colors.js';
-import {FONT_FAMILY} from '../../Config/Constant.js';
+import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant.js';
 import {ScrollView} from 'react-native-gesture-handler';
 import AppBar from '../AppBar.js';
-const userTrackingView = () => {
+import {useNavigation} from '@react-navigation/native';
+const userTrackingView = navigation => {
   return (
     <View style={{flexDirection: 'column'}}>
       <View style={{flexDirection: 'row'}}>
@@ -15,11 +16,15 @@ const userTrackingView = () => {
           title={'Services'}
           count={'0'}
           img={require('../../Images/Home/servers.png')}
+          screenName={SCREEN_NAMES.SERVICE_SCREEN}
+          navigation={navigation}
         />
         <HomeUserTrackingView
           title={'Domains'}
           count={'0'}
           img={require('../../Images/Home/domain.png')}
+          screenName={SCREEN_NAMES.DOMAIN_SCREEN}
+          navigation={navigation}
         />
       </View>
       <View style={{flexDirection: 'row'}}>
@@ -27,11 +32,15 @@ const userTrackingView = () => {
           title={'Tickets'}
           count={'0'}
           img={require('../../Images/Home/tickets.png')}
+          screenName={SCREEN_NAMES.HOME_SCREEN}
+          navigation={navigation}
         />
         <HomeUserTrackingView
           title={'Invoice'}
           count={'0'}
           img={require('../../Images/Home/invoices.png')}
+          screenName={SCREEN_NAMES.INVOICE_SCREEN}
+          navigation={navigation}
         />
       </View>
     </View>
@@ -179,24 +188,31 @@ const hostHeder = title => {
   );
 };
 
+const RenderAllComponents = ({navigation}) => {
+  return (
+    <ScrollView>
+      <View>
+        {userTrackingView(navigation)}
+        {domainInView()}
+        {hostHeder('Web Site Hosting')}
+        {websiteHostingView()}
+        {hostHeder('Reseller Hosting')}
+        {resellerHostingHomeView()}
+        {hostHeder('Email For Business')}
+        {emailForBusinessView()}
+        {hostHeder('Security')}
+        {securityView()}
+      </View>
+    </ScrollView>
+  );
+};
+
 const HomeScreen = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <AppBar />
-      <ScrollView>
-        <View>
-          {userTrackingView()}
-          {domainInView()}
-          {hostHeder('Web Site Hosting')}
-          {websiteHostingView()}
-          {hostHeder('Reseller Hosting')}
-          {resellerHostingHomeView()}
-          {hostHeder('Email For Business')}
-          {emailForBusinessView()}
-          {hostHeder('Security')}
-          {securityView()}
-        </View>
-      </ScrollView>
+      <RenderAllComponents navigation={navigation} />
     </View>
   );
 };

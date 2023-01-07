@@ -18,7 +18,7 @@ const SideDrawerItems = [
   {
     icon: require('../Images/Home/servers.png'),
     title: 'My Services',
-    screen: SCREEN_NAMES.DOMAIN_SCREEN,
+    screen: SCREEN_NAMES.SERVICE_SCREEN,
   },
   {
     icon: require('../Images/Home/invoices.png'),
