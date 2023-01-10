@@ -1,17 +1,19 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 
 const WebsiteHostingHomeView = props => {
   return (
-    <View style={styles.viewStyle}>
-      <Image style={props.imgStyle} source={props.img} />
-      <View style={styles.titleViewStyle}>
-        <Text style={styles.titleTxtStyle}>{props.title}</Text>
-        <Text style={styles.priceTxtStyle}>{props.price}</Text>
+    <TouchableOpacity style={{flex: 1}}>
+      <View style={styles.viewStyle}>
+        <Image style={props.imgStyle} source={props.img} />
+        <View style={styles.titleViewStyle}>
+          <Text style={styles.titleTxtStyle}>{props.title}</Text>
+          <Text style={styles.priceTxtStyle}>{props.price}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

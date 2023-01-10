@@ -5,6 +5,7 @@ import {
 } from './Type';
 import axios from 'axios';
 export const requestApiData = () => {
+  console.log('requestApiData called');
   return {
     type: REQUEST_API_DATA,
   };
@@ -21,30 +22,4 @@ export const receiveApiDataFailure = error => ({
   type: RECEIVE_API_DATA_FAILURE,
   error,
 });
-const BASE_URL = 'https://api.motherhost.com/app/';
 
-export const fetchInvoiceData = dispatch => {
-  console.log('called');
-  dispatch(requestApiData);
-  axios
-    .request({
-      method: 'POST',
-      url: BASE_URL + 'getinvoices.php',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        action: 'GetInvoices',
-        userid: 41,
-        orderby: 'duedate',
-        order: 'desc',
-      },
-    })
-    .then(response => {
-      dispatch(receiveApiDataSuccess(response.data.invoices.invoice));
-    })
-    .catch(error => {
-      console.log(error);
-      dispatch(receiveApiDataFailure(error));
-    });
-};

@@ -1,37 +1,11 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet} from 'react-native';
+import {FlatList, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 
-const renderItem = ({item}) => {
-  return (
-    <View style={styles.itemContainer}>
-      <View style={styles.innerViewTop}>
-        <Text style={styles.idText}>{item.host}</Text>
-      </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View>
-          <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
-          <Text style={styles.dateText}>{`Due Date\t: ${item.date}`}</Text>
-        </View>
-        <View style={styles.statusBox}>
-          <Text
-            style={
-              item.status === 'Active'
-                ? styles.statusTextColorGreen
-                : styles.statusTextColorRed
-            }>
-            {item.status}
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-};
-
-const DomainScreen = () => {
+const DomainScreen = ({navigation}) => {
   const data = [
     {
       date: '20/10/2000',
@@ -62,6 +36,35 @@ const DomainScreen = () => {
       host: 'maduraihost.com',
     },
   ];
+
+  const renderItem = ({item}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN)}>
+        <View style={styles.itemContainer}>
+          <View style={styles.innerViewTop}>
+            <Text style={styles.idText}>{item.host}</Text>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View>
+              <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
+              <Text style={styles.dateText}>{`Due Date\t: ${item.date}`}</Text>
+            </View>
+            <View style={styles.statusBox}>
+              <Text
+                style={
+                  item.status === 'Active'
+                    ? styles.statusTextColorGreen
+                    : styles.statusTextColorRed
+                }>
+                {item.status}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.totalContainer}>

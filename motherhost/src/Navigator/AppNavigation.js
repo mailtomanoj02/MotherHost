@@ -9,21 +9,22 @@ import SideMenu from '../Components/SideMenu';
 import WebviewScreen from '../Components/WebviewScreen.js';
 import {SCREEN_NAMES} from '../Config/Constant.js';
 import ServiceScreen from '../Components/ServiceScreen';
-import {Provider} from 'react-redux';
-import {Store} from "../redux/store";
+import {connect} from 'react-redux';
+import DomainDetailScreen from '../Components/DomainDetailScreen';
+import {Text, View} from 'react-native';
 const Stack = createNativeStackNavigator();
 
-const MotherHostStackNavigator = () => {
+const DomainStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="HomeScreen">
-      <Stack.Screen
-        name={SCREEN_NAMES.HOME_SCREEN}
-        component={HomeScreen}
-        options={{title: ''}}
-      />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
         name={SCREEN_NAMES.DOMAIN_SCREEN}
         component={DomainScreen}
+        options={{title: ''}}
+      />
+      <Stack.Screen
+        name={SCREEN_NAMES.DOMAIN_DETAIL_SCREEN}
+        component={DomainDetailScreen}
         options={{title: ''}}
       />
     </Stack.Navigator>
@@ -32,9 +33,10 @@ const MotherHostStackNavigator = () => {
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+function MyDrawer(props) {
   return (
-    <Provider store={Store}>
+    <View style={{flex: 1}}>
+      {props.isLoader ? <Text>LOADING</Text> : null}
       <NavigationContainer>
         <Drawer.Navigator
           drawerContent={props => <SideMenu {...props} />}
@@ -45,27 +47,33 @@ function MyDrawer() {
             component={HomeScreen}
           />
           <Drawer.Screen
-            name={SCREEN_NAMES.DOMAIN_SCREEN}
-            component={DomainScreen}
+            name={SCREEN_NAMES.DOMAIN_STACK_SCREEN}
+            component={DomainStackNavigator}
           />
           <Drawer.Screen
             name={SCREEN_NAMES.WEBVIEW_SCREEN}
             component={WebviewScreen}
           />
-          <Stack.Screen
+          <Drawer.Screen
             name={SCREEN_NAMES.INVOICE_SCREEN}
             component={InvoiceScreen}
             options={{title: ''}}
           />
-          <Stack.Screen
+          <Drawer.Screen
             name={SCREEN_NAMES.SERVICE_SCREEN}
             component={ServiceScreen}
             options={{title: ''}}
           />
         </Drawer.Navigator>
       </NavigationContainer>
-    </Provider>
+      </View>
   );
 }
 
-export default MyDrawer;
+const mapStateToProps = state => {
+  return {
+    isLoader: state.isLoading,
+  };
+};
+
+export default connect(mapStateToProps, null)(MyDrawer);

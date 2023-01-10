@@ -9,10 +9,14 @@
 import * as React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigation from '../motherhost/src/Navigator/AppNavigation.js';
+import {Store} from './src/redux/store';
+import {Provider} from 'react-redux';
 const App = () => {
   return (
     <SafeAreaProvider>
-      <AppNavigation />
+      <Provider store={Store}>
+        <AppNavigation />
+      </Provider>
     </SafeAreaProvider>
   );
 };

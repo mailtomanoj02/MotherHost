@@ -11,6 +11,7 @@ const initialState = {
 };
 
 export const mainReducer = (state = initialState, action) => {
+  console.log('mainReducer called');
   switch (action.type) {
     case REQUEST_API_DATA:
       return {

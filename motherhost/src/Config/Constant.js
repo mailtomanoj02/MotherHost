@@ -11,7 +11,9 @@ export const SCREEN_NAMES = {
   SERVICE_SCREEN: 'Services',
   INVOICE_SCREEN: 'Invoices',
   WEBVIEW_SCREEN: 'Webview',
+  DOMAIN_STACK_SCREEN: 'Domain_Stack',
   DOMAIN_SCREEN: 'Domain',
+  DOMAIN_DETAIL_SCREEN: 'Domain_Detail',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {

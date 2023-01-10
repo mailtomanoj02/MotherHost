@@ -10,6 +10,7 @@ import {
 import Colors from '../Themes/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
+import {SCREEN_NAMES} from '../Config/Constant';
 
 const AppBar = props => {
   const navigation = useNavigation();
