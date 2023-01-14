@@ -12,6 +12,8 @@ import ServiceScreen from '../Components/ServiceScreen';
 import {connect} from 'react-redux';
 import DomainDetailScreen from '../Components/DomainDetailScreen';
 import {Text, View} from 'react-native';
+import HostingScreen from '../Components/HostingScreen';
+import LoginAndRegistration from '../Components/loginAndRegistration/LoginAndRegistration';
 const Stack = createNativeStackNavigator();
 
 const DomainStackNavigator = () => {
@@ -30,6 +32,17 @@ const DomainStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+// const HoistingStackNavigator = () => {
+//   return (
+//     <Stack.Navigator screenOptions={{headerShown: false}}>
+//       <Stack.Screen
+//         name={SCREEN_NAMES.HOSTING_SCREEN}
+//         component={HostingScreen}
+//         options={{title: ''}}
+//       />
+//     </Stack.Navigator>
+//   );
+// };
 
 const Drawer = createDrawerNavigator();
 
@@ -40,7 +53,7 @@ function MyDrawer(props) {
       <NavigationContainer>
         <Drawer.Navigator
           drawerContent={props => <SideMenu {...props} />}
-          initialRouteName={SCREEN_NAMES.HOME_SCREEN}
+          initialRouteName={SCREEN_NAMES.LOGIN_REGISTRATION}
           screenOptions={{headerShown: false}}>
           <Drawer.Screen
             name={SCREEN_NAMES.HOME_SCREEN}
@@ -64,9 +77,19 @@ function MyDrawer(props) {
             component={ServiceScreen}
             options={{title: ''}}
           />
+          <Drawer.Screen
+            name={SCREEN_NAMES.HOSTING_SCREEN}
+            component={HostingScreen}
+            options={{title: ''}}
+          />
+          <Drawer.Screen
+            name={SCREEN_NAMES.LOGIN_REGISTRATION}
+            component={LoginAndRegistration}
+            options={{title: ''}}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
-      </View>
+    </View>
   );
 }
 

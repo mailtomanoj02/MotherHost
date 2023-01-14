@@ -97,34 +97,44 @@ const HomeScreen = () => {
     );
   };
   const resellerHostingHomeView = () => {
+      const SCREEN_TITLE={
+          LINUX_MULTI_DOMAIN:'Linux Multi Domain Hosting',
+          WINDOWS_MULTI_DOMAIN:'Windows Multi Domain Hosting',
+          LINUX_RESELLER:'Linux Reseller Hosting',
+          WINDOWS_RESELLER:'Windows Reseller Hosting',
+      }
     return (
       <View>
         <View style={homeStyle.websiteHostinViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/linuxlogo.png')}
             imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-            title={'Linux Multi Domain Hosting'}
+            title={SCREEN_TITLE.LINUX_MULTI_DOMAIN}
             price={'25/m'}
+            navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/windowslogo.png')}
             imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-            title={'Windows Multi Domain Hosting'}
+            title={SCREEN_TITLE.WINDOWS_MULTI_DOMAIN}
             price={'25/m'}
+            navigation={navigation}
           />
         </View>
         <View style={homeStyle.websiteHostinViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/linuxlogo.png')}
             imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-            title={'Linux Reseller Hosting'}
+            title={SCREEN_TITLE.LINUX_RESELLER}
             price={'25/m'}
+            navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/windowslogo.png')}
             imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-            title={'Windows Reseller Hosting'}
+            title={SCREEN_TITLE.WINDOWS_RESELLER}
             price={'25/m'}
+            navigation={navigation}
           />
         </View>
       </View>

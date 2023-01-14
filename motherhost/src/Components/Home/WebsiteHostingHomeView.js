@@ -1,11 +1,17 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../Themes/Colors';
-import {FONT_FAMILY} from '../../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
 
 const WebsiteHostingHomeView = props => {
   return (
-    <TouchableOpacity style={{flex: 1}}>
+    <TouchableOpacity
+      style={{flex: 1}}
+      onPress={() =>
+        props.navigation.navigate(SCREEN_NAMES.HOSTING_SCREEN, {
+          headerTitle: props.title,
+        })
+      }>
       <View style={styles.viewStyle}>
         <Image style={props.imgStyle} source={props.img} />
         <View style={styles.titleViewStyle}>

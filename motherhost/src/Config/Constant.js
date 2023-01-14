@@ -14,6 +14,9 @@ export const SCREEN_NAMES = {
   DOMAIN_STACK_SCREEN: 'Domain_Stack',
   DOMAIN_SCREEN: 'Domain',
   DOMAIN_DETAIL_SCREEN: 'Domain_Detail',
+  HOSTING_SCREEN: 'Hosting_Screen',
+  HOSTING_STACK: 'Hosting_Stack',
+  LOGIN_REGISTRATION: 'login_registration',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {
