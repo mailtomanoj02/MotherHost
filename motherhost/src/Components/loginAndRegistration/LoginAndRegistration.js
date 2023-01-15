@@ -3,16 +3,16 @@ import AppBar from '../AppBar';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {useState} from 'react';
-import SignIn from './SignIn';
-import Register from './Register';
+import register from './Register';
+import signIn from './SignIn';
 
 const LoginAndRegistration = () => {
   const SCREEN_CONSTANTS = {
     REGISTER: 'REGISTER',
     SIGN_IN: 'SIGN IN',
   };
-  const [isRegisterPressed, setIsRegisterPressed] = useState(false);
-  const [isSignInPressed, setSignInPressed] = useState(true);
+  const [isRegisterPressed, setIsRegisterPressed] = useState(true);
+  const [isSignInPressed, setSignInPressed] = useState(false);
   const handleRegisterPressed = () => {
     setSignInPressed(false);
     setIsRegisterPressed(true);
@@ -56,7 +56,7 @@ const LoginAndRegistration = () => {
     <View style={{flex: 1}}>
       <AppBar />
       {RenderHeader()}
-      {isSignInPressed ? SignIn() : Register()}
+      {isSignInPressed ? signIn() : register()}
     </View>
   );
 };
