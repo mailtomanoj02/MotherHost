@@ -1,25 +1,49 @@
 import {
   REQUEST_API_DATA,
-  RECEIVE_API_DATA_SUCCESS,
-  RECEIVE_API_DATA_FAILURE,
+  INVOICE_API_DATA_SUCCESS,
+  DOMAIN_API_DATA_SUCCESS,
+  API_DATA_FAILURE,
+  SERVICE_API_DATA_SUCCESS,
 } from './Type';
-import axios from 'axios';
+import { fetchAPIRequest } from '../Api/Api';
+
 export const requestApiData = () => {
-  console.log('requestApiData called');
-  return {
+    return {
     type: REQUEST_API_DATA,
   };
 };
 
-export const receiveApiDataSuccess = data => {
-  return {
-    type: RECEIVE_API_DATA_SUCCESS,
-    data,
-  };
+export const fetchAPIAction = (url, params, method = 'POST') => dispatch => {
+  fetchAPIRequest(url, params, method)
+  .then((res) => {
+    const data = res?.data
+    
+    if(url === 'getinvoices.php'){
+      dispatch({
+        type: INVOICE_API_DATA_SUCCESS,
+        invoiceData: data.invoices.invoice,
+      })
+    }
+    else if(url === 'getclientsdomains.php'){
+      dispatch({
+        type: DOMAIN_API_DATA_SUCCESS,
+        domainData: data.domains.domain,
+      })
+    }
+    else if(url === 'getclientsproducts.php'){
+      dispatch({
+        type: SERVICE_API_DATA_SUCCESS,
+        serviceData: data.products.product,
+      })
+    }
+    
+  })
+  .catch((e) => {
+    dispatch({
+      type: API_DATA_FAILURE,
+      data,
+  })
+  })
 };
 
-export const receiveApiDataFailure = error => ({
-  type: RECEIVE_API_DATA_FAILURE,
-  error,
-});
 

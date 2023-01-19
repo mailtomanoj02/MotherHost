@@ -4,22 +4,24 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-
+import { connect,useDispatch } from 'react-redux';
+import { fetchAPIAction } from '../redux/Action';
+import { useEffect } from 'react';
 const renderItem = ({item}) => {
   return (
     <View style={styles.itemContainer}>
-      <Text style={styles.tileHeadingStyle}>Personal</Text>
-      <Text style={styles.nameStyle}>{item.name}</Text>
-      <Text style={styles.nameStyle}>{item.host}</Text>
+      <Text style={styles.tileHeadingStyle}>{item?.name}</Text>
+      <Text style={styles.nameStyle}>{item?.groupname}</Text>
+      <Text style={styles.domainStyle}>{item?.domain}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
-          <Text style={styles.dateText}>{`Next Due Date\t: ${item.nextDueDate}`}</Text>
-          <Text style={styles.dateText}>{`Billing Cycle\t\t: ${item.cycle}`}</Text>
+          <Text style={styles.dateText}>{`Next Due Date\t: ${item?.nextduedate}`}</Text>
+          <Text style={styles.dateText}>{`Billing Cycle\t\t: ${item?.billingcycle}`}</Text>
         </View>
         <View style={styles.statusBox}>
           <Text
             style={
-              item.status === 'Active'
+              item?.status === 'Active'
                 ? styles.statusTextColorGreen
                 : styles.statusTextColorRed
             }>
@@ -31,24 +33,23 @@ const renderItem = ({item}) => {
   );
 };
 
-const ServiceScreen = () => {
-  const data = [
-    {
-      cycle: 'Annually',
-      nextDueDate: '21/10/2000',
-      name: 'Wordpress Hosting',
-      id: '# 12345',
-      host: 'maduraihost.com',
-      status: 'Active',
-    },
-  ];
+const ServiceScreen = (props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+      dispatch(fetchAPIAction(
+          'getclientsproducts.php',
+          {action: 'GetClientsProducts',clientid: 41}
+      ))
+      console.log('props.serviceData == ', props.serviceData)
+  },[]);
+  const {serviceData} = props;
 
   return (
     <View style={styles.totalContainer}>
       <AppBar />
       <ScreenTitle title="My Services" />
       <FlatList
-        data={data}
+        data={serviceData}
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
@@ -56,7 +57,20 @@ const ServiceScreen = () => {
   );
 };
 
-export default ServiceScreen;
+const mapStateToProps = state => {
+  return {
+    serviceData: state.serviceData,
+    isLoading: state.isLoading,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchAPIAction: dispatch(fetchAPIAction),
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(ServiceScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {
@@ -84,6 +98,12 @@ const styles = StyleSheet.create({
   },
   nameStyle: {
     fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontSize: 14,
+    marginTop: 8,
+    marginHorizontal: 5,
+  },
+  domainStyle: {
+    fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
     marginTop: 8,
     marginHorizontal: 5,

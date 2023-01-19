@@ -4,38 +4,22 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
+import { connect, useDispatch } from 'react-redux';
+import { fetchAPIAction } from '../redux/Action';
+import {useEffect} from 'react';
 
-const DomainScreen = ({navigation}) => {
-  const data = [
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12345',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12341',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12342',
-      host: 'maduraihost.com',
-    },
-    {
-      date: '20/10/2000',
-      DueDate: '21/10/2000',
-      status: 'Active',
-      id: '# 12343',
-      host: 'maduraihost.com',
-    },
-  ];
+const DomainScreen = (props) => {
+
+  useEffect(() => {
+    dispatch(fetchAPIAction('getclientsdomains.php', {
+      action: 'GetClientsDomains',
+      clientid: 41,
+    }));
+    console.log('props.domainData == ', props.domainData);
+    // return () => {
+    //   console.log('unmounted');
+    // };
+  }, []);
 
   const renderItem = ({item}) => {
     return (
@@ -43,17 +27,17 @@ const DomainScreen = ({navigation}) => {
         onPress={() => navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN)}>
         <View style={styles.itemContainer}>
           <View style={styles.innerViewTop}>
-            <Text style={styles.idText}>{item.host}</Text>
+            <Text style={styles.idText}>{item.domainname}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
-              <Text style={styles.dateText}>{`Due Date\t: ${item.date}`}</Text>
+              <Text style={styles.dateText}>{`Date\t\t: ${item?.regdate}`}</Text>
+              <Text style={styles.dateText}>{`Due Date\t: ${item?.nextduedate}`}</Text>
             </View>
             <View style={styles.statusBox}>
               <Text
                 style={
-                  item.status === 'Active'
+                  item?.status === 'Active'
                     ? styles.statusTextColorGreen
                     : styles.statusTextColorRed
                 }>
@@ -66,12 +50,14 @@ const DomainScreen = ({navigation}) => {
     );
   };
 
+  const {domainData} = props
+
   return (
     <View style={styles.totalContainer}>
       <AppBar />
       <ScreenTitle title="My Domains" />
       <FlatList
-        data={data}
+        data={domainData}
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
@@ -79,7 +65,20 @@ const DomainScreen = ({navigation}) => {
   );
 };
 
-export default DomainScreen;
+const mapStateToProps = state => {
+  return {
+    domainData: state.domainData,
+    isLoading: state.isLoading,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchAPIAction: dispatch(fetchAPIAction),
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(DomainScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {

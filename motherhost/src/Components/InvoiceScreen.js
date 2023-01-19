@@ -4,24 +4,23 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-// import {fetchInvoiceData} from '../redux/Action';
 import {useEffect} from 'react';
-import {connect} from 'react-redux';
-import {fetchAPIRequest} from './../Api/Api';
+import {connect, useDispatch} from 'react-redux';
+import {fetchAPIAction} from './../redux/Action';
 
 const InvoiceScreen = props => {
+  const dispatch = useDispatch()
   useEffect(() => {
-    console.log('fetched');
-    fetchAPIRequest('getinvoices.php', {
+    dispatch(fetchAPIAction('getinvoices.php', {
       action: 'GetInvoices',
       userid: 41,
       orderby: 'duedate',
       order: 'desc',
-    });
+    }));
     return () => {
       console.log('unmounted');
     };
-  }, [props.fetchData]);
+  }, []);
   const renderItem = ({item}) => {
     return (
       <View style={styles.itemContainer}>
@@ -49,13 +48,15 @@ const InvoiceScreen = props => {
     );
   };
 
+  const {invoiceData} = props
+
   return (
     <View style={styles.totalContainer}>
       <AppBar />
       {props.isLoading ? <Text> Loading </Text> : null}
       <ScreenTitle title="My Invoices" />
       <FlatList
-        data={props.data}
+        data={invoiceData}
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
@@ -65,18 +66,18 @@ const InvoiceScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    data: state.data,
+    invoiceData: state.invoiceData,
     isLoading: state.isLoading,
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchData: dispatch(fetchInvoiceData),
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchData: dispatch(fetchAPIAction),
+  };
+};
 
-export default connect(mapStateToProps, null)(InvoiceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {

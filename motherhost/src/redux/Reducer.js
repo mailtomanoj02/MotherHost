@@ -1,33 +1,41 @@
 import {
   REQUEST_API_DATA,
-  RECEIVE_API_DATA_FAILURE,
-  RECEIVE_API_DATA_SUCCESS,
+  INVOICE_API_DATA_SUCCESS,
+  DOMAIN_API_DATA_SUCCESS,
+  SERVICE_API_DATA_SUCCESS,
+  API_DATA_FAILURE,
 } from './Type';
 
 const initialState = {
-  data: null,
   isLoading: false,
   error: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
-  console.log('mainReducer called');
   switch (action.type) {
     case REQUEST_API_DATA:
       return {
         ...state,
         isLoading: true,
       };
-    case RECEIVE_API_DATA_SUCCESS:
+    case INVOICE_API_DATA_SUCCESS:
       return {
         ...state,
-        isLoading: false,
-        data: action.data,
+        invoiceData: action.invoiceData,
       };
-    case RECEIVE_API_DATA_FAILURE:
+    case DOMAIN_API_DATA_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        domainData: action.domainData,
+      };
+    case SERVICE_API_DATA_SUCCESS:
+      return {
+        ...state,
+        serviceData: action.serviceData
+      };
+    case API_DATA_FAILURE:
+      return {
+        ...state,
         error: action.error,
       };
     default:
