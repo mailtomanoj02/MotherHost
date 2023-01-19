@@ -53,7 +53,7 @@ function MyDrawer(props) {
       <NavigationContainer>
         <Drawer.Navigator
           drawerContent={props => <SideMenu {...props} />}
-          initialRouteName={SCREEN_NAMES.LOGIN_REGISTRATION}
+          initialRouteName={SCREEN_NAMES.HOME_SCREEN}
           screenOptions={{headerShown: false}}>
           <Drawer.Screen
             name={SCREEN_NAMES.HOME_SCREEN}
