@@ -9,7 +9,7 @@ import { fetchAPIAction } from '../redux/Action';
 import {useEffect} from 'react';
 
 const DomainScreen = (props) => {
-
+const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchAPIAction('getclientsdomains.php', {
       action: 'GetClientsDomains',
