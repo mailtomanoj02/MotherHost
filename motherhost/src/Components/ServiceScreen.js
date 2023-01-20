@@ -4,9 +4,9 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-import { connect,useDispatch } from 'react-redux';
-import { fetchAPIAction } from '../redux/Action';
-import { useEffect } from 'react';
+import {connect, useDispatch} from 'react-redux';
+import {fetchAPIAction} from '../redux/Action';
+import {useEffect} from 'react';
 const renderItem = ({item}) => {
   return (
     <View style={styles.itemContainer}>
@@ -15,8 +15,14 @@ const renderItem = ({item}) => {
       <Text style={styles.domainStyle}>{item?.domain}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
-          <Text style={styles.dateText}>{`Next Due Date\t: ${item?.nextduedate}`}</Text>
-          <Text style={styles.dateText}>{`Billing Cycle\t\t: ${item?.billingcycle}`}</Text>
+          <Text
+            style={
+              styles.dateText
+            }>{`Next Due Date\t: ${item?.nextduedate}`}</Text>
+          <Text
+            style={
+              styles.dateText
+            }>{`Billing Cycle\t\t: ${item?.billingcycle}`}</Text>
         </View>
         <View style={styles.statusBox}>
           <Text
@@ -33,15 +39,17 @@ const renderItem = ({item}) => {
   );
 };
 
-const ServiceScreen = (props) => {
+const ServiceScreen = props => {
   const dispatch = useDispatch();
   useEffect(() => {
-      dispatch(fetchAPIAction(
-          'getclientsproducts.php',
-          {action: 'GetClientsProducts',clientid: 41}
-      ))
-      console.log('props.serviceData == ', props.serviceData)
-  },[]);
+    dispatch(
+      fetchAPIAction('getclientsproducts.php', {
+        action: 'GetClientsProducts',
+        clientid: 41,
+      }),
+    );
+    console.log('props.serviceData == ', props.serviceData);
+  }, []);
   const {serviceData} = props;
 
   return (
@@ -70,7 +78,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(ServiceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ServiceScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {

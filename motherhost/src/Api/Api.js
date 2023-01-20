@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { receiveApiDataSuccess } from './../redux/Action'
+import {receiveApiDataSuccess} from './../redux/Action';
 const BASE_URL = 'https://api.motherhost.com/app/';
 
-
 export const fetchAPIRequest = (url, params, method = 'POST') => {
+  console.log('API Called');
+
   return new Promise((resolve, reject) => {
     axios
       .request({
@@ -20,9 +21,7 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
       })
       .catch(error => {
         // console.log('error == ', error)
-        reject(error)
+        reject(error);
       });
-
-  })
-}
-
+  });
+};

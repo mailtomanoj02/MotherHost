@@ -26,10 +26,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   imageStyle: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
     alignItems: 'center',
-    marginTop: 5,
+    justifyContent: 'center',
+    marginVertical: 16,
+    marginHorizontal: 12,
+    tintColor: Colors.headerBlue,
   },
   textInputStyle: {
     flex: 1,

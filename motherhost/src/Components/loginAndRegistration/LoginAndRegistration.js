@@ -1,10 +1,17 @@
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import AppBar from '../AppBar';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {useState} from 'react';
-import register from './Register';
-import signIn from './SignIn';
+import SignIn from './SignIn';
+import Register from './Register';
 
 const LoginAndRegistration = () => {
   const SCREEN_CONSTANTS = {
@@ -56,7 +63,15 @@ const LoginAndRegistration = () => {
     <View style={{flex: 1}}>
       <AppBar />
       {RenderHeader()}
-      {isSignInPressed ? signIn() : register()}
+      {isSignInPressed ? (
+        <SignIn />
+      ) : (
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <Register />
+        </KeyboardAvoidingView>
+      )}
     </View>
   );
 };

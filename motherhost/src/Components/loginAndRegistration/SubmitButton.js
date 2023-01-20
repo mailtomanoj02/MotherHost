@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.ORANGE,
     marginTop: 20,
     padding: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 12,
   },
   buttonTextStyle: {
     flex: 1,

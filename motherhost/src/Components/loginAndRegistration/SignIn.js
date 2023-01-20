@@ -10,16 +10,16 @@ import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import colors from '../../Themes/Colors';
 import PlaceHolderComponent from './PlaceHolderComponent';
-import React from 'react';
+import React, {useRef} from 'react';
 import SubmitButton from './SubmitButton';
 const SignIn = () => {
-  const emailRef = React.createRef();
-  const passwordRef = React.createRef();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
   return (
     <View style={styles.containerStyle} onTouchStart={() => Keyboard.dismiss()}>
       <Text style={styles.signInTextStyle}>SIGN IN</Text>
       <PlaceHolderComponent
-        image={require('./../../Images/Login/img.png')}
+        image={require('../../Images/EntryIcons/user.png')}
         innerRef={emailRef}
         onSubmitEditing={() => passwordRef.current.focus()}
         params={{
@@ -29,7 +29,7 @@ const SignIn = () => {
         }}
       />
       <PlaceHolderComponent
-        image={require('./../../Images/Login/img.png')}
+        image={require('./../../Images/EntryIcons/key.png')}
         innerRef={passwordRef}
         keyName="done"
         params={{

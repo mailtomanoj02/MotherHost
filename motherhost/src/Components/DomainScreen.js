@@ -4,35 +4,43 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
-import { connect, useDispatch } from 'react-redux';
-import { fetchAPIAction } from '../redux/Action';
+import {connect, useDispatch} from 'react-redux';
+import {fetchAPIAction} from '../redux/Action';
 import {useEffect} from 'react';
 
-const DomainScreen = (props) => {
-const dispatch = useDispatch();
+const DomainScreen = props => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchAPIAction('getclientsdomains.php', {
-      action: 'GetClientsDomains',
-      clientid: 41,
-    }));
+    dispatch(
+      fetchAPIAction('getclientsdomains.php', {
+        action: 'GetClientsDomains',
+        clientid: 41,
+      }),
+    );
     console.log('props.domainData == ', props.domainData);
-    // return () => {
-    //   console.log('unmounted');
-    // };
+    return () => {
+      console.log('unmounted');
+    };
   }, []);
 
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN)}>
+        onPress={() =>
+          props.navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN)
+        }>
         <View style={styles.itemContainer}>
           <View style={styles.innerViewTop}>
             <Text style={styles.idText}>{item.domainname}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text style={styles.dateText}>{`Date\t\t: ${item?.regdate}`}</Text>
-              <Text style={styles.dateText}>{`Due Date\t: ${item?.nextduedate}`}</Text>
+              <Text
+                style={styles.dateText}>{`Date\t\t: ${item?.regdate}`}</Text>
+              <Text
+                style={
+                  styles.dateText
+                }>{`Due Date\t: ${item?.nextduedate}`}</Text>
             </View>
             <View style={styles.statusBox}>
               <Text
@@ -50,7 +58,7 @@ const dispatch = useDispatch();
     );
   };
 
-  const {domainData} = props
+  const {domainData} = props;
 
   return (
     <View style={styles.totalContainer}>
@@ -78,7 +86,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(DomainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DomainScreen);
 
 const styles = StyleSheet.create({
   totalContainer: {

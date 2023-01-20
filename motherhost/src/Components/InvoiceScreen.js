@@ -9,14 +9,16 @@ import {connect, useDispatch} from 'react-redux';
 import {fetchAPIAction} from './../redux/Action';
 
 const InvoiceScreen = props => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchAPIAction('getinvoices.php', {
-      action: 'GetInvoices',
-      userid: 41,
-      orderby: 'duedate',
-      order: 'desc',
-    }));
+    dispatch(
+      fetchAPIAction('getinvoices.php', {
+        action: 'GetInvoices',
+        userid: 41,
+        orderby: 'duedate',
+        order: 'desc',
+      }),
+    );
     return () => {
       console.log('unmounted');
     };
@@ -48,7 +50,7 @@ const InvoiceScreen = props => {
     );
   };
 
-  const {invoiceData} = props
+  const {invoiceData} = props;
 
   return (
     <View style={styles.totalContainer}>
