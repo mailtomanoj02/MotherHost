@@ -5,7 +5,7 @@ import PlaceHolderComponent from './PlaceHolderComponent';
 import SubmitButton from './SubmitButton';
 import {TextInput} from 'react-native-gesture-handler';
 import Colors from '../../Themes/Colors';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
 
 const Register = () => {
@@ -22,13 +22,25 @@ const Register = () => {
     setCountry(JSON.stringify(country));
     setCallCode(country.callingCode[0]);
   };
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const phoneRef = useRef(null);
+  const companyRef = useRef(null);
+  const addressRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const pinRef = useRef(null);
+  const gstRef = useRef(null);
   return (
     <View style={styles.containerStyle}>
       <ScrollView>
         <Text style={styles.signInTextStyle}>Personal Details</Text>
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/user.png')}
-          keyName="done"
+          innerRef={firstNameRef}
+          onSubmitEditing={() => lastNameRef.current.focus()}
           params={{
             autoCapitalize: false,
             placeholder: 'First Name',
@@ -36,7 +48,8 @@ const Register = () => {
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/user.png')}
-          keyName="done"
+          innerRef={lastNameRef}
+          onSubmitEditing={() => emailRef.current.focus()}
           params={{
             autoCapitalize: false,
             placeholder: 'Last Name',
@@ -44,7 +57,8 @@ const Register = () => {
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/email.png')}
-          keyName="done"
+          innerRef={emailRef}
+          onSubmitEditing={() => passwordRef.current.focus()}
           params={{
             autoCapitalize: false,
             keyboardType: 'email-address',
@@ -53,7 +67,8 @@ const Register = () => {
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/key.png')}
-          keyName="done"
+          innerRef={passwordRef}
+          onSubmitEditing={() => phoneRef.current.focus()}
           params={{
             autoCapitalize: false,
             secureTextEntry: true,
@@ -79,6 +94,8 @@ const Register = () => {
             />
           </View>
           <TextInput
+            ref={phoneRef}
+            onSubmitEditing={() => companyRef.current.focus()}
             style={styles.textInputStyle}
             placeholder={'Phone Number'}
           />
@@ -86,37 +103,37 @@ const Register = () => {
         <Text style={styles.signInTextStyle}>Billing Address</Text>
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/building.png')}
-          keyName="done"
+          innerRef={companyRef}
+          onSubmitEditing={() => addressRef.current.focus()}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'Company Name',
           }}
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/location.png')}
-          keyName="done"
+          innerRef={addressRef}
+          onSubmitEditing={() => cityRef.current.focus()}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'Address',
           }}
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/location.png')}
-          keyName="done"
+          innerRef={cityRef}
+          onSubmitEditing={() => stateRef.current.focus()}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'City',
           }}
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/location.png')}
-          keyName="done"
+          innerRef={stateRef}
+          onSubmitEditing={() => pinRef.current.focus()}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'State',
           }}
         />
@@ -125,15 +142,6 @@ const Register = () => {
             source={require('./../../Images/EntryIcons/location.png')}
             style={styles.imageStyle}
           />
-          {/*<TextInput*/}
-          {/*  style={{*/}
-          {/*    flex: 0.5,*/}
-          {/*    flexDirection: 'row',*/}
-          {/*    fontSize: 16,*/}
-          {/*    marginLeft: 20,*/}
-          {/*  }}*/}
-
-          {/*/>*/}
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <CountryPicker
               {...{
@@ -150,19 +158,18 @@ const Register = () => {
         </View>
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/location.png')}
-          keyName="done"
+          innerRef={pinRef}
+          onSubmitEditing={() => gstRef.current.focus()}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'Pin',
           }}
         />
         <PlaceHolderComponent
           image={require('./../../Images/EntryIcons/tax.png')}
-          keyName="done"
+          innerRef={gstRef}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'GST Number',
           }}
         />
@@ -195,6 +202,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginHorizontal: 12,
     tintColor: Colors.headerBlue,
+
   },
   textInputStyle: {
     flex: 1,
