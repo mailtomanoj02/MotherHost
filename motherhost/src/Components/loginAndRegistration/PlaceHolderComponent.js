@@ -1,8 +1,26 @@
 import Colors from '../../Themes/Colors';
-import {Image, View, StyleSheet} from 'react-native';
+import {Image, View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
+import {FONT_FAMILY} from '../../Config/Constant';
+import {useState} from 'react';
 
 const PlaceHolderComponent = props => {
+  const [hidePassword, setHidePassword] = useState(true);
+  const constants = {
+    SHOW: 'SHOW',
+    HIDE: 'HIDE',
+  };
+  const renderShowHide = () => {
+    return (
+      <TouchableOpacity
+        style={styles.buttonShowHideStyle}
+        onPress={() => setHidePassword(!hidePassword)}>
+        <Text style={styles.textShowHideStyle}>
+          {hidePassword ? constants.SHOW : constants.HIDE}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.containerViewStyle}>
       <Image source={props.image} style={styles.imageStyle} />
@@ -11,8 +29,11 @@ const PlaceHolderComponent = props => {
         ref={props.innerRef}
         returnKeyType={props.keyName}
         onSubmitEditing={props.onSubmitEditing}
+        onChangeText={props.onChangeText}
+        secureTextEntry={props.showHide ? hidePassword : false}
         {...props.params}
       />
+      {props.showHide ? renderShowHide() : null}
     </View>
   );
 };
@@ -39,5 +60,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontSize: 16,
   },
+  buttonShowHideStyle:{
+    padding: 10, alignItems: 'center', justifyContent: 'center'
+  },
+  textShowHideStyle:{fontFamily: FONT_FAMILY.REGULAR, fontSize: 10}
 });
 export default PlaceHolderComponent;

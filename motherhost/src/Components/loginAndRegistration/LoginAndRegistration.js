@@ -64,7 +64,7 @@ const LoginAndRegistration = () => {
       <AppBar />
       {RenderHeader()}
       {isSignInPressed ? (
-        <SignIn />
+        <SignIn isRegisterPressed={setIsRegisterPressed} isSignInPressed={setSignInPressed}/>
       ) : (
         <KeyboardAvoidingView
           style={{flex: 1}}

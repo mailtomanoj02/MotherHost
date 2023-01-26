@@ -4,6 +4,7 @@ import {
   DOMAIN_API_DATA_SUCCESS,
   API_DATA_FAILURE,
   SERVICE_API_DATA_SUCCESS,
+  LOGIN_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 
@@ -35,12 +36,18 @@ export const fetchAPIAction =
             type: SERVICE_API_DATA_SUCCESS,
             serviceData: data.products.product,
           });
+        } else if (url === 'validatelogin.php') {
+          console.log('called');
+          dispatch({
+            type: LOGIN_API_DATA_SUCCESS,
+            loginData: data,
+          });
         }
       })
       .catch(e => {
         dispatch({
           type: API_DATA_FAILURE,
-          data,
+          data: e,
         });
       });
   };

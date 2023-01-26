@@ -9,14 +9,21 @@
 import * as React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigation from '../motherhost/src/Navigator/AppNavigation.js';
-import {Store} from './src/redux/store';
-import {Provider} from 'react-redux';
+import {Persistor, Store} from './src/redux/store';
+import {Provider, useSelector} from 'react-redux';
+import Toast from './src/Components/Toast';
+import {PersistGate} from 'redux-persist/integration/react';
 const App = () => {
+
   return (
     <SafeAreaProvider>
       <Provider store={Store}>
-        <AppNavigation />
+        <PersistGate loading={null} persistor={Persistor}>
+          <AppNavigation />
+        </PersistGate>
       </Provider>
+
+      {/*<Toast />*/}
     </SafeAreaProvider>
   );
 };

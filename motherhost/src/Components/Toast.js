@@ -1,7 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
-import {Animated, Button, Text, View} from 'react-native';
+import {Animated, Text, View} from 'react-native';
 import {FONT_FAMILY} from '../Config/Constant';
+import {ToastValue} from '../utils/Utils';
+import {isValidString} from '../utils/Helper';
 
 const Message = props => {
   const opacity = useRef(new Animated.Value(0)).current;
@@ -10,13 +12,13 @@ const Message = props => {
     Animated.sequence([
       Animated.timing(opacity, {
         toValue: 1,
-        duration: 500,
+        // duration: 500,
         useNativeDriver: true,
       }),
       Animated.delay(2000),
       Animated.timing(opacity, {
         toValue: 0,
-        duration: 500,
+        // duration: 500,
         useNativeDriver: true,
       }),
     ]).start(() => {
@@ -38,7 +40,7 @@ const Message = props => {
         ],
         margin: 10,
         marginBottom: 5,
-        backgroundColor: props.color,
+        backgroundColor: 'red',
         padding: 10,
         borderRadius: 4,
         shadowColor: 'black',
@@ -58,35 +60,33 @@ const Message = props => {
 };
 
 const Toast = props => {
-  const [messages, setMessages] = useState([]);
-  console.log(props.backgroundColor);
+  const [message, setMessage] = useState('');
+  const [toastValue, setToastValue] = useState(ToastValue);
   const color = props.backgroundColor;
+
   useEffect(() => {
-    const message = props.message;
-    setMessages([...messages, message]);
-  }, []);
+    setMessage(toastValue);
+  }, [toastValue]);
 
   return (
     <>
       <View
         style={{
           position: 'absolute',
-          top: 0,
+          top: 75,
           left: 0,
           right: 0,
         }}>
-        {messages.map(message => (
+        {isValidString(message) ? (
           <Message
-            key={message}
             message={message}
             color={color}
             onHide={() => {
-              setMessages(messages =>
-                messages.filter(currentMessage => currentMessage !== message),
-              );
+              setMessage('');
+              setToastValue('');
             }}
           />
-        ))}
+        ) : null}
       </View>
 
       {/*<Button*/}

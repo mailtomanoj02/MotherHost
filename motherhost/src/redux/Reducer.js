@@ -3,6 +3,7 @@ import {
   INVOICE_API_DATA_SUCCESS,
   DOMAIN_API_DATA_SUCCESS,
   SERVICE_API_DATA_SUCCESS,
+  LOGIN_API_DATA_SUCCESS,
   API_DATA_FAILURE,
 } from './Type';
 
@@ -31,7 +32,12 @@ export const mainReducer = (state = initialState, action) => {
     case SERVICE_API_DATA_SUCCESS:
       return {
         ...state,
-        serviceData: action.serviceData
+        serviceData: action.serviceData,
+      };
+    case LOGIN_API_DATA_SUCCESS:
+      return {
+        ...state,
+        loginData: action.loginData,
       };
     case API_DATA_FAILURE:
       return {
@@ -42,5 +48,3 @@ export const mainReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-

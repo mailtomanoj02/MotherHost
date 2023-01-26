@@ -5,23 +5,25 @@ import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {useEffect} from 'react';
-import {connect, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from './../redux/Action';
 
 const InvoiceScreen = props => {
   const dispatch = useDispatch();
+  const invoiceData = useSelector(state => state.invoiceData);
   useEffect(() => {
-    dispatch(
-      fetchAPIAction('getinvoices.php', {
-        action: 'GetInvoices',
-        userid: 41,
-        orderby: 'duedate',
-        order: 'desc',
-      }),
-    );
-    return () => {
-      console.log('unmounted');
-    };
+    const apiCall = props.navigation.addListener('focus', () => {
+      dispatch(
+        fetchAPIAction('getinvoices.php', {
+          action: 'GetInvoices',
+          userid: 41,
+          orderby: 'duedate',
+          order: 'desc',
+        }),
+      );
+    });
+
+    return apiCall;
   }, []);
   const renderItem = ({item}) => {
     return (
@@ -50,8 +52,6 @@ const InvoiceScreen = props => {
     );
   };
 
-  const {invoiceData} = props;
-
   return (
     <View style={styles.totalContainer}>
       <AppBar />
@@ -66,20 +66,13 @@ const InvoiceScreen = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    invoiceData: state.invoiceData,
-    isLoading: state.isLoading,
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchData: dispatch(fetchAPIAction),
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchData: dispatch(fetchAPIAction),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(InvoiceScreen);
+export default InvoiceScreen;
 
 const styles = StyleSheet.create({
   totalContainer: {

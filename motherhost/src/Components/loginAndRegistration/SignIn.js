@@ -1,40 +1,58 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Keyboard,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Keyboard} from 'react-native';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import colors from '../../Themes/Colors';
 import PlaceHolderComponent from './PlaceHolderComponent';
 import React, {useRef, useState} from 'react';
-import SubmitButton from './SubmitButton';
-import Toast from '../Toast';
-const SignIn = () => {
+import {useDispatch} from 'react-redux';
+import {fetchAPIAction} from '../../redux/Action';
+import {checkIsValidEmail, isValidElement} from '../../utils/Helper';
+// import {showToast} from '../../utils/Utils';
+const SignIn = ({isRegisterPressed, isSignInPressed}) => {
+  const dispatch = useDispatch();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const [toast, setToast] = useState(false);
-  const onPress = () => {
-    setToast(true);
-    setTimeout(() => {
-      setToast(false);
-    }, 2000);
+  const [loginDetails, setLoginDetails] = useState({
+    email: 'kramnath84@gmail.com',
+    password: '$+X5J4W3kmJ%mBG',
+  });
+
+  const SubmitButtonSignIn = title => {
+    return (
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => {
+          if (
+            checkIsValidEmail(loginDetails.email) &&
+            isValidElement(loginDetails.password)
+          ) {
+            dispatch(
+              fetchAPIAction('validatelogin.php', {
+                email: loginDetails.email,
+                password2: loginDetails.password,
+              }),
+            );
+          } else {
+            console.log('Enter valid email or Password');
+            // showToast('Manoj');
+          }
+        }}>
+        <Text style={styles.buttonTextStyle}>{title}</Text>
+      </TouchableOpacity>
+    );
   };
+
   return (
     <View style={styles.containerStyle} onTouchStart={() => Keyboard.dismiss()}>
-      {toast ? (
-        <Toast message={'Provide all information'} backgroundColor={'red'} />
-      ) : null}
       <Text style={styles.signInTextStyle}>SIGN IN</Text>
       <PlaceHolderComponent
         image={require('../../Images/EntryIcons/user.png')}
         innerRef={emailRef}
         onSubmitEditing={() => passwordRef.current.focus()}
+        onChangeText={text => setLoginDetails({...loginDetails, email: text})}
         params={{
           autoCapitalize: false,
+          value: 'kramnath84@gmail.com',
           keyboardType: 'email-address',
           placeholder: 'Email Address',
         }}
@@ -42,43 +60,33 @@ const SignIn = () => {
       <PlaceHolderComponent
         image={require('./../../Images/EntryIcons/key.png')}
         innerRef={passwordRef}
+        onChangeText={text =>
+          setLoginDetails({...loginDetails, password: text})
+        }
         keyName="done"
+        showHide={true}
         params={{
           autoCapitalize: false,
-          secureTextEntry: true,
+          // secureTextEntry: true,
+          value: '$+X5J4W3kmJ%mBG',
           placeholder: 'Password',
         }}
       />
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => onPress()}>
-        <Text style={styles.buttonTextStyle}>SUBMIT</Text>
-        {/*<Text>SUBMIT</Text>*/}
-      </TouchableOpacity>
+      {SubmitButtonSignIn('SUBMIT')}
       <View style={{flexDirection: 'row', marginTop: 20}}>
-        <Text
-          style={{
-            fontFamily: FONT_FAMILY.REGULAR,
-            color: Colors.DARK_GREY,
-            fontSize: 13,
+        <Text style={styles.textNewToMotherHostStyle}>New to Motherhost?</Text>
+        <TouchableOpacity
+          style={{paddingHorizontal: 5}}
+          onPress={() => {
+            isRegisterPressed(true);
+            isSignInPressed(false);
           }}>
-          New to Motherhost?
-        </Text>
-        <TouchableOpacity style={{paddingHorizontal: 5}}>
-          <Text
-            style={{
-              fontFamily: FONT_FAMILY.REGULAR,
-              color: Colors.DARK_GREY,
-              fontSize: 13,
-            }}>
-            Register Now
-          </Text>
+          <Text style={styles.textRegisterNowStyle}>Register Now</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-export default SignIn;
 
 const styles = StyleSheet.create({
   containerStyle: {flex: 0.6, alignItems: 'center', justifyContent: 'center'},
@@ -101,4 +109,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
+  textNewToMotherHostStyle: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: Colors.DARK_GREY,
+    fontSize: 13,
+  },
+  textRegisterNowStyle: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: Colors.DARK_GREY,
+    fontSize: 13,
+  },
 });
+
+export default SignIn;
