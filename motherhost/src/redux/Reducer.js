@@ -4,6 +4,7 @@ import {
   DOMAIN_API_DATA_SUCCESS,
   SERVICE_API_DATA_SUCCESS,
   LOGIN_API_DATA_SUCCESS,
+    REGISTER_API_DATA_SUCCESS,
   API_DATA_FAILURE,
 } from './Type';
 
@@ -38,6 +39,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         loginData: action.loginData,
+      };
+    case REGISTER_API_DATA_SUCCESS:
+      return {
+        ...state,
+        registerData: action.registerData,
       };
     case API_DATA_FAILURE:
       return {

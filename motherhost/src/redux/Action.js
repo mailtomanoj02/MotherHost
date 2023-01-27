@@ -5,8 +5,11 @@ import {
   API_DATA_FAILURE,
   SERVICE_API_DATA_SUCCESS,
   LOGIN_API_DATA_SUCCESS,
+  REGISTER_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
+import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
+import Colors from "../Themes/Colors";
 
 export const requestApiData = () => {
   return {
@@ -37,10 +40,21 @@ export const fetchAPIAction =
             serviceData: data.products.product,
           });
         } else if (url === 'validatelogin.php') {
-          console.log('called');
           dispatch({
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
+          });
+          if (data) {
+            if (data.result === 'success') {
+              showToastMessage('Welcome back ' + data.fullname, Colors.GREEN);
+            } else {
+              showToastMessage(data.message, Colors.RED);
+            }
+          }
+        } else if (url === 'clientadd.php') {
+          dispatch({
+            type: REGISTER_API_DATA_SUCCESS,
+            registerData: data,
           });
         }
       })

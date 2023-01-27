@@ -1,17 +1,40 @@
-import {StyleSheet, Text, ScrollView, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {FONT_FAMILY} from '../../Config/Constant';
 import colors from '../../Themes/Colors';
 import PlaceHolderComponent from './PlaceHolderComponent';
-import SubmitButton from './SubmitButton';
-import {TextInput} from 'react-native-gesture-handler';
 import Colors from '../../Themes/Colors';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
+import {getIpAddress} from 'react-native-device-info';
+import {fetchAPIAction} from '../../redux/Action';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Register = () => {
   const [countryCode, setCountryCode] = useState('IN');
-  const [country, setCountry] = useState('India');
-  const [callCode, setCallCode] = useState('');
+  const [callCode, setCallCode] = useState('91');
+  const [deviceIp, setDeviceIp] = useState('');
+  const [registerDetails, setRegisterDetails] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password2: '',
+    phoneNumber: '',
+    companyName: '',
+    address1: '',
+    country: '',
+    city: '',
+    state: '',
+    postcode: '',
+  });
   const visible = false;
   const withFilter = true;
   const withCallingCode = true;
@@ -19,7 +42,6 @@ const Register = () => {
   const withCountryNameButton = true;
   const onSelect = country => {
     setCountryCode(country.cca2);
-    setCountry(JSON.stringify(country));
     setCallCode(country.callingCode[0]);
   };
   const firstNameRef = useRef(null);
@@ -33,6 +55,58 @@ const Register = () => {
   const stateRef = useRef(null);
   const pinRef = useRef(null);
   const gstRef = useRef(null);
+  const dispatch = useDispatch();
+  let platform = Platform.OS;
+  useEffect(() => {
+    getIpAddress().then(res => setDeviceIp(res));
+  }, []);
+
+  const details = useSelector(state => state.registerData);
+  console.log('details', details);
+
+  const SubmitButton = title => {
+    const {
+      firstname,
+      lastname,
+      email,
+      password2,
+      phoneNumber,
+      companyName,
+      address1,
+      country,
+      city,
+      state,
+      postcode,
+    } = registerDetails;
+
+    return (
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => {
+          dispatch(
+            fetchAPIAction('clientadd.php', {
+              action: 'AddClient', //hardcode
+              firstname: firstname,
+              lastname: lastname,
+              email: email,
+              password2: password2,
+              phonenumber: phoneNumber,
+              companyname: companyName,
+              address1: address1,
+              country: countryCode,
+              city: city,
+              state: state,
+              postcode: postcode,
+              clientip: deviceIp,
+              usertype: platform === 'ios' ? 'IOSApp' : 'AndroidApp',
+              playerid: 'jdshfjdhfk', // give dummy string
+            }),
+          );
+        }}>
+        <Text style={styles.buttonTextStyle}>{title}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.containerStyle}>
       <ScrollView>
@@ -41,6 +115,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/user.png')}
           innerRef={firstNameRef}
           onSubmitEditing={() => lastNameRef.current.focus()}
+          onChangeText={firstName =>
+            setRegisterDetails({...registerDetails, firstname: firstName})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'First Name',
@@ -50,6 +127,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/user.png')}
           innerRef={lastNameRef}
           onSubmitEditing={() => emailRef.current.focus()}
+          onChangeText={lastName =>
+            setRegisterDetails({...registerDetails, lastname: lastName})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'Last Name',
@@ -59,6 +139,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/email.png')}
           innerRef={emailRef}
           onSubmitEditing={() => passwordRef.current.focus()}
+          onChangeText={email =>
+            setRegisterDetails({...registerDetails, email: email})
+          }
           params={{
             autoCapitalize: false,
             keyboardType: 'email-address',
@@ -69,9 +152,12 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/key.png')}
           innerRef={passwordRef}
           onSubmitEditing={() => phoneRef.current.focus()}
+          onChangeText={password =>
+            setRegisterDetails({...registerDetails, password2: password})
+          }
+          showHide={true}
           params={{
             autoCapitalize: false,
-            secureTextEntry: true,
             placeholder: 'Password',
           }}
         />
@@ -96,6 +182,9 @@ const Register = () => {
           <TextInput
             ref={phoneRef}
             onSubmitEditing={() => companyRef.current.focus()}
+            onChangeText={phone =>
+              setRegisterDetails({...registerDetails, phoneNumber: phone})
+            }
             style={styles.textInputStyle}
             placeholder={'Phone Number'}
           />
@@ -105,6 +194,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/building.png')}
           innerRef={companyRef}
           onSubmitEditing={() => addressRef.current.focus()}
+          onChangeText={companyName =>
+            setRegisterDetails({...registerDetails, companyName: companyName})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'Company Name',
@@ -114,6 +206,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/location.png')}
           innerRef={addressRef}
           onSubmitEditing={() => cityRef.current.focus()}
+          onChangeText={address =>
+            setRegisterDetails({...registerDetails, address1: address})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'Address',
@@ -123,6 +218,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/location.png')}
           innerRef={cityRef}
           onSubmitEditing={() => stateRef.current.focus()}
+          onChangeText={city =>
+            setRegisterDetails({...registerDetails, city: city})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'City',
@@ -132,6 +230,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/location.png')}
           innerRef={stateRef}
           onSubmitEditing={() => pinRef.current.focus()}
+          onChangeText={state =>
+            setRegisterDetails({...registerDetails, state: state})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'State',
@@ -160,6 +261,9 @@ const Register = () => {
           image={require('./../../Images/EntryIcons/location.png')}
           innerRef={pinRef}
           onSubmitEditing={() => gstRef.current.focus()}
+          onChangeText={pin =>
+            setRegisterDetails({...registerDetails, postcode: pin})
+          }
           params={{
             autoCapitalize: false,
             placeholder: 'Pin',
@@ -173,7 +277,7 @@ const Register = () => {
             placeholder: 'GST Number',
           }}
         />
-        <SubmitButton title={'REGISTER'} />
+        {SubmitButton('REGISTER')}
       </ScrollView>
     </View>
   );
@@ -202,13 +306,26 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginHorizontal: 12,
     tintColor: Colors.headerBlue,
-
   },
   textInputStyle: {
     flex: 1,
     flexDirection: 'row',
     fontSize: 16,
     marginLeft: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.ORANGE,
+    marginTop: 20,
+    padding: 10,
+    marginHorizontal: 12,
+  },
+  buttonTextStyle: {
+    flex: 1,
+    textAlign: 'center',
+    color: Colors.white,
+    fontSize: 17,
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
 });
 export default Register;

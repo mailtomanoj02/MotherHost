@@ -60,9 +60,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontSize: 16,
   },
-  buttonShowHideStyle:{
-    padding: 10, alignItems: 'center', justifyContent: 'center'
+  buttonShowHideStyle: {
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  textShowHideStyle:{fontFamily: FONT_FAMILY.REGULAR, fontSize: 10}
+  textShowHideStyle: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: 10,
+    color: Colors.headerBlue,
+  },
 });
 export default PlaceHolderComponent;
