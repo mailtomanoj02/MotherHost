@@ -7,10 +7,12 @@ import {FONT_FAMILY} from '../Config/Constant';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from './../redux/Action';
+import SkeletonLoader from './customUI/SkeletonLoader';
 
 const InvoiceScreen = props => {
   const dispatch = useDispatch();
   const invoiceData = useSelector(state => state.invoiceData);
+  const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
     const apiCall = props.navigation.addListener('focus', () => {
       dispatch(
@@ -55,22 +57,19 @@ const InvoiceScreen = props => {
   return (
     <View style={styles.totalContainer}>
       <AppBar />
-      {props.isLoading ? <Text> Loading </Text> : null}
       <ScreenTitle title="My Invoices" />
-      <FlatList
-        data={invoiceData}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={invoiceData}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchData: dispatch(fetchAPIAction),
-//   };
-// };
 
 export default InvoiceScreen;
 

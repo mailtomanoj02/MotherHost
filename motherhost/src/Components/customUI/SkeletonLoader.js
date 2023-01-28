@@ -2,7 +2,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {Fragment} from 'react';
 
 const SkeletonLoader = () => {
-  const loader = [1, 2, 3, 4, 5];
+  const loader = [1, 2, 3, 4, 5, 6];
   return (
     <SkeletonPlaceholder>
       {loader.map(index => {
@@ -16,7 +16,7 @@ const SkeletonLoader = () => {
               marginLeft={10}
               borderRadius={10}>
               <SkeletonPlaceholder.Item
-                height={100}
+                height={110}
                 borderRadius={4}
                 flex={1}
                 marginHorizontal={5}

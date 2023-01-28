@@ -6,10 +6,11 @@ import {
   SERVICE_API_DATA_SUCCESS,
   LOGIN_API_DATA_SUCCESS,
   REGISTER_API_DATA_SUCCESS,
+  RESPONSE_API_DATA,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
-import Colors from "../Themes/Colors";
+import Colors from '../Themes/Colors';
 
 export const requestApiData = () => {
   return {
@@ -20,6 +21,7 @@ export const requestApiData = () => {
 export const fetchAPIAction =
   (url, params, method = 'POST') =>
   dispatch => {
+    dispatch({type: REQUEST_API_DATA});
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
@@ -57,11 +59,13 @@ export const fetchAPIAction =
             registerData: data,
           });
         }
+        dispatch({type: RESPONSE_API_DATA});
       })
       .catch(e => {
         dispatch({
           type: API_DATA_FAILURE,
           data: e,
         });
+        dispatch({type: RESPONSE_API_DATA});
       });
   };

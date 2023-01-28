@@ -4,8 +4,9 @@ import {
   DOMAIN_API_DATA_SUCCESS,
   SERVICE_API_DATA_SUCCESS,
   LOGIN_API_DATA_SUCCESS,
-    REGISTER_API_DATA_SUCCESS,
+  REGISTER_API_DATA_SUCCESS,
   API_DATA_FAILURE,
+  RESPONSE_API_DATA,
 } from './Type';
 
 const initialState = {
@@ -19,6 +20,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case RESPONSE_API_DATA:
+      return {
+        ...state,
+        isLoading: false,
       };
     case INVOICE_API_DATA_SUCCESS:
       return {

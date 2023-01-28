@@ -4,9 +4,10 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
 import {useEffect} from 'react';
+import SkeletonLoader from './customUI/SkeletonLoader';
 const renderItem = ({item}) => {
   return (
     <View style={styles.itemContainer}>
@@ -41,44 +42,38 @@ const renderItem = ({item}) => {
 
 const ServiceScreen = props => {
   const dispatch = useDispatch();
+  const serviceData = useSelector(state => state.serviceData);
+  const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
-    dispatch(
-      fetchAPIAction('getclientsproducts.php', {
-        action: 'GetClientsProducts',
-        clientid: 41,
-      }),
-    );
-    console.log('props.serviceData == ', props.serviceData);
+    const apiCall = props.navigation.addListener('focus', () => {
+      dispatch(
+        fetchAPIAction('getclientsproducts.php', {
+          action: 'GetClientsProducts',
+          clientid: 41,
+        }),
+      );
+    });
+    return apiCall;
   }, []);
-  const {serviceData} = props;
 
   return (
     <View style={styles.totalContainer}>
       <AppBar />
       <ScreenTitle title="My Services" />
-      <FlatList
-        data={serviceData}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={serviceData}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    serviceData: state.serviceData,
-    isLoading: state.isLoading,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchAPIAction: dispatch(fetchAPIAction),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ServiceScreen);
+export default ServiceScreen;
 
 const styles = StyleSheet.create({
   totalContainer: {

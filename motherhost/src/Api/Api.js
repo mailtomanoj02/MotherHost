@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {receiveApiDataSuccess} from './../redux/Action';
 const BASE_URL = 'https://api.motherhost.com/app/';
 
 export const fetchAPIRequest = (url, params, method = 'POST') => {

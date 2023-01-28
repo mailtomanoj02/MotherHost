@@ -4,23 +4,25 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
 import {useEffect} from 'react';
+import SkeletonLoader from './customUI/SkeletonLoader';
 
 const DomainScreen = props => {
   const dispatch = useDispatch();
+  const domainData = useSelector(state => state.domainData);
+  const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
-    dispatch(
-      fetchAPIAction('getclientsdomains.php', {
-        action: 'GetClientsDomains',
-        clientid: 41,
-      }),
-    );
-    console.log('props.domainData == ', props.domainData);
-    return () => {
-      console.log('unmounted');
-    };
+    const apiCall = props.navigation.addListener('focus', () => {
+      dispatch(
+        fetchAPIAction('getclientsdomains.php', {
+          action: 'GetClientsDomains',
+          clientid: 41,
+        }),
+      );
+    });
+    return apiCall;
   }, []);
 
   const renderItem = ({item}) => {
@@ -58,35 +60,24 @@ const DomainScreen = props => {
     );
   };
 
-  const {domainData} = props;
-
   return (
     <View style={styles.totalContainer}>
       <AppBar />
       <ScreenTitle title="My Domains" />
-      <FlatList
-        data={domainData}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={domainData}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    domainData: state.domainData,
-    isLoading: state.isLoading,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchAPIAction: dispatch(fetchAPIAction),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DomainScreen);
+export default DomainScreen;
 
 const styles = StyleSheet.create({
   totalContainer: {

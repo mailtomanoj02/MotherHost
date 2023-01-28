@@ -13,8 +13,8 @@ const SignIn = ({isRegisterPressed, isSignInPressed}) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginDetails, setLoginDetails] = useState({
-    email: 'kramnath84@gmail.com',
-    password: '$+X5J4W3kmJ%mBG',
+    email: '',
+    password: '',
   });
 
   const SubmitButtonSignIn = title => {
@@ -22,20 +22,12 @@ const SignIn = ({isRegisterPressed, isSignInPressed}) => {
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => {
-          if (
-            checkIsValidEmail(loginDetails.email) &&
-            isValidElement(loginDetails.password)
-          ) {
-            dispatch(
-              fetchAPIAction('validatelogin.php', {
-                email: loginDetails.email,
-                password2: loginDetails.password,
-              }),
-            );
-          } else {
-            console.log('Enter valid email or Password');
-            // showToast('Manoj');
-          }
+          dispatch(
+            fetchAPIAction('validatelogin.php', {
+              email: loginDetails.email,
+              password2: loginDetails.password,
+            }),
+          );
         }}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
       </TouchableOpacity>
@@ -52,7 +44,6 @@ const SignIn = ({isRegisterPressed, isSignInPressed}) => {
         onChangeText={text => setLoginDetails({...loginDetails, email: text})}
         params={{
           autoCapitalize: false,
-          value: 'kramnath84@gmail.com',
           keyboardType: 'email-address',
           placeholder: 'Email Address',
         }}
@@ -67,8 +58,6 @@ const SignIn = ({isRegisterPressed, isSignInPressed}) => {
         showHide={true}
         params={{
           autoCapitalize: false,
-          // secureTextEntry: true,
-          value: '$+X5J4W3kmJ%mBG',
           placeholder: 'Password',
         }}
       />
