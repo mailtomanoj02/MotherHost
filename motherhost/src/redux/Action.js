@@ -19,9 +19,11 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (url, params, method = 'POST') =>
+  (url, params, loader = true, method = 'POST') =>
   dispatch => {
-    dispatch({type: REQUEST_API_DATA});
+    if (loader) {
+      dispatch({type: REQUEST_API_DATA});
+    }
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
@@ -59,13 +61,17 @@ export const fetchAPIAction =
             registerData: data,
           });
         }
-        dispatch({type: RESPONSE_API_DATA});
+        if (loader) {
+          dispatch({type: RESPONSE_API_DATA});
+        }
       })
       .catch(e => {
         dispatch({
           type: API_DATA_FAILURE,
           data: e,
         });
-        dispatch({type: RESPONSE_API_DATA});
+        if (loader) {
+          dispatch({type: RESPONSE_API_DATA});
+        }
       });
   };

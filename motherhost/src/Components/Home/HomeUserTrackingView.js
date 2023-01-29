@@ -8,7 +8,9 @@ const HomeUserTrackingView = props => {
   return (
     <TouchableOpacity
       style={{flex: 1}}
-      onPress={() => props.navigation.navigate(props.screenName)}>
+      onPress={() =>
+        props.navigation.navigate(props.screenName, {doApiCall: true})
+      }>
       <View style={styles.viewStyle}>
         <View style={styles.titleViewStyle}>
           <Text style={styles.countTxtStyle}>{props.count}</Text>

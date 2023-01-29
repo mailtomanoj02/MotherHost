@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import AppBar from './AppBar';
-import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import AppBar from '../AppBar';
+import Colors from '../../Themes/Colors';
+import {FONT_FAMILY} from '../../Config/Constant';
 import {TextInput} from 'react-native-gesture-handler';
 const DomainDetailScreen = () => {
   const RenderPlaceHolder = ({title, placeHolderValue}) => {

@@ -1,28 +1,25 @@
 import * as React from 'react';
 import {FlatList, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import AppBar from './AppBar';
-import ScreenTitle from './ScreenTitle';
-import Colors from '../Themes/Colors';
-import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {fetchAPIAction} from '../redux/Action';
+import AppBar from '../AppBar';
+import ScreenTitle from '../ScreenTitle';
+import Colors from '../../Themes/Colors';
+import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAPIAction} from '../../redux/Action';
 import {useEffect} from 'react';
-import SkeletonLoader from './customUI/SkeletonLoader';
+import SkeletonLoader from '../customUI/SkeletonLoader';
 
 const DomainScreen = props => {
   const dispatch = useDispatch();
   const domainData = useSelector(state => state.domainData);
   const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
-    const apiCall = props.navigation.addListener('focus', () => {
-      dispatch(
-        fetchAPIAction('getclientsdomains.php', {
-          action: 'GetClientsDomains',
-          clientid: 41,
-        }),
-      );
-    });
-    return apiCall;
+    dispatch(
+      fetchAPIAction('getclientsdomains.php', {
+        action: 'GetClientsDomains',
+        clientid: 41,
+      }),
+    );
   }, []);
 
   const renderItem = ({item}) => {

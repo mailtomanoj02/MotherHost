@@ -1,31 +1,47 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet} from 'react-native';
+import {FlatList, Text, View, StyleSheet, RefreshControl} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchAPIAction} from './../redux/Action';
+import {fetchAPIAction} from '../redux/Action';
 import SkeletonLoader from './customUI/SkeletonLoader';
 
 const InvoiceScreen = props => {
-  const dispatch = useDispatch();
-  const invoiceData = useSelector(state => state.invoiceData);
-  const isLoading = useSelector(state => state.isLoading);
-  useEffect(() => {
-    const apiCall = props.navigation.addListener('focus', () => {
-      dispatch(
-        fetchAPIAction('getinvoices.php', {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(
+      fetchAPIAction(
+        'getinvoices.php',
+        {
           action: 'GetInvoices',
           userid: 41,
           orderby: 'duedate',
           order: 'desc',
-        }),
-      );
-    });
-
-    return apiCall;
+        },
+        false,
+      ),
+    );
+    // Refresh the data here
+    setTimeout(() => setRefreshing(false), 2000);
+  };
+  const dispatch = useDispatch();
+  const invoiceData = useSelector(state => state.invoiceData);
+  const isLoading = useSelector(state => state.isLoading);
+  useEffect(() => {
+    dispatch(
+      fetchAPIAction('getinvoices.php', {
+        action: 'GetInvoices',
+        userid: 41,
+        orderby: 'duedate',
+        order: 'desc',
+      }),
+    );
+    return () => console.log('called unmount');
   }, []);
   const renderItem = ({item}) => {
     return (
@@ -65,6 +81,9 @@ const InvoiceScreen = props => {
           data={invoiceData}
           keyExtractor={item => item.id}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
       )}
     </View>

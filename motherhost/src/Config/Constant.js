@@ -17,6 +17,7 @@ export const SCREEN_NAMES = {
   HOSTING_SCREEN: 'Hosting_Screen',
   HOSTING_STACK: 'Hosting_Stack',
   LOGIN_REGISTRATION: 'login_registration',
+  DRAWER: 'Drawer',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {
