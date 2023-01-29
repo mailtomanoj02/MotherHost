@@ -97,12 +97,12 @@ const HomeScreen = () => {
     );
   };
   const resellerHostingHomeView = () => {
-      const SCREEN_TITLE={
-          LINUX_MULTI_DOMAIN:'Linux Multi Domain Hosting',
-          WINDOWS_MULTI_DOMAIN:'Windows Multi Domain Hosting',
-          LINUX_RESELLER:'Linux Reseller Hosting',
-          WINDOWS_RESELLER:'Windows Reseller Hosting',
-      }
+    const SCREEN_TITLE = {
+      LINUX_MULTI_DOMAIN: 'Linux Multi Domain Hosting',
+      WINDOWS_MULTI_DOMAIN: 'Windows Multi Domain Hosting',
+      LINUX_RESELLER: 'Linux Reseller Hosting',
+      WINDOWS_RESELLER: 'Windows Reseller Hosting',
+    };
     return (
       <View>
         <View style={homeStyle.websiteHostinViewStyle}>

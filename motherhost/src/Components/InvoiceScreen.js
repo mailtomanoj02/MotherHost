@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
 import SkeletonLoader from './customUI/SkeletonLoader';
 
-const InvoiceScreen = props => {
+const InvoiceScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = () => {
@@ -26,7 +26,6 @@ const InvoiceScreen = props => {
         false,
       ),
     );
-    // Refresh the data here
     setTimeout(() => setRefreshing(false), 2000);
   };
   const dispatch = useDispatch();
