@@ -6,8 +6,6 @@ import PlaceHolderComponent from './PlaceHolderComponent';
 import React, {useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
-import {checkIsValidEmail, isValidElement} from '../../utils/Helper';
-// import {showToast} from '../../utils/Utils';
 const SignIn = ({isRegisterPressed, isSignInPressed}) => {
   const dispatch = useDispatch();
   const emailRef = useRef(null);

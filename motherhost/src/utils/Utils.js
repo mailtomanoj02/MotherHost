@@ -1,6 +1,8 @@
-export let ToastValue;
+import {useSelector} from 'react-redux';
+import {isValidElement} from './Helper';
 
-export function showToast(message) {
-  console.log('showToast', message);
-  ToastValue = message;
-}
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const loginData = useSelector(state => state.loginData);
+export const isUserLoggedIn = () => {
+  return isValidElement(loginData?.userid);
+};

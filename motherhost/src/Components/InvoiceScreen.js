@@ -11,35 +11,23 @@ import SkeletonLoader from './customUI/SkeletonLoader';
 
 const InvoiceScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
+  let params = {
+    action: 'GetInvoices',
+    userid: 41,
+    orderby: 'duedate',
+    order: 'desc',
+  };
 
   const handleRefresh = () => {
     setRefreshing(true);
-    dispatch(
-      fetchAPIAction(
-        'getinvoices.php',
-        {
-          action: 'GetInvoices',
-          userid: 41,
-          orderby: 'duedate',
-          order: 'desc',
-        },
-        false,
-      ),
-    );
+    dispatch(fetchAPIAction('getinvoices.php', params, false));
     setTimeout(() => setRefreshing(false), 2000);
   };
   const dispatch = useDispatch();
   const invoiceData = useSelector(state => state.invoiceData);
   const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
-    dispatch(
-      fetchAPIAction('getinvoices.php', {
-        action: 'GetInvoices',
-        userid: 41,
-        orderby: 'duedate',
-        order: 'desc',
-      }),
-    );
+    dispatch(fetchAPIAction('getinvoices.php', params));
     return () => console.log('called unmount');
   }, []);
   const renderItem = ({item}) => {

@@ -26,7 +26,6 @@ export const trimBlankSpacesInText = text => {
   }
 };
 export const checkIsValidEmail = email => {
-  //trim and then check
   let trimEmail = isValidString(email) ? email.trim() : email;
   return checkRegexPatternTest(EMAIL_PATTERN, trimEmail);
 };

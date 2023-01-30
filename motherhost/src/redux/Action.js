@@ -7,6 +7,7 @@ import {
   LOGIN_API_DATA_SUCCESS,
   REGISTER_API_DATA_SUCCESS,
   RESPONSE_API_DATA,
+  GET_PRICING_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -48,10 +49,9 @@ export const fetchAPIAction =
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
           });
+          console.log(data);
           if (data) {
-            if (data.result === 'success') {
-              showToastMessage('Welcome back ' + data.fullname, Colors.GREEN);
-            } else {
+            if (data.result !== 'success') {
               showToastMessage(data.message, Colors.RED);
             }
           }
@@ -59,6 +59,12 @@ export const fetchAPIAction =
           dispatch({
             type: REGISTER_API_DATA_SUCCESS,
             registerData: data,
+          });
+        } else if (url === 'gettldprice.php') {
+          console.log(data);
+          dispatch({
+            type: GET_PRICING_API_DATA_SUCCESS,
+            pricingData: data,
           });
         }
         if (loader) {

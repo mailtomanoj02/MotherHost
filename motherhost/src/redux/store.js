@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['loginData'],
+  whitelist: ['loginData', 'pricingData'],
 };
 const persistedReducer = persistReducer(persistConfig, mainReducer);
 const Store = createStore(persistedReducer, applyMiddleware(thunk));

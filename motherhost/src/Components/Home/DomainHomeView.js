@@ -7,7 +7,7 @@ const DomainHomeView = props => {
     <View style={styles.viewStyle}>
       <Image style={styles.imgStyle} source={props.img} />
       <View style={[styles.txtViewStyle, {backgroundColor: props.color}]}>
-        <Text style={styles.txtStyle}>220 </Text>
+        <Text style={styles.txtStyle}>{`₹ ${props.price}`}</Text>
       </View>
     </View>
   );
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   txtStyle: {
     alignSelf: 'center',
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '800',
   },
 });
