@@ -1,26 +1,33 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, Text, View, StyleSheet, TouchableOpacity, RefreshControl} from 'react-native';
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import SkeletonLoader from '../customUI/SkeletonLoader';
+import {getUserId} from '../../utils/Utils';
 
 const DomainScreen = props => {
   const dispatch = useDispatch();
   const domainData = useSelector(state => state.domainData);
   const isLoading = useSelector(state => state.isLoading);
+  const [refreshing, setRefreshing] = useState(false);
+  let params = {
+    action: 'GetClientsDomains',
+    clientid: getUserId(),
+  };
   useEffect(() => {
-    dispatch(
-      fetchAPIAction('getclientsdomains.php', {
-        action: 'GetClientsDomains',
-        clientid: 41,
-      }),
-    );
+    dispatch(fetchAPIAction('getclientsdomains.php', params));
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(fetchAPIAction('getclientsdomains.php', params, false));
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -68,6 +75,9 @@ const DomainScreen = props => {
           data={domainData}
           keyExtractor={item => item.id}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
       )}
     </View>

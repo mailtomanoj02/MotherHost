@@ -1,6 +1,14 @@
 import {DrawerItemList} from '@react-navigation/drawer';
 import * as React from 'react';
-import {Text, Image, View, StyleSheet, Pressable, FlatList} from 'react-native';
+import {
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  Pressable,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {
   FONT_FAMILY,
   SCREEN_NAMES,
@@ -8,11 +16,13 @@ import {
 } from '../Config/Constant';
 import Colors from '../Themes/Colors';
 import {useNavigation} from '@react-navigation/native';
+import {getUserName, isUserLoggedIn} from '../utils/Utils';
+import Register from './loginAndRegistration/Register';
 
 const SideMenu = () => {
   const navigation = useNavigation();
 
-  const SideDrawerItems = [
+  const LoginDrawerData = [
     {
       icon: require('../Images/Home/domain.png'),
       title: 'My Domains',
@@ -28,6 +38,9 @@ const SideMenu = () => {
       title: 'My Invoices',
       screen: SCREEN_NAMES.INVOICE_SCREEN,
     },
+  ];
+
+  let SideDrawerItems = [
     {
       icon: require('../Images/Drawer/about-us.png'),
       title: 'About us',
@@ -59,6 +72,7 @@ const SideMenu = () => {
       screen: SCREEN_NAMES.WEBVIEW_SCREEN,
     },
   ];
+
   const onHandleItemClicked = item => {
     let params = {};
     if (item.title === 'About us') {
@@ -75,19 +89,30 @@ const SideMenu = () => {
   };
 
   const loggInView = () => {
-    return <Text style={styles.txtStyle}>Hi, Ramnath!</Text>;
+    let userName = getUserName();
+    return <Text style={styles.txtStyle}>{userName}</Text>;
   };
   const logoutView = () => {
     return (
       <View>
         <Text style={styles.txtStyle}>You are not logged in!</Text>
         <View style={styles.logoutViewStyle}>
-          <Pressable style={styles.pressableStyle}>
+          <TouchableOpacity
+            style={styles.pressableStyle}
+            onPress={() =>
+              navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION)
+            }>
             <Text style={styles.pressableTextStyle}>Register</Text>
-          </Pressable>
-          <Pressable style={styles.pressableStyle}>
-            <Text style={styles.pressableTextStyle}>Login</Text>
-          </Pressable>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.pressableStyle}>
+            <Text
+              style={styles.pressableTextStyle}
+              onPress={() =>
+                navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION)
+              }>
+              Login
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -105,7 +130,11 @@ const SideMenu = () => {
   const LoadDrawerItems = () => {
     return (
       <FlatList
-        data={SideDrawerItems}
+        data={
+          isUserLoggedIn()
+            ? LoginDrawerData.concat(SideDrawerItems)
+            : SideDrawerItems
+        }
         renderItem={({item}) => <RenderSideMenuItem item={item} />}
       />
     );
@@ -118,7 +147,7 @@ const SideMenu = () => {
           style={styles.logoStyle}
           source={require('../Images/Logo/Symbol-Logo.png')}
         />
-        {true ? loggInView() : logoutView()}
+        {isUserLoggedIn() ? loggInView() : logoutView()}
       </View>
       <LoadDrawerItems />
     </View>
@@ -158,6 +187,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 4,
     backgroundColor: Colors.white,
+    margin: 3,
   },
   pressableTextStyle: {
     fontSize: 16,

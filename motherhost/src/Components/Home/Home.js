@@ -12,7 +12,7 @@ import {useEffect} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
 import {isValidElement} from '../../utils/Helper';
-import {isUserLoggedIn} from '../../utils/Utils';
+import {getUserId, getUserName, isUserLoggedIn} from '../../utils/Utils';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -252,7 +252,10 @@ const HomeScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      <AppBar />
+      <AppBar
+        image={require('./../../Images/AppBar/hamburger.png')}
+        onPress={'toggleDrawer'}
+      />
       <RenderAllComponents />
     </View>
   );

@@ -12,6 +12,7 @@ import {
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
 import Colors from '../Themes/Colors';
+import {isValidElement} from "../utils/Helper";
 
 export const requestApiData = () => {
   return {
@@ -61,11 +62,12 @@ export const fetchAPIAction =
             registerData: data,
           });
         } else if (url === 'gettldprice.php') {
-          console.log(data);
-          dispatch({
-            type: GET_PRICING_API_DATA_SUCCESS,
-            pricingData: data,
-          });
+          if (isValidElement(data[0]?.com.register)) {
+            dispatch({
+              type: GET_PRICING_API_DATA_SUCCESS,
+              pricingData: data,
+            });
+          }
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});

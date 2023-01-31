@@ -1,8 +1,22 @@
-import {useSelector} from 'react-redux';
 import {isValidElement} from './Helper';
+import {selectUserID, selectUserName} from './Selectors';
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-const loginData = useSelector(state => state.loginData);
 export const isUserLoggedIn = () => {
-  return isValidElement(loginData?.userid);
+  let userId = selectUserID();
+  return isValidElement(userId);
+};
+export const getUserId = () => {
+  let userId = '';
+  if (isValidElement(selectUserID())) {
+    userId = selectUserID();
+  }
+  return userId;
+};
+
+export const getUserName = () => {
+  let userName = '';
+  if (isValidElement(selectUserName())) {
+    userName = selectUserName();
+  }
+  return userName;
 };

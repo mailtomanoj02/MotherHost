@@ -62,7 +62,6 @@ const Register = () => {
   }, []);
 
   const details = useSelector(state => state.registerData);
-  console.log('details', details);
 
   const SubmitButton = title => {
     const {

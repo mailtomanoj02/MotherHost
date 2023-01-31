@@ -8,12 +8,13 @@ import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
 import SkeletonLoader from './customUI/SkeletonLoader';
+import {getUserId} from '../utils/Utils';
 
 const InvoiceScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   let params = {
     action: 'GetInvoices',
-    userid: 41,
+    userid: getUserId(),
     orderby: 'duedate',
     order: 'desc',
   };

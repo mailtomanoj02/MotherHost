@@ -1,13 +1,14 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet} from 'react-native';
+import {FlatList, Text, View, StyleSheet, RefreshControl} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import SkeletonLoader from './customUI/SkeletonLoader';
+import {getUserId} from '../utils/Utils';
 const renderItem = ({item}) => {
   return (
     <View style={styles.itemContainer}>
@@ -44,17 +45,20 @@ const ServiceScreen = props => {
   const dispatch = useDispatch();
   const serviceData = useSelector(state => state.serviceData);
   const isLoading = useSelector(state => state.isLoading);
+  const [refreshing, setRefreshing] = useState(false);
+  let params = {
+    action: 'GetClientsProducts',
+    clientid: getUserId(),
+  };
   useEffect(() => {
-    const apiCall = props.navigation.addListener('focus', () => {
-      dispatch(
-        fetchAPIAction('getclientsproducts.php', {
-          action: 'GetClientsProducts',
-          clientid: 41,
-        }),
-      );
-    });
-    return apiCall;
+    dispatch(fetchAPIAction('getclientsproducts.php', params));
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    dispatch(fetchAPIAction('getclientsproducts.php', params, false));
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   return (
     <View style={styles.totalContainer}>
@@ -67,6 +71,9 @@ const ServiceScreen = props => {
           data={serviceData}
           keyExtractor={item => item.id}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
       )}
     </View>

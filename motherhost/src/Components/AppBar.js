@@ -10,9 +10,11 @@ import {
 import Colors from '../Themes/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
-import {SCREEN_NAMES} from '../Config/Constant';
 
 const AppBar = props => {
+  let imageBack = props.image
+    ? props.image
+    : require('./../Images/AppBar/left-arrow.png');
   const navigation = useNavigation();
   return (
     <SafeAreaView>
@@ -20,11 +22,13 @@ const AppBar = props => {
         <Pressable
           style={styles.leftPressableStyle}
           onPress={() => {
-            navigation.goBack();
+            props.onPress === 'toggleDrawer'
+              ? navigation.toggleDrawer()
+              : navigation.goBack();
           }}>
           <Image
-            style={styles.leftIconStle}
-            source={require('./../Images/AppBar/left-arrow.png')}
+            style={props.image ? styles.hamBurgerStyle : styles.leftIconStyle}
+            source={imageBack}
           />
         </Pressable>
         <Image
@@ -45,9 +49,14 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
-  leftIconStle: {
+  leftIconStyle: {
     width: 25,
     height: 25,
+    margin: 10,
+  },
+  hamBurgerStyle: {
+    width: 19,
+    height: 19,
     margin: 10,
   },
   containerStyle: {
