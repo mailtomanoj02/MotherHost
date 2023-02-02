@@ -1,13 +1,12 @@
-import {DrawerItemList} from '@react-navigation/drawer';
 import * as React from 'react';
 import {
   Text,
   Image,
   View,
   StyleSheet,
-  Pressable,
   FlatList,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import {
   FONT_FAMILY,
@@ -17,11 +16,27 @@ import {
 import Colors from '../Themes/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {getUserName, isUserLoggedIn} from '../utils/Utils';
-import Register from './loginAndRegistration/Register';
+import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
 
 const SideMenu = () => {
+  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const handleConfirm = () => {
+    dispatch({type: LOGIN_API_DATA_SUCCESS, loginData: null});
+    navigation.reset({
+      index: 0,
+      routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
+    });
+    setShowModal(false);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
   const LoginDrawerData = [
     {
       icon: require('../Images/Home/domain.png'),
@@ -119,12 +134,35 @@ const SideMenu = () => {
   };
   const RenderSideMenuItem = ({item}) => {
     return (
-      <Pressable
+      <TouchableOpacity
         onPress={() => onHandleItemClicked(item)}
         style={styles.menuContainer}>
         <Image style={styles.menuItemIcon} source={item.icon} />
         <Text style={styles.menuItemTxt}>{item.title}</Text>
-      </Pressable>
+      </TouchableOpacity>
+    );
+  };
+  const LogoutModal = ({visible, onClose, onConfirm}) => {
+    return (
+      <Modal
+        visible={visible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={onClose}>
+        <View style={styles.container}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.text}>Are you sure you want to logout?</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={onClose} style={styles.button}>
+                <Text style={styles.buttonText}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onConfirm} style={styles.button}>
+                <Text style={styles.buttonText}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     );
   };
   const LoadDrawerItems = () => {
@@ -150,6 +188,20 @@ const SideMenu = () => {
         {isUserLoggedIn() ? loggInView() : logoutView()}
       </View>
       <LoadDrawerItems />
+      <TouchableOpacity
+        style={styles.menuContainer}
+        onPress={() => setShowModal(true)}>
+        <Image
+          source={require('../Images/Drawer/logout.png')}
+          style={styles.menuItemIcon}
+        />
+        <Text style={styles.menuItemTxt}>Logout</Text>
+      </TouchableOpacity>
+      <LogoutModal
+        visible={showModal}
+        onConfirm={handleConfirm}
+        onClose={handleClose}
+      />
     </View>
   );
 };
@@ -214,6 +266,35 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.headerBlue,
     marginLeft: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#00000080',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    fontFamily: FONT_FAMILY.REGULAR,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    padding: 10,
+    marginLeft: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
 });
 

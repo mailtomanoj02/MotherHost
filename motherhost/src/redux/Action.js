@@ -12,7 +12,8 @@ import {
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
 import Colors from '../Themes/Colors';
-import {isValidElement} from "../utils/Helper";
+import {isValidElement} from '../utils/Helper';
+import {SCREEN_NAMES} from '../Config/Constant';
 
 export const requestApiData = () => {
   return {
@@ -21,12 +22,12 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (url, params, loader = true, method = 'POST') =>
+  (url, params, loader = true, method = 'POST', navigation = null) =>
   dispatch => {
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
-    fetchAPIRequest(url, params, method)
+    fetchAPIRequest(url, params, method, navigation)
       .then(res => {
         const data = res?.data;
 
@@ -50,10 +51,14 @@ export const fetchAPIAction =
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
           });
-          console.log(data);
           if (data) {
             if (data.result !== 'success') {
               showToastMessage(data.message, Colors.RED);
+            } else if (data.result === 'success') {
+              navigation.reset({
+                index: 0,
+                routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
+              });
             }
           }
         } else if (url === 'clientadd.php') {

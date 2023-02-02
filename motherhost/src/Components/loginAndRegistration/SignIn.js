@@ -6,13 +6,13 @@ import PlaceHolderComponent from './PlaceHolderComponent';
 import React, {useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
-const SignIn = ({isRegisterPressed, isSignInPressed}) => {
+const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
   const dispatch = useDispatch();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginDetails, setLoginDetails] = useState({
-    email: '',
-    password: '',
+    email: 'kramnath84@gmail.com',
+    password: '$+X5J4W3kmJ%mBG',
   });
 
   const SubmitButtonSignIn = title => {
@@ -21,10 +21,16 @@ const SignIn = ({isRegisterPressed, isSignInPressed}) => {
         style={styles.buttonContainer}
         onPress={() => {
           dispatch(
-            fetchAPIAction('validatelogin.php', {
-              email: loginDetails.email,
-              password2: loginDetails.password,
-            }),
+            fetchAPIAction(
+              'validatelogin.php',
+              {
+                email: loginDetails.email,
+                password2: loginDetails.password,
+              },
+              false,
+              'POST',
+              navigation,
+            ),
           );
         }}>
         <Text style={styles.buttonTextStyle}>{title}</Text>

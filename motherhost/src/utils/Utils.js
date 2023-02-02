@@ -1,5 +1,6 @@
 import {isValidElement} from './Helper';
 import {selectUserID, selectUserName} from './Selectors';
+import {Store} from '../redux/store';
 
 export const isUserLoggedIn = () => {
   let userId = selectUserID();
@@ -15,6 +16,7 @@ export const getUserId = () => {
 
 export const getUserName = () => {
   let userName = '';
+  const state = Store.getState();
   if (isValidElement(selectUserName())) {
     userName = selectUserName();
   }

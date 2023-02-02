@@ -13,7 +13,7 @@ import {useState} from 'react';
 import SignIn from './SignIn';
 import Register from './Register';
 
-const LoginAndRegistration = () => {
+const LoginAndRegistration = props => {
   const SCREEN_CONSTANTS = {
     REGISTER: 'REGISTER',
     SIGN_IN: 'SIGN IN',
@@ -67,6 +67,7 @@ const LoginAndRegistration = () => {
         <SignIn
           isRegisterPressed={setIsRegisterPressed}
           isSignInPressed={setSignInPressed}
+          navigation={props.navigation}
         />
       ) : (
         <KeyboardAvoidingView

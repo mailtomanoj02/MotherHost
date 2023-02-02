@@ -51,11 +51,7 @@ const MyDrawer = () => {
       drawerContent={props => <SideMenu {...props} />}
       initialRouteName={SCREEN_NAMES.HOME_SCREEN}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
-      <Drawer.Screen
-        name={SCREEN_NAMES.HOME_SCREEN}
-        component={HomeScreen}
-        options={{unmountOnBlur: false}}
-      />
+      <Drawer.Screen name={SCREEN_NAMES.HOME_SCREEN} component={HomeScreen} />
       <Drawer.Screen
         name={SCREEN_NAMES.DOMAIN_STACK_SCREEN}
         component={DomainStackNavigator}

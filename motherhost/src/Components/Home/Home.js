@@ -12,7 +12,7 @@ import {useEffect} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
 import {isValidElement} from '../../utils/Helper';
-import {getUserId, getUserName, isUserLoggedIn} from '../../utils/Utils';
+import {isUserLoggedIn} from '../../utils/Utils';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
