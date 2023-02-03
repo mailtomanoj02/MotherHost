@@ -10,6 +10,7 @@ const WebsiteHostingHomeView = props => {
       onPress={() =>
         props.navigation.navigate(SCREEN_NAMES.HOSTING_SCREEN, {
           headerTitle: props.title,
+          groupId: props.groupId,
         })
       }>
       <View style={styles.viewStyle}>

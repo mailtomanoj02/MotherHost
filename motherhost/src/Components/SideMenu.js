@@ -19,6 +19,7 @@ import {getUserName, isUserLoggedIn} from '../utils/Utils';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
+import colors from "../Themes/Colors";
 
 const SideMenu = () => {
   const [showModal, setShowModal] = useState(false);
@@ -154,10 +155,10 @@ const SideMenu = () => {
             <Text style={styles.text}>Are you sure you want to logout?</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={onClose} style={styles.button}>
-                <Text style={styles.buttonText}>No</Text>
+                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>No</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={onConfirm} style={styles.button}>
-                <Text style={styles.buttonText}>Yes</Text>
+                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>Yes</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -188,15 +189,16 @@ const SideMenu = () => {
         {isUserLoggedIn() ? loggInView() : logoutView()}
       </View>
       <LoadDrawerItems />
-      <TouchableOpacity
-        style={styles.menuContainer}
-        onPress={() => setShowModal(true)}>
+      {isUserLoggedIn()?<TouchableOpacity
+          style={styles.menuContainer}
+          onPress={() => setShowModal(true)}>
         <Image
-          source={require('../Images/Drawer/logout.png')}
-          style={styles.menuItemIcon}
+            source={require('../Images/Drawer/logout.png')}
+            style={styles.menuItemIcon}
         />
         <Text style={styles.menuItemTxt}>Logout</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>:null
+      }
       <LogoutModal
         visible={showModal}
         onConfirm={handleConfirm}
@@ -281,20 +283,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
     fontFamily: FONT_FAMILY.REGULAR,
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    padding: 10,
-    marginLeft: 10,
+    justifyContent: 'space-around',
+    borderColor: Colors.BORDER_TITLE
   },
   buttonText: {
     fontSize: 16,
-    fontFamily: FONT_FAMILY.REGULAR,
+    fontFamily: FONT_FAMILY.BOLD,
   },
 });
 

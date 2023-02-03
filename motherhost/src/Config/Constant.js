@@ -14,6 +14,7 @@ export const SCREEN_NAMES = {
   DOMAIN_STACK_SCREEN: 'Domain_Stack',
   DOMAIN_SCREEN: 'Domain',
   DOMAIN_DETAIL_SCREEN: 'Domain_Detail',
+  DOMAIN_NAME_SCREEN: 'Domain_name',
   HOSTING_SCREEN: 'Hosting_Screen',
   HOSTING_STACK: 'Hosting_Stack',
   LOGIN_REGISTRATION: 'login_registration',

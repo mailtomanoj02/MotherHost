@@ -12,6 +12,7 @@ import DomainDetailScreen from '../Components/Domain/DomainDetailScreen';
 import HostingScreen from '../Components/HostingScreen';
 import LoginAndRegistration from '../Components/loginAndRegistration/LoginAndRegistration';
 import {createStackNavigator} from '@react-navigation/stack';
+import DomainNameScreen from '../Components/Domain/DomainNameScreen';
 const DomainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
@@ -51,7 +52,11 @@ const MyDrawer = () => {
       drawerContent={props => <SideMenu {...props} />}
       initialRouteName={SCREEN_NAMES.HOME_SCREEN}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
-      <Drawer.Screen name={SCREEN_NAMES.HOME_SCREEN} component={HomeScreen} />
+      <Drawer.Screen
+        name={SCREEN_NAMES.HOME_SCREEN}
+        component={HomeScreen}
+        options={{unmountOnBlur: false}}
+      />
       <Drawer.Screen
         name={SCREEN_NAMES.DOMAIN_STACK_SCREEN}
         component={DomainStackNavigator}
@@ -67,17 +72,18 @@ const MyDrawer = () => {
       <Drawer.Screen
         name={SCREEN_NAMES.SERVICE_SCREEN}
         component={ServiceScreen}
-        options={{title: ''}}
       />
       <Drawer.Screen
         name={SCREEN_NAMES.HOSTING_SCREEN}
         component={HostingScreen}
-        options={{title: ''}}
       />
       <Drawer.Screen
         name={SCREEN_NAMES.LOGIN_REGISTRATION}
         component={LoginAndRegistration}
-        options={{title: ''}}
+      />
+      <Drawer.Screen
+        name={SCREEN_NAMES.DOMAIN_NAME_SCREEN}
+        component={DomainNameScreen}
       />
     </Drawer.Navigator>
   );

@@ -16,30 +16,47 @@ import {isUserLoggedIn} from '../../utils/Utils';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const homeWithoutLoginData = useSelector(state => state.pricingData);
+  const pricingData = useSelector(state => state.pricingData);
+  const loginData = useSelector(state => state.loginData);
   let params = {
     action: 'GetTLDPricing',
     tld: 'com,net,in,co.in,uk,us,org',
     currency: '1',
     year: 1,
   };
+  const SCREEN_TITLE = {
+    LINUX_MULTI_DOMAIN: 'Linux Multi Domain Hosting',
+    WINDOWS_MULTI_DOMAIN: 'Windows Multi Domain Hosting',
+    LINUX_RESELLER: 'Linux Reseller Hosting',
+    WINDOWS_RESELLER: 'Windows Reseller Hosting',
+    STATIC: 'Static',
+    WORDPRESS: 'Wordpress',
+    LINUX: 'Linux',
+    WINDOWS: 'Windows',
+  };
   useEffect(() => {
     dispatch(fetchAPIAction('gettldprice.php', params));
   }, []);
   const userTrackingView = () => {
+    let loginList = isValidElement(loginData) ? loginData : '';
+    let serviceCount = loginList?.stats?.productsnumactive;
+    let domainCount = loginList?.stats?.numactivedomains;
+    let ticketCount = loginList?.stats?.numactivetickets;
+    let invoiceCount = loginList?.stats?.numdueinvoices;
+
     return (
       <View style={{flexDirection: 'column'}}>
         <View style={{flexDirection: 'row'}}>
           <HomeUserTrackingView
             title={'Services'}
-            count={'0'}
+            count={serviceCount}
             img={require('../../Images/Home/servers.png')}
             screenName={SCREEN_NAMES.SERVICE_SCREEN}
             navigation={navigation}
           />
           <HomeUserTrackingView
             title={'Domains'}
-            count={'0'}
+            count={domainCount}
             img={require('../../Images/Home/domain.png')}
             screenName={SCREEN_NAMES.DOMAIN_STACK_SCREEN}
             navigation={navigation}
@@ -48,14 +65,14 @@ const HomeScreen = () => {
         <View style={{flexDirection: 'row'}}>
           <HomeUserTrackingView
             title={'Tickets'}
-            count={'0'}
+            count={ticketCount}
             img={require('../../Images/Home/tickets.png')}
             screenName={SCREEN_NAMES.HOME_SCREEN}
             navigation={navigation}
           />
           <HomeUserTrackingView
             title={'Invoice'}
-            count={'0'}
+            count={invoiceCount}
             img={require('../../Images/Home/invoices.png')}
             screenName={SCREEN_NAMES.INVOICE_SCREEN}
             navigation={navigation}
@@ -65,9 +82,7 @@ const HomeScreen = () => {
     );
   };
   const domainInView = () => {
-    let priceList = isValidElement(homeWithoutLoginData)
-      ? homeWithoutLoginData
-      : '';
+    let priceList = isValidElement(pricingData) ? pricingData : '';
     let comPrice = isValidElement(priceList[0]?.com.register)
       ? priceList[0].com.register
       : '';
@@ -99,72 +114,78 @@ const HomeScreen = () => {
   };
   const websiteHostingView = () => {
     return (
-      <View style={homeStyle.websiteHostinViewStyle}>
+      <View style={homeStyle.websiteHostingViewStyle}>
         <WebsiteHostingHomeView
           img={require('../../Images/Home/static.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-          title={'Static'}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
+          title={SCREEN_TITLE.STATIC}
           price={'25/m'}
+          groupId={20}
+          navigation={navigation}
         />
         <WebsiteHostingHomeView
           img={require('../../Images/Home/wordpress.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-          title={'Wordpress'}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
+          title={SCREEN_TITLE.WORDPRESS}
           price={'399/m'}
+          groupId={29}
+          navigation={navigation}
         />
         <WebsiteHostingHomeView
           img={require('../../Images/Home/linux.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-          title={'Linux'}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
+          title={SCREEN_TITLE.LINUX}
           price={'299/m'}
+          groupId={2}
+          navigation={navigation}
         />
         <WebsiteHostingHomeView
           img={require('../../Images/Home/windows.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
-          title={'Windows'}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
+          title={SCREEN_TITLE.WINDOWS}
           price={'299/m'}
+          groupId={7}
+          navigation={navigation}
         />
       </View>
     );
   };
   const resellerHostingHomeView = () => {
-    const SCREEN_TITLE = {
-      LINUX_MULTI_DOMAIN: 'Linux Multi Domain Hosting',
-      WINDOWS_MULTI_DOMAIN: 'Windows Multi Domain Hosting',
-      LINUX_RESELLER: 'Linux Reseller Hosting',
-      WINDOWS_RESELLER: 'Windows Reseller Hosting',
-    };
     return (
       <View>
-        <View style={homeStyle.websiteHostinViewStyle}>
+        <View style={homeStyle.websiteHostingViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/linuxlogo.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
             title={SCREEN_TITLE.LINUX_MULTI_DOMAIN}
             price={'499/m'}
+            groupId={31}
             navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/windowslogo.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
             title={SCREEN_TITLE.WINDOWS_MULTI_DOMAIN}
             price={'499/m'}
+            groupId={9}
             navigation={navigation}
           />
         </View>
-        <View style={homeStyle.websiteHostinViewStyle}>
+        <View style={homeStyle.websiteHostingViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/linuxlogo.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
             title={SCREEN_TITLE.LINUX_RESELLER}
             price={'999/m'}
+            groupId={5}
             navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/windowslogo.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
             title={SCREEN_TITLE.WINDOWS_RESELLER}
             price={'999/m'}
+            groupId={11}
             navigation={navigation}
           />
         </View>
@@ -173,18 +194,22 @@ const HomeScreen = () => {
   };
   const emailForBusinessView = () => {
     return (
-      <View style={homeStyle.websiteHostinViewStyle}>
+      <View style={homeStyle.websiteHostingViewStyle}>
         <WebsiteHostingHomeView
           img={require('../../Images/Home/SmarterMail_logo.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle2}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle2}
           title={'Smartermail pro'}
           price={'22/m'}
+          groupId={14}
+          navigation={navigation}
         />
         <WebsiteHostingHomeView
           img={require('../../Images/Home/gsuite-logo.png')}
-          imgStyle={homeStyle.websiteHostinViewStyleImgStyle1}
+          imgStyle={homeStyle.websiteHostingViewStyleImgStyle1}
           title={'Google Workspace'}
           price={'115/m'}
+          groupId={30}
+          navigation={navigation}
         />
       </View>
     );
@@ -192,38 +217,46 @@ const HomeScreen = () => {
   const securityView = () => {
     return (
       <View>
-        <View style={homeStyle.websiteHostinViewStyle}>
+        <View style={homeStyle.websiteHostingViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/DigiCertlue.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle2}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle2}
             title={'SSL'}
             price={'1500/yr'}
+            groupId={22}
+            navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/spamexperts.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle2}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle2}
             title={'Spam Experts'}
             price={'385/m'}
+            groupId={23}
+            navigation={navigation}
           />
         </View>
-        <View style={homeStyle.websiteHostinViewStyle}>
+        <View style={homeStyle.websiteHostingViewStyle}>
           <WebsiteHostingHomeView
             img={require('../../Images/Home/sitelock.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle2}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle2}
             title={'Site Lock'}
             price={'385/m'}
+            groupId={24}
+            navigation={navigation}
           />
           <WebsiteHostingHomeView
             img={require('../../Images/Home/codeguard-logo.png')}
-            imgStyle={homeStyle.websiteHostinViewStyleImgStyle2}
+            imgStyle={homeStyle.websiteHostingViewStyleImgStyle2}
             title={'CodeGuard'}
             price={'215/m'}
+            groupId={25}
+            navigation={navigation}
           />
         </View>
       </View>
     );
   };
-  const hostHeder = title => {
+  const hostHeader = title => {
     return (
       <View style={homeStyle.titleContainer}>
         <Text style={homeStyle.titleStyle}>{title}</Text>
@@ -237,13 +270,13 @@ const HomeScreen = () => {
         <View>
           {isUserLoggedIn() ? userTrackingView() : null}
           {domainInView()}
-          {hostHeder('Web Site Hosting')}
+          {hostHeader('Web Site Hosting')}
           {websiteHostingView()}
-          {hostHeder('Reseller Hosting')}
+          {hostHeader('Reseller Hosting')}
           {resellerHostingHomeView()}
-          {hostHeder('Email For Business')}
+          {hostHeader('Email For Business')}
           {emailForBusinessView()}
-          {hostHeder('Security')}
+          {hostHeader('Security')}
           {securityView()}
         </View>
       </ScrollView>
@@ -272,21 +305,21 @@ const homeStyle = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     color: Colors.black,
   },
-  websiteHostinViewStyle: {
+  websiteHostingViewStyle: {
     flexDirection: 'row',
     margin: 5,
   },
-  websiteHostinViewStyleImgStyle1: {
+  websiteHostingViewStyleImgStyle1: {
     height: 30,
     width: 30,
     resizeMode: 'contain',
   },
-  websiteHostinViewStyleImgStyle2: {
+  websiteHostingViewStyleImgStyle2: {
     height: 50,
     width: 90,
     resizeMode: 'contain',
   },
-  websiteHostinViewStyleImgStyle3: {
+  websiteHostingViewStyleImgStyle3: {
     height: 30,
     width: 30,
     resizeMode: 'contain',

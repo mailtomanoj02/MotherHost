@@ -2,51 +2,37 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
-const HostingScreen = ({route}) => {
-  const {headerTitle} = route.params;
-  const data = [
-    {
-      id: '1',
-      header: 'Start Up',
-      description:
-        '10 WebsitesFree domain with annual plan2 GB SSD Storage Unlimited Data Transfer2 Email Accounts Each Domain20 MySQL databases (200MB each)Free SSL Certificate',
-      amount: '499',
-    },
-    {
-      id: '2',
-      header: 'Start Up',
-      description:
-        '10 WebsitesFree domain with annual plan2 GB SSD Storage Unlimited Data Transfer2 Email Accounts Each Domain20 MySQL databases (200MB each)Free SSL Certificate',
-      amount: '499',
-    },
-    {
-      id: '3',
-      header: 'Start Up',
-      description:
-        '10 WebsitesFree domain with annual plan2 GB SSD Storage Unlimited Data Transfer2 Email Accounts Each Domain20 MySQL databases (200MB each)Free SSL Certificate',
-      amount: '499',
-    },
-    {
-      id: '4',
-      header: 'Start Up',
-      description:
-        '10 WebsitesFree domain with annual plan2 GB SSD Storage Unlimited Data Transfer2 Email Accounts Each Domain20 MySQL databases (200MB each)Free SSL Certificate',
-      amount: '499',
-    },
-    {
-      id: '5',
-      header: 'Start Up',
-      description:
-        '10 WebsitesFree domain with annual plan2 GB SSD Storage Unlimited Data Transfer2 Email Accounts Each Domain20 MySQL databases (200MB each)Free SSL Certificate',
-      amount: '499',
-    },
-  ];
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAPIAction} from '../redux/Action';
+import {isValidElement} from '../utils/Helper';
+import {useEffect} from 'react';
+import SkeletonLoader from './customUI/SkeletonLoader';
 
+const HostingScreen = props => {
+  const {headerTitle, groupId} = props.route.params;
+  const dispatch = useDispatch();
+  const productData = useSelector(state => state.productData);
+  const isLoading = useSelector(state => state.isLoading);
+  let params = {
+    action: 'GetProducts',
+    gid: groupId,
+  };
+
+  useEffect(() => {
+    dispatch(fetchAPIAction('getproducts.php', params));
+  }, []);
+
+  let productList = isValidElement(productData)
+    ? productData.products?.product
+    : '';
   const renderButton = () => {
     return (
       <TouchableOpacity
-        style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}>
+        style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}
+        onPress={() =>
+          props.navigation.navigate(SCREEN_NAMES.DOMAIN_NAME_SCREEN)
+        }>
         <View style={styles.buttonContainerStyle}>
           <Text style={styles.buttonTextStyle}>ORDER & CONTINUE</Text>
         </View>
@@ -55,14 +41,16 @@ const HostingScreen = ({route}) => {
   };
 
   const renderItem = ({item}) => {
+    let description = item.description.replace(/<[^>]+>/g, '');
+    let itemPrice = item.pricing.INR.monthly;
     return (
       <View style={styles.itemContainer}>
         <View style={styles.innerTitleContainerStyle}>
-          <Text style={styles.innerTitleTextStyle}>{item.header}</Text>
+          <Text style={styles.innerTitleTextStyle}>{item.name}</Text>
         </View>
-        <Text style={styles.descriptionTextStyle}>{item.description}</Text>
+        <Text style={styles.descriptionTextStyle}>{description}</Text>
         <View style={styles.amountContainerStyle}>
-          <Text style={styles.amountTextStyle}>{`$ ${item.amount}`}</Text>
+          <Text style={styles.amountTextStyle}>{`$ ${itemPrice}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
           {renderButton()}
         </View>
@@ -73,11 +61,15 @@ const HostingScreen = ({route}) => {
     <View style={styles.totalContainer}>
       <AppBar />
       <ScreenTitle title={headerTitle} />
-      <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-      />
+      {isLoading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={productList}
+          keyExtractor={item => item.pid}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
@@ -117,7 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontFamily: FONT_FAMILY.REGULAR,
     color: Colors.DARK_GREY,
-    fontSize: 12,
+    fontSize: 13,
   },
   amountTextStyle: {
     color: Colors.headerBlue,

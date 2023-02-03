@@ -12,7 +12,6 @@ import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
-import {fetchAPIAction} from '../../redux/Action';
 
 const DomainNameScreen = () => {
   const [option1Selected, setOption1Selected] = useState(true);
@@ -59,7 +58,7 @@ const DomainNameScreen = () => {
       <View
         style={[
           {
-            backgroundColor: Colors.PLACEHOLDER_GREY,
+            backgroundColor: Colors.BORDER_TITLE,
             height: 1,
             marginTop: 8,
             marginHorizontal: 5,
@@ -98,7 +97,7 @@ const DomainNameScreen = () => {
             <Text
               style={{
                 marginHorizontal: 5,
-                fontFamily: FONT_FAMILY.SEMI_BOLD,
+                fontFamily: FONT_FAMILY.REGULAR,
                 alignSelf: 'center',
               }}>
               WWW.
@@ -132,7 +131,6 @@ const DomainNameScreen = () => {
             />
           </View>
         ) : null}
-        {Divider()}
       </View>
     );
   };
@@ -205,6 +203,7 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 16,
     marginLeft: 5,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   iconStyle: {
     width: 20,
@@ -218,6 +217,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     margin: 10,
     paddingBottom: 10,
+    borderWidth: 1,
+    borderColor: Colors.BORDER_TITLE,
+    borderRadius:8
   },
   touchablePaddingStyle: {padding: 12},
   touchableButtonStyle: {flexDirection: 'row'},
@@ -233,7 +235,7 @@ const styles = StyleSheet.create({
   },
   txtDescriptionStyle: {
     marginHorizontal: 7,
-    fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
   },
   buttonContainer: {

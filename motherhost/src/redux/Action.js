@@ -8,6 +8,7 @@ import {
   REGISTER_API_DATA_SUCCESS,
   RESPONSE_API_DATA,
   GET_PRICING_API_DATA_SUCCESS,
+  GET_PRODUCTS_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -52,9 +53,7 @@ export const fetchAPIAction =
             loginData: data,
           });
           if (data) {
-            if (data.result !== 'success') {
-              showToastMessage(data.message, Colors.RED);
-            } else if (data.result === 'success') {
+            if (data.result === 'success') {
               navigation.reset({
                 index: 0,
                 routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
@@ -73,9 +72,18 @@ export const fetchAPIAction =
               pricingData: data,
             });
           }
+        } else if (url === 'getproducts.php') {
+          console.log(data);
+          dispatch({
+            type: GET_PRODUCTS_API_DATA_SUCCESS,
+            productData: data,
+          });
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});
+        }
+        if (data.result !== 'success' || !isValidElement(data.result)) {
+          showToastMessage(data.message, Colors.RED);
         }
       })
       .catch(e => {
