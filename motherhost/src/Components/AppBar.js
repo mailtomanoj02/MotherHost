@@ -1,25 +1,32 @@
-import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Pressable,
-  Touchable,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Colors from '../Themes/Colors';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
+import {SCREEN_NAMES} from '../Config/Constant';
 
 const AppBar = props => {
   let imageBack = props.image
     ? props.image
     : require('./../Images/AppBar/left-arrow.png');
   const navigation = useNavigation();
+  const route = useRoute();
+  let screenName = route.name;
+  const [showWallet, setShowWallet] = useState(true);
+  useEffect(() => {
+    if (screenName === 'Wallet') {
+      const unsubscribe = navigation.addListener('focus', () => {
+        setShowWallet(false);
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [navigation]);
   return (
     <SafeAreaView>
       <View style={styles.containerStyle}>
-        <Pressable
+        <TouchableOpacity
           style={styles.leftPressableStyle}
           onPress={() => {
             props.onPress === 'toggleDrawer'
@@ -30,11 +37,30 @@ const AppBar = props => {
             style={props.image ? styles.hamBurgerStyle : styles.leftIconStyle}
             source={imageBack}
           />
-        </Pressable>
+        </TouchableOpacity>
         <Image
           style={styles.logoStyle}
           source={require('./../Images/Logo/NameLogo-White.png')}
         />
+        <View style={styles.walletCartViewStyle}>
+          {showWallet ? (
+            <TouchableOpacity
+              style={styles.walletCartButtonStyle}
+              onPress={() => navigation.navigate(SCREEN_NAMES.WALLET)}>
+              <Image
+                source={require('./../Images/AppBar/wallet.png')}
+                style={styles.walletCartImageStyle}
+              />
+            </TouchableOpacity>
+          ) : null}
+
+          <TouchableOpacity style={styles.walletCartButtonStyle}>
+            <Image
+              source={require('./../Images/AppBar/shopping-cart.png')}
+              style={styles.walletCartImageStyle}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -71,6 +97,16 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     justifyContent: 'center',
   },
+  walletCartViewStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  walletCartButtonStyle: {
+    justifyContent: 'center',
+    marginHorizontal: 15,
+  },
+  walletCartImageStyle: {height: 24, width: 24},
 });
 
 export default AppBar;

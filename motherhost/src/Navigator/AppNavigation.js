@@ -13,6 +13,9 @@ import HostingScreen from '../Components/HostingScreen';
 import LoginAndRegistration from '../Components/loginAndRegistration/LoginAndRegistration';
 import {createStackNavigator} from '@react-navigation/stack';
 import DomainNameScreen from '../Components/Domain/DomainNameScreen';
+import Wallet from '../Components/Wallet';
+import DomainAvailabilityScreen from '../Components/DomainAvailabilityScreen';
+import CouponsScreen from '../Components/CouponsScreen';
 const DomainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
@@ -50,7 +53,7 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <SideMenu {...props} />}
-      initialRouteName={SCREEN_NAMES.HOME_SCREEN}
+      initialRouteName={SCREEN_NAMES.COUPONS}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
       <Drawer.Screen
         name={SCREEN_NAMES.HOME_SCREEN}
@@ -85,6 +88,12 @@ const MyDrawer = () => {
         name={SCREEN_NAMES.DOMAIN_NAME_SCREEN}
         component={DomainNameScreen}
       />
+      <Drawer.Screen name={SCREEN_NAMES.WALLET} component={Wallet} />
+      <Drawer.Screen
+        name={SCREEN_NAMES.DOMAIN_AVAILABILITY}
+        component={DomainAvailabilityScreen}
+      />
+      <Drawer.Screen name={SCREEN_NAMES.COUPONS} component={CouponsScreen} />
     </Drawer.Navigator>
   );
 };

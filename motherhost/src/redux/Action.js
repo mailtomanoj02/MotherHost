@@ -28,7 +28,7 @@ export const fetchAPIAction =
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
-    fetchAPIRequest(url, params, method, navigation)
+    fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
 

@@ -17,7 +17,7 @@ const Colors = {
   PLACEHOLDER_GREY: '#a5a5a9',
   GREEN: '#218c21',
   RED: '#e50c0c',
-  ORANGE: '#F19937',
+  ORANGE: '#EF9F38',
 };
 
 export default Colors;

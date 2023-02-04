@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderWidth: 1,
     borderColor: Colors.BORDER_TITLE,
-    borderRadius:8
+    borderRadius: 8,
   },
   touchablePaddingStyle: {padding: 12},
   touchableButtonStyle: {flexDirection: 'row'},
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     padding: 10,
     marginHorizontal: 12,
-    borderRadius: 5
+    borderRadius: 5,
   },
   buttonTextStyle: {
     flex: 1,

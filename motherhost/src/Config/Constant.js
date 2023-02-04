@@ -15,10 +15,13 @@ export const SCREEN_NAMES = {
   DOMAIN_SCREEN: 'Domain',
   DOMAIN_DETAIL_SCREEN: 'Domain_Detail',
   DOMAIN_NAME_SCREEN: 'Domain_name',
+  DOMAIN_AVAILABILITY: 'Domain_availability',
   HOSTING_SCREEN: 'Hosting_Screen',
   HOSTING_STACK: 'Hosting_Stack',
   LOGIN_REGISTRATION: 'login_registration',
   DRAWER: 'Drawer',
+  WALLET: 'Wallet',
+  COUPONS: 'Coupons',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {
