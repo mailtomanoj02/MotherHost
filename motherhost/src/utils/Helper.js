@@ -2,8 +2,11 @@ const EMAIL_PATTERN =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PHONE_PATTERN =
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+const DOMAIN_PATTERN =
+  /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/;
 const checkRegexPatternTest = (pattern, data) => {
-  let testPattern = new RegExp(pattern);
+  const regExp = new RegExp(pattern);
+  let testPattern = regExp;
   return testPattern.test(data);
 };
 function isValidElementCheck(data) {
@@ -28,4 +31,9 @@ export const trimBlankSpacesInText = text => {
 export const checkIsValidEmail = email => {
   let trimEmail = isValidString(email) ? email.trim() : email;
   return checkRegexPatternTest(EMAIL_PATTERN, trimEmail);
+};
+
+export const checkIsValidDomain = domain => {
+  let trimDomain = isValidString(domain) ? domain.trim() : domain;
+  return checkRegexPatternTest(DOMAIN_PATTERN, trimDomain);
 };

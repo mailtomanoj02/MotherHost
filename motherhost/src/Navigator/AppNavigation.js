@@ -16,7 +16,9 @@ import DomainNameScreen from '../Components/Domain/DomainNameScreen';
 import Wallet from '../Components/Wallet';
 import DomainAvailabilityScreen from '../Components/DomainAvailabilityScreen';
 import CouponsScreen from '../Components/CouponsScreen';
+import InvoiceDetailScreen from '../Components/InvoiceDetailScreen';
 const DomainStack = createStackNavigator();
+const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
 const DomainStackNavigator = () => {
@@ -25,16 +27,30 @@ const DomainStackNavigator = () => {
       <DomainStack.Screen
         name={SCREEN_NAMES.DOMAIN_SCREEN}
         component={DomainScreen}
-        options={{title: ''}}
       />
       <DomainStack.Screen
         name={SCREEN_NAMES.DOMAIN_DETAIL_SCREEN}
         component={DomainDetailScreen}
-        options={{title: ''}}
       />
     </DomainStack.Navigator>
   );
 };
+
+const InvoiceStackNavigator = () => {
+  return (
+    <InvoiceStack.Navigator screenOptions={{headerShown: false}}>
+      <InvoiceStack.Screen
+        name={SCREEN_NAMES.INVOICE_SCREEN}
+        component={InvoiceScreen}
+      />
+      <InvoiceStack.Screen
+        name={SCREEN_NAMES.INVOICE_DETAIL_SCREEN}
+        component={InvoiceDetailScreen}
+      />
+    </InvoiceStack.Navigator>
+  );
+};
+
 const RootStackScreen = () => {
   return (
     <RootStack.Navigator screenOptions={{headerShown: false}}>
@@ -53,7 +69,7 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <SideMenu {...props} />}
-      initialRouteName={SCREEN_NAMES.COUPONS}
+      initialRouteName={SCREEN_NAMES.HOME_SCREEN}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
       <Drawer.Screen
         name={SCREEN_NAMES.HOME_SCREEN}
@@ -69,8 +85,8 @@ const MyDrawer = () => {
         component={WebviewScreen}
       />
       <Drawer.Screen
-        name={SCREEN_NAMES.INVOICE_SCREEN}
-        component={InvoiceScreen}
+        name={SCREEN_NAMES.INVOICE_STACK}
+        component={InvoiceStackNavigator}
       />
       <Drawer.Screen
         name={SCREEN_NAMES.SERVICE_SCREEN}
@@ -94,6 +110,10 @@ const MyDrawer = () => {
         component={DomainAvailabilityScreen}
       />
       <Drawer.Screen name={SCREEN_NAMES.COUPONS} component={CouponsScreen} />
+      <Drawer.Screen
+        name={SCREEN_NAMES.INVOICE_DETAIL_SCREEN}
+        component={InvoiceDetailScreen}
+      />
     </Drawer.Navigator>
   );
 };

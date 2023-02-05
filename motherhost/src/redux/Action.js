@@ -9,6 +9,8 @@ import {
   RESPONSE_API_DATA,
   GET_PRICING_API_DATA_SUCCESS,
   GET_PRODUCTS_API_DATA_SUCCESS,
+  GET_WHOIS_API_DATA_SUCCESS,
+  INVOICE_DETAIL_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -23,20 +25,33 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (url, params, loader = true, method = 'POST', navigation = null) =>
+  (
+    url,
+    params,
+    loader = true,
+    method = 'POST',
+    navigation = null,
+    includeAuth = false,
+  ) =>
   dispatch => {
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
-    fetchAPIRequest(url, params, method)
+    fetchAPIRequest(url, params, method, includeAuth)
       .then(res => {
         const data = res?.data;
-
         if (url === 'getinvoices.php') {
-          dispatch({
-            type: INVOICE_API_DATA_SUCCESS,
-            invoiceData: data.invoices.invoice,
-          });
+          if (params.action === 'GetInvoices') {
+            dispatch({
+              type: INVOICE_API_DATA_SUCCESS,
+              invoiceData: data.invoices.invoice,
+            });
+          } else {
+            dispatch({
+              type: INVOICE_DETAIL_API_DATA_SUCCESS,
+              invoiceDetailData: data,
+            });
+          }
         } else if (url === 'getclientsdomains.php') {
           dispatch({
             type: DOMAIN_API_DATA_SUCCESS,
@@ -73,10 +88,14 @@ export const fetchAPIAction =
             });
           }
         } else if (url === 'getproducts.php') {
-          console.log(data);
           dispatch({
             type: GET_PRODUCTS_API_DATA_SUCCESS,
             productData: data,
+          });
+        } else if (url === 'whois.php') {
+          dispatch({
+            type: GET_WHOIS_API_DATA_SUCCESS,
+            whoisData: data,
           });
         }
         if (loader) {

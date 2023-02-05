@@ -13,7 +13,7 @@ const Colors = {
   HOME_NET_COLOR: '#1C1B19',
   BORDER_TITLE: '#bababd',
   MEDIUM_GREY: '#ebebf3',
-  DARK_GREY: '#6b6b6e',
+  DARK_GREY: '#545457',
   PLACEHOLDER_GREY: '#a5a5a9',
   GREEN: '#218c21',
   RED: '#e50c0c',

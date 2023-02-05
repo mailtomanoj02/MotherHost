@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import HomeUserTrackingView from '../Home/HomeUserTrackingView.js';
 import DomainHomeView from '../Home/DomainHomeView.js';
 import WebsiteHostingHomeView from '../Home/WebsiteHostingHomeView.js';
@@ -8,14 +15,16 @@ import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant.js';
 import {ScrollView} from 'react-native-gesture-handler';
 import AppBar from '../AppBar.js';
 import {useNavigation} from '@react-navigation/native';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
-import {isValidElement} from '../../utils/Helper';
+import {checkIsValidDomain, isValidElement} from '../../utils/Helper';
 import {isUserLoggedIn} from '../../utils/Utils';
+import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [domainSearch, setDomainSearch] = useState('');
   const pricingData = useSelector(state => state.pricingData);
   const loginData = useSelector(state => state.loginData);
   let params = {
@@ -74,7 +83,7 @@ const HomeScreen = () => {
             title={'Invoice'}
             count={invoiceCount}
             img={require('../../Images/Home/invoices.png')}
-            screenName={SCREEN_NAMES.INVOICE_SCREEN}
+            screenName={SCREEN_NAMES.INVOICE_STACK}
             navigation={navigation}
           />
         </View>
@@ -264,6 +273,64 @@ const HomeScreen = () => {
     );
   };
 
+  const searchView = () => {
+    let params = {
+      action: 'DomainWhois',
+      domain: domainSearch,
+    };
+    const onPress = () => {
+      if (checkIsValidDomain(domainSearch)) {
+        dispatch(fetchAPIAction('whois.php', params));
+        navigation.navigate(SCREEN_NAMES.DOMAIN_AVAILABILITY, {
+          domainName: domainSearch,
+        });
+        setDomainSearch('');
+      } else {
+        showToastMessage('Please enter a valid domain', Colors.RED);
+      }
+    };
+    return (
+      <View style={{backgroundColor: Colors.headerBlue}}>
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            backgroundColor: 'white',
+            marginBottom: 8,
+            marginHorizontal: 15,
+            borderRadius: 5,
+          }}>
+          <TextInput
+            style={{
+              height: 30,
+              flex: 0.9,
+              marginHorizontal: 10,
+            }}
+            placeholder={'Search your domain. ex: montherhost.com'}
+            onChangeText={value => setDomainSearch(value)}
+            value={domainSearch}
+            autoCapitalize={false}
+          />
+          <TouchableOpacity
+            style={{
+              backgroundColor: Colors.ORANGE,
+              flex: 0.1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 5,
+              height: 30,
+            }}
+            onPress={onPress}>
+            <Image
+              source={require('./../../Images/Home/search.png')}
+              style={{height: 20, width: 20}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   const RenderAllComponents = () => {
     return (
       <ScrollView>
@@ -289,6 +356,7 @@ const HomeScreen = () => {
         image={require('./../../Images/AppBar/hamburger.png')}
         onPress={'toggleDrawer'}
       />
+      {searchView()}
       <RenderAllComponents />
     </View>
   );

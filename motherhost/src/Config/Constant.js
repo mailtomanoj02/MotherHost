@@ -9,7 +9,9 @@ export const FONT_FAMILY = {
 export const SCREEN_NAMES = {
   HOME_SCREEN: 'Home',
   SERVICE_SCREEN: 'Services',
+  INVOICE_STACK: 'Invoices_Stack',
   INVOICE_SCREEN: 'Invoices',
+  INVOICE_DETAIL_SCREEN: 'Invoice_detail',
   WEBVIEW_SCREEN: 'Webview',
   DOMAIN_STACK_SCREEN: 'Domain_Stack',
   DOMAIN_SCREEN: 'Domain',

@@ -1,6 +1,6 @@
-import {isValidElement} from './Helper';
+import {isValidElement, isValidString} from './Helper';
 import {selectUserID, selectUserName} from './Selectors';
-import {Store} from '../redux/store';
+import {state} from './Selectors';
 
 export const isUserLoggedIn = () => {
   let userId = selectUserID();
@@ -16,9 +16,27 @@ export const getUserId = () => {
 
 export const getUserName = () => {
   let userName = '';
-  const state = Store.getState();
   if (isValidElement(selectUserName())) {
     userName = selectUserName();
   }
   return userName;
+};
+
+export const getAddress = () => {
+  let address = '';
+  let loginData = state().loginData;
+  let name = loginData?.fullname ? loginData.fullname : '';
+  let address1 = loginData?.address1 ? loginData.address1 : '';
+  let city = loginData?.city ? loginData.city : '';
+  let stateData = loginData?.fullstate ? loginData.fullstate : '';
+  let postcode = loginData?.postcode ? loginData.postcode : '';
+  let countryName = loginData?.countryname ? loginData.countryname : '';
+  address = `${isValidString(name) ? name + ',' : ''}\n${
+    isValidString(address1) ? address1 + ',' : ''
+  }\n${isValidString(city) ? city + ', ' : ''}${
+    isValidString(stateData) ? stateData + ', ' : ''
+  }${isValidString(postcode) ? postcode + ', ' : ''}\n${
+    isValidString(countryName) ? countryName : ''
+  }`;
+  return address;
 };

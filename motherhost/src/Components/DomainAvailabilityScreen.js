@@ -3,26 +3,57 @@ import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
+import {useSelector} from 'react-redux';
+import SkeletonLoader from './customUI/SkeletonLoader';
 
-const DomainAvailabilityScreen = () => {
+const DomainAvailabilityScreen = props => {
+  let whoisData = useSelector(state => state.whoisData);
+  let isLoading = useSelector(state => state.isLoading);
+  let isAvailable = whoisData?.status?.toLowerCase() === 'available';
+  const {domainName} = props.route.params;
+  const AvailableView = () => {
+    return (
+      <View style={styles.totalContainerStyle}>
+        {isAvailable ? (
+          <View>
+            <Text style={[styles.textStyle, {color: Colors.GREEN}]}>
+              Congratulations!
+            </Text>
+            <Text
+              style={[
+                styles.textStyle,
+                {color: Colors.GREEN},
+              ]}>{`${domainName} available!`}</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={[styles.textStyle, {color: Colors.RED}]}>Oops!</Text>
+            <Text
+              style={[
+                styles.textStyle,
+                {color: Colors.RED},
+              ]}>{`${domainName} not available!!`}</Text>
+          </View>
+        )}
+        {isAvailable ? (
+          <View style={{flexDirection: 'row', marginTop: 10}}>
+            <Text style={styles.amountTextStyle}>{'$ 1040'}</Text>
+            <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
+            <TouchableOpacity style={styles.addToCartButtonStyle}>
+              <View style={styles.buttonContainerStyle}>
+                <Text style={styles.buttonTextStyle}>ADD TO CART</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+      </View>
+    );
+  };
   return (
     <View>
       <AppBar />
       <ScreenTitle title={'Domain Availability'} />
-      <View style={styles.totalContainerStyle}>
-        <Text style={styles.textStyle}>Congratulations!</Text>
-        <Text style={styles.textStyle}>maduraihost.com available!</Text>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Text style={styles.amountTextStyle}>{'$ 1040'}</Text>
-          <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
-          <TouchableOpacity
-            style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center'}}>
-            <View style={styles.buttonContainerStyle}>
-              <Text style={styles.buttonTextStyle}>ADD TO CART</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+      {isLoading ? <SkeletonLoader /> : AvailableView()}
     </View>
   );
 };
@@ -36,7 +67,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
-    color: Colors.GREEN,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
     fontSize: 14,
   },
@@ -61,6 +91,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     color: Colors.white,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
+  },
+  addToCartButtonStyle: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 });
 export default DomainAvailabilityScreen;

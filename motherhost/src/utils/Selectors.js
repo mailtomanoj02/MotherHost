@@ -1,5 +1,5 @@
 import {Store} from '../redux/store';
-const state = () => {
+export const state = () => {
   return Store.getState();
 };
 export const selectUserID = () => state().loginData?.userid;

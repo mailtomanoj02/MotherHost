@@ -1,16 +1,23 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet, RefreshControl} from 'react-native';
+import {
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../redux/Action';
 import SkeletonLoader from './customUI/SkeletonLoader';
 import {getUserId} from '../utils/Utils';
 
-const InvoiceScreen = () => {
+const InvoiceScreen = props => {
   const [refreshing, setRefreshing] = useState(false);
   let params = {
     action: 'GetInvoices',
@@ -29,11 +36,16 @@ const InvoiceScreen = () => {
   const isLoading = useSelector(state => state.isLoading);
   useEffect(() => {
     dispatch(fetchAPIAction('getinvoices.php', params));
-    return () => console.log('called unmount');
   }, []);
   const renderItem = ({item}) => {
     return (
-      <View style={styles.itemContainer}>
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() =>
+          props.navigation.navigate(SCREEN_NAMES.INVOICE_DETAIL_SCREEN, {
+            invoiceData: item.id,
+          })
+        }>
         <View style={styles.innerViewTop}>
           <Text style={styles.idText}>{item.id}</Text>
           <Text style={styles.amountStyle}>{item.amount}</Text>
@@ -54,7 +66,7 @@ const InvoiceScreen = () => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

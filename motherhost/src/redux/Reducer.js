@@ -9,6 +9,8 @@ import {
   RESPONSE_API_DATA,
   GET_PRICING_API_DATA_SUCCESS,
   GET_PRODUCTS_API_DATA_SUCCESS,
+  GET_WHOIS_API_DATA_SUCCESS,
+  INVOICE_DETAIL_API_DATA_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -32,6 +34,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         invoiceData: action.invoiceData,
+      };
+    case INVOICE_DETAIL_API_DATA_SUCCESS:
+      return {
+        ...state,
+        invoiceDetailData: action.invoiceDetailData,
       };
     case DOMAIN_API_DATA_SUCCESS:
       return {
@@ -63,6 +70,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         productData: action.productData,
+      };
+    case GET_WHOIS_API_DATA_SUCCESS:
+      return {
+        ...state,
+        whoisData: action.whoisData,
       };
     case API_DATA_FAILURE:
       return {

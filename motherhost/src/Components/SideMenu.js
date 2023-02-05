@@ -19,7 +19,7 @@ import {getUserName, isUserLoggedIn} from '../utils/Utils';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
-import colors from "../Themes/Colors";
+import colors from '../Themes/Colors';
 
 const SideMenu = () => {
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +52,7 @@ const SideMenu = () => {
     {
       icon: require('../Images/Home/invoices.png'),
       title: 'My Invoices',
-      screen: SCREEN_NAMES.INVOICE_SCREEN,
+      screen: SCREEN_NAMES.INVOICE_STACK,
     },
   ];
 
@@ -155,10 +155,14 @@ const SideMenu = () => {
             <Text style={styles.text}>Are you sure you want to logout?</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={onClose} style={styles.button}>
-                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>No</Text>
+                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>
+                  No
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={onConfirm} style={styles.button}>
-                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>Yes</Text>
+                <Text style={[styles.buttonText, {color: colors.headerBlue}]}>
+                  Yes
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -189,16 +193,17 @@ const SideMenu = () => {
         {isUserLoggedIn() ? loggInView() : logoutView()}
       </View>
       <LoadDrawerItems />
-      {isUserLoggedIn()?<TouchableOpacity
+      {isUserLoggedIn() ? (
+        <TouchableOpacity
           style={styles.menuContainer}
           onPress={() => setShowModal(true)}>
-        <Image
+          <Image
             source={require('../Images/Drawer/logout.png')}
             style={styles.menuItemIcon}
-        />
-        <Text style={styles.menuItemTxt}>Logout</Text>
-      </TouchableOpacity>:null
-      }
+          />
+          <Text style={styles.menuItemTxt}>Logout</Text>
+        </TouchableOpacity>
+      ) : null}
       <LogoutModal
         visible={showModal}
         onConfirm={handleConfirm}
@@ -289,7 +294,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderColor: Colors.BORDER_TITLE
+    borderColor: Colors.BORDER_TITLE,
   },
   buttonText: {
     fontSize: 16,
