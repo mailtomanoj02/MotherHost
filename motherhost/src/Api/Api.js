@@ -25,3 +25,33 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
       });
   });
 };
+
+export const fetchRazorAPIRequest = async (total, invoiceId) => {
+  console.log('called');
+  let userName = 'rzp_live_NRitIpeIamRiYC';
+  let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
+  let razorParams = {
+    amount: total * 100,
+    currency: 'INR',
+    receipt: invoiceId.toString(),
+    partial_payment: false,
+    first_payment_min_amount: 0,
+  };
+  return await axios
+    .request({
+      method: 'POST',
+      url: 'https://api.razorpay.com/v1/orders',
+      headers: {
+        Authorization:
+          'Basic ' + Buffer.from(userName + ':' + password).toString('base64'),
+        'Content-Type': 'application/json',
+      },
+      data: razorParams,
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      // console.log(error);
+    });
+};

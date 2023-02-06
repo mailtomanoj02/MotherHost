@@ -14,8 +14,8 @@ import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../redux/Action';
 import {isValidElement} from '../utils/Helper';
 import RazorpayCheckout from 'react-native-razorpay';
-import axios from 'axios';
-import {Buffer} from 'buffer';
+import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
+import {fetchRazorAPIRequest} from '../Api/Api';
 const InvoiceDetailScreen = props => {
   let useAddress = getAddress();
   let dispatch = useDispatch();
@@ -41,61 +41,37 @@ const InvoiceDetailScreen = props => {
   }, [invoiceDetailsList]);
 
   const onTapPay = async () => {
-    let userName = 'rzp_live_NRitIpeIamRiYC';
-    let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
-    let razorParams = {
-      amount: total * 100,
-      currency: 'INR',
-      receipt: invoiceId.toString(),
-      partial_payment: false,
-      first_payment_min_amount: 0,
-    };
-    let orderId;
-    await axios
-      .request({
-        method: 'POST',
-        url: 'https://api.razorpay.com/v1/orders',
-        headers: {
-          Authorization:
-            'Basic ' +
-            Buffer.from(userName + ':' + password).toString('base64'),
-          'Content-Type': 'application/json',
+    const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
+    console.log('orderResponse==?', orderResponse?.id);
+    if (isValidElement(orderResponse?.id)) {
+      let options = {
+        description: 'motherhost.com',
+        image: require('./../Images/Logo/razerpaylogo.png'),
+        currency: 'INR',
+        key: 'rzp_live_NRitIpeIamRiYC', // Your api key
+        amount: total * 100,
+        name: getUserName(),
+        order_id: orderResponse?.id,
+        prefill: {
+          email: 'gaurav.kumar@example.com',
+          contact: '9191919191',
+          name: 'Gaurav Kumar',
         },
-        data: razorParams,
-      })
-      .then(response => {
-        console.log('response == ', response.data);
-        orderId = response.data.id;
-      })
-      .catch(error => {
-        console.log('error == ', error);
-      });
-    console.log(orderId);
-    let options = {
-      description: 'Motherhost.com',
-      image: require('./../Images/Logo/razerpaylogo.png'),
-      currency: 'INR',
-      key: 'rzp_live_NRitIpeIamRiYC', // Your api key
-      amount: total * 100,
-      name: getUserName(),
-      order_id: orderId,
-      prefill: {
-        email: 'gaurav.kumar@example.com',
-        contact: '9191919191',
-        name: 'Gaurav Kumar',
-      },
-      theme: {color: Colors.buttonBlue},
-    };
-    console.log(options);
-    RazorpayCheckout.open(options)
-      .then(data => {
-        // handle success
-        alert(`Success: ${data.razorpay_payment_id}`);
-      })
-      .catch(error => {
-        // handle failure
-        alert(`Error: ${error.code} | ${error.description}`);
-      });
+        theme: {color: Colors.buttonBlue},
+      };
+      console.log(options);
+      await RazorpayCheckout.open(options)
+        .then(data => {
+          // handle success
+          alert(`Success: ${data.razorpay_payment_id}`);
+        })
+        .catch(error => {
+          // handle failure
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
+    } else {
+      showToastMessage('Oops! payment failed try again later.', Colors.RED);
+    }
   };
   const renderItem = () => {
     return (
