@@ -9,7 +9,7 @@ import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAddress, getUserId} from '../utils/Utils';
+import {getAddress} from '../utils/Utils';
 import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../redux/Action';
 import {isValidElement} from '../utils/Helper';
@@ -19,27 +19,10 @@ const InvoiceDetailScreen = props => {
   let dispatch = useDispatch();
   let invoiceId = props.route.params.invoiceData;
   let invoiceDetailData = useSelector(state => state.invoiceDetailData);
+  let razorOrderIdData = useSelector(state => state.razorOrderIdData);
   let status = invoiceDetailData?.status;
   let invoiceDetailsList = invoiceDetailData?.items?.item;
   const [total, setTotal] = useState(0);
-
-  const data = [
-    {
-      id: '1',
-      Test: 'Test',
-      amount: '3.0',
-    },
-    {
-      id: '2',
-      Test: 'Test 1',
-      amount: '3.0',
-    },
-    {
-      id: '3',
-      Test: 'Test 2',
-      amount: '3.0',
-    },
-  ];
   let params = {
     action: 'GetInvoice',
     invoiceid: invoiceId,
@@ -56,20 +39,36 @@ const InvoiceDetailScreen = props => {
     setTotal(total);
   }, [invoiceDetailsList]);
 
-  const onTapPay = () => {
+  const onTapPay = async () => {
+    let razorParams = {
+      amount: 100,
+      currency: 'INR',
+      receipt: 'invoiceId',
+      partial_payment: false,
+      first_payment_min_amount: 0,
+    };
+    const response = await fetchAPIAction(
+      'orders',
+      razorParams,
+      false,
+      'POST',
+      false,
+      true,
+    );
     let options = {
       description: 'Motherhost.com',
-      image: 'https://i.imgur.com/3g7nmJC.png',
+      image: require('./../Images/Logo/razerpaylogo.png'),
       currency: 'INR',
       key: 'rzp_live_NRitIpeIamRiYC', // Your api key
-      amount: '5000',
-      name: 'foo',
+      amount: total * 100,
+      name: 'Acme Corp',
+      order_id: response?.id,
       prefill: {
-        email: 'void@razorpay.com',
+        email: 'gaurav.kumar@example.com',
         contact: '9191919191',
-        name: 'Razorpay Software',
+        name: 'Gaurav Kumar',
       },
-      theme: {color: '#F37254'},
+      theme: {color: Colors.buttonBlue},
     };
     RazorpayCheckout.open(options)
       .then(data => {

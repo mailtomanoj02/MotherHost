@@ -11,6 +11,7 @@ import {
   GET_PRODUCTS_API_DATA_SUCCESS,
   GET_WHOIS_API_DATA_SUCCESS,
   INVOICE_DETAIL_API_DATA_SUCCESS,
+  RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -97,6 +98,9 @@ export const fetchAPIAction =
             type: GET_WHOIS_API_DATA_SUCCESS,
             whoisData: data,
           });
+        } else if (url === 'orders') {
+          console.log('orders==>', data);
+          return data;
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});
@@ -106,6 +110,9 @@ export const fetchAPIAction =
         }
       })
       .catch(e => {
+        if (url === 'orders') {
+          console.log('orders failed ==>', e);
+        }
         dispatch({
           type: API_DATA_FAILURE,
           data: e,

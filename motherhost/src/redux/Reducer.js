@@ -10,7 +10,7 @@ import {
   GET_PRICING_API_DATA_SUCCESS,
   GET_PRODUCTS_API_DATA_SUCCESS,
   GET_WHOIS_API_DATA_SUCCESS,
-  INVOICE_DETAIL_API_DATA_SUCCESS,
+  INVOICE_DETAIL_API_DATA_SUCCESS, RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -75,6 +75,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         whoisData: action.whoisData,
+      };
+    case RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS:
+      return {
+        ...state,
+        razorOrderIdData: action.razorOrderIdData,
       };
     case API_DATA_FAILURE:
       return {
