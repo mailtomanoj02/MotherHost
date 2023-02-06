@@ -9,17 +9,18 @@ import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAddress} from '../utils/Utils';
+import {getAddress, getUserName} from '../utils/Utils';
 import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../redux/Action';
 import {isValidElement} from '../utils/Helper';
 import RazorpayCheckout from 'react-native-razorpay';
+import axios from 'axios';
+import {Buffer} from 'buffer';
 const InvoiceDetailScreen = props => {
   let useAddress = getAddress();
   let dispatch = useDispatch();
   let invoiceId = props.route.params.invoiceData;
   let invoiceDetailData = useSelector(state => state.invoiceDetailData);
-  let razorOrderIdData = useSelector(state => state.razorOrderIdData);
   let status = invoiceDetailData?.status;
   let invoiceDetailsList = invoiceDetailData?.items?.item;
   const [total, setTotal] = useState(0);
@@ -40,29 +41,44 @@ const InvoiceDetailScreen = props => {
   }, [invoiceDetailsList]);
 
   const onTapPay = async () => {
+    let userName = 'rzp_live_NRitIpeIamRiYC';
+    let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
     let razorParams = {
-      amount: 100,
+      amount: total * 100,
       currency: 'INR',
-      receipt: 'invoiceId',
+      receipt: invoiceId.toString(),
       partial_payment: false,
       first_payment_min_amount: 0,
     };
-    const response = await fetchAPIAction(
-      'orders',
-      razorParams,
-      false,
-      'POST',
-      false,
-      true,
-    );
+    let orderId;
+    await axios
+      .request({
+        method: 'POST',
+        url: 'https://api.razorpay.com/v1/orders',
+        headers: {
+          Authorization:
+            'Basic ' +
+            Buffer.from(userName + ':' + password).toString('base64'),
+          'Content-Type': 'application/json',
+        },
+        data: razorParams,
+      })
+      .then(response => {
+        console.log('response == ', response.data);
+        orderId = response.data.id;
+      })
+      .catch(error => {
+        console.log('error == ', error);
+      });
+    console.log(orderId);
     let options = {
       description: 'Motherhost.com',
       image: require('./../Images/Logo/razerpaylogo.png'),
       currency: 'INR',
       key: 'rzp_live_NRitIpeIamRiYC', // Your api key
       amount: total * 100,
-      name: 'Acme Corp',
-      order_id: response?.id,
+      name: getUserName(),
+      order_id: orderId,
       prefill: {
         email: 'gaurav.kumar@example.com',
         contact: '9191919191',
@@ -70,6 +86,7 @@ const InvoiceDetailScreen = props => {
       },
       theme: {color: Colors.buttonBlue},
     };
+    console.log(options);
     RazorpayCheckout.open(options)
       .then(data => {
         // handle success

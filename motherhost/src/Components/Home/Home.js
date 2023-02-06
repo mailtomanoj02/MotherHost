@@ -357,7 +357,7 @@ const HomeScreen = () => {
         onPress={'toggleDrawer'}
       />
       {searchView()}
-      <RenderAllComponents />
+      {RenderAllComponents()}
     </View>
   );
 };

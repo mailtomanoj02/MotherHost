@@ -32,13 +32,12 @@ export const fetchAPIAction =
     loader = true,
     method = 'POST',
     navigation = null,
-    includeAuth = false,
   ) =>
   dispatch => {
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
-    fetchAPIRequest(url, params, method, includeAuth)
+    fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
         if (url === 'getinvoices.php') {
@@ -98,9 +97,6 @@ export const fetchAPIAction =
             type: GET_WHOIS_API_DATA_SUCCESS,
             whoisData: data,
           });
-        } else if (url === 'orders') {
-          console.log('orders==>', data);
-          return data;
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});
@@ -110,9 +106,6 @@ export const fetchAPIAction =
         }
       })
       .catch(e => {
-        if (url === 'orders') {
-          console.log('orders failed ==>', e);
-        }
         dispatch({
           type: API_DATA_FAILURE,
           data: e,
