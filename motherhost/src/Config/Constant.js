@@ -24,6 +24,7 @@ export const SCREEN_NAMES = {
   DRAWER: 'Drawer',
   WALLET: 'Wallet',
   COUPONS: 'Coupons',
+  CHECKOUT: 'Checkout',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {

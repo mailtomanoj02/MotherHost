@@ -21,6 +21,7 @@ const InvoiceDetailScreen = props => {
   let dispatch = useDispatch();
   let invoiceId = props.route.params.invoiceData;
   let invoiceDetailData = useSelector(state => state.invoiceDetailData);
+  let loginData = useSelector(state => state.loginData);
   let status = invoiceDetailData?.status;
   let invoiceDetailsList = invoiceDetailData?.items?.item;
   const [total, setTotal] = useState(0);
@@ -32,7 +33,6 @@ const InvoiceDetailScreen = props => {
     dispatch(fetchAPIAction('getinvoices.php', params));
   }, []);
   useEffect(() => {
-    console.log('useEffect called');
     const total = invoiceDetailsList?.reduce(
       (a, v) => (a = a + parseFloat(v?.amount)),
       0,
@@ -41,37 +41,38 @@ const InvoiceDetailScreen = props => {
   }, [invoiceDetailsList]);
 
   const onTapPay = async () => {
-    const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
-    console.log('orderResponse==?', orderResponse?.id);
-    if (isValidElement(orderResponse?.id)) {
-      let options = {
-        description: 'motherhost.com',
-        image: require('./../Images/Logo/razerpaylogo.png'),
-        currency: 'INR',
-        key: 'rzp_live_NRitIpeIamRiYC', // Your api key
-        amount: total * 100,
-        name: getUserName(),
-        order_id: orderResponse?.id,
-        prefill: {
-          email: 'gaurav.kumar@example.com',
-          contact: '9191919191',
-          name: 'Gaurav Kumar',
-        },
-        theme: {color: Colors.buttonBlue},
-      };
-      console.log(options);
-      await RazorpayCheckout.open(options)
-        .then(data => {
-          // handle success
-          alert(`Success: ${data.razorpay_payment_id}`);
-        })
-        .catch(error => {
-          // handle failure
-          alert(`Error: ${error.code} | ${error.description}`);
-        });
-    } else {
-      showToastMessage('Oops! payment failed try again later.', Colors.RED);
-    }
+    // const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
+    // console.log('orderResponse==?', orderResponse?.id);
+    let userName = getUserName();
+    // if (isValidElement(orderResponse?.id)) {
+    //   let options = {
+    //     description: 'motherhost.com',
+    //     image: require('./../Images/Logo/razerpaylogo.png'),
+    //     currency: 'INR',
+    //     key: 'rzp_live_NRitIpeIamRiYC', // Your api key
+    //     amount: total * 100,
+    //     name: userName,
+    //     order_id: orderResponse?.id,
+    //     prefill: {
+    //       email: loginData?.email,
+    //       contact: loginData?.phonenumber,
+    //       name: userName,
+    //     },
+    //     theme: {color: Colors.buttonBlue},
+    //   };
+    //   console.log(options);
+    //   await RazorpayCheckout.open(options)
+    //     .then(data => {
+    //       // handle success
+    //       alert(`Success: ${data.razorpay_payment_id}`);
+    //     })
+    //     .catch(error => {
+    //       // handle failure
+    //       alert(`Error: ${error.code} | ${error.description}`);
+    //     });
+    // } else {
+    //   showToastMessage('Oops! payment failed try again later.', Colors.RED);
+    // }
   };
   const renderItem = () => {
     return (
@@ -87,14 +88,14 @@ const InvoiceDetailScreen = props => {
                 <Text
                   style={[
                     styles.boxTextStyle,
-                    {fontFamily: FONT_FAMILY.REGULAR},
+                    {fontFamily: FONT_FAMILY.REGULAR, flex: 0.85},
                   ]}>
                   {item.description}
                 </Text>
                 <Text
                   style={[
                     styles.boxTextStyle,
-                    {fontFamily: FONT_FAMILY.REGULAR},
+                    {fontFamily: FONT_FAMILY.REGULAR, flex: 0.15},
                   ]}>
                   {item.amount}
                 </Text>
@@ -159,14 +160,14 @@ const InvoiceDetailScreen = props => {
             <Text
               style={[
                 styles.boxTextStyle,
-                {fontFamily: FONT_FAMILY.SEMI_BOLD},
+                {fontFamily: FONT_FAMILY.SEMI_BOLD, flex: 0.85},
               ]}>
               Total
             </Text>
             <Text
               style={[
                 styles.boxTextStyle,
-                {fontFamily: FONT_FAMILY.SEMI_BOLD},
+                {fontFamily: FONT_FAMILY.SEMI_BOLD, flex: 0.15},
               ]}>
               {total?.toFixed(2)}
             </Text>

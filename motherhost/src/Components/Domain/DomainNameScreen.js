@@ -18,6 +18,7 @@ const DomainNameScreen = () => {
   const [option2Selected, setOption2Selected] = useState(false);
   const [option3Selected, setOption3Selected] = useState(false);
   const [value, setValue] = useState('com');
+  const [eligible, setEligible] = useState('');
   const [isFocus, setIsFocus] = useState(null);
   const data = [
     {label: 'com', value: 'com'},
@@ -45,26 +46,66 @@ const DomainNameScreen = () => {
     setOption2Selected(false);
     setOption3Selected(true);
   };
+
+  const domainAvailableView = () => {
+    return (
+      <View
+        style={[
+          styles.domainEligibleViewStyle,
+          {
+            backgroundColor: Colors.LIGHTGREEN,
+            borderColor: Colors.BORDER_GREEN,
+          },
+        ]}>
+        <Text
+          style={[
+            styles.domainEligibleHeaderTextStyle,
+            {color: Colors.BORDER_GREEN},
+          ]}>
+          Your Domain is eligible for transfer.
+        </Text>
+        <Text
+          style={[
+            styles.domainEligibleDescriptionTextStyle,
+            {color: Colors.BORDER_GREEN},
+          ]}>
+          Please ensure you have unlocked your domain at your current registrar
+          before checkout.
+        </Text>
+      </View>
+    );
+  };
+  const domainUnAvailableView = () => {
+    return (
+      <View
+        style={[
+          styles.domainEligibleViewStyle,
+          {backgroundColor: Colors.LIGHT_RED, borderColor: Colors.BORDER_RED},
+        ]}>
+        <Text
+          style={[
+            styles.domainEligibleHeaderTextStyle,
+            {color: Colors.BORDER_RED, textAlign: 'center'},
+          ]}>
+          Not eligible for transfer.
+        </Text>
+        <Text
+          style={[
+            styles.domainEligibleDescriptionTextStyle,
+            {color: Colors.BORDER_RED},
+          ]}>
+          {
+            'The domain you entered does not appear to be registered.\nIf the domain was registered recently, you may need to try again later.\nAlternatively, you can perform a search to register this domain'
+          }
+        </Text>
+      </View>
+    );
+  };
   const SubmitButton = title => {
     return (
       <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
       </TouchableOpacity>
-    );
-  };
-
-  const Divider = () => {
-    return (
-      <View
-        style={[
-          {
-            backgroundColor: Colors.BORDER_TITLE,
-            height: 1,
-            marginTop: 8,
-            marginHorizontal: 5,
-          },
-        ]}
-      />
     );
   };
 
@@ -159,6 +200,11 @@ const DomainNameScreen = () => {
         {renderTextInput(option3Selected)}
       </View>
       {SubmitButton('USE THIS DOMAIN')}
+      {eligible === 'available'
+        ? domainAvailableView()
+        : eligible === 'unAvailable'
+        ? domainUnAvailableView()
+        : null}
     </View>
   );
 };
@@ -252,6 +298,23 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 15,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
+  },
+  domainEligibleViewStyle: {
+    margin: 10,
+    paddingBottom: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
+    paddingHorizontal: 15,
+  },
+  domainEligibleHeaderTextStyle: {
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontSize: 19,
+  },
+  domainEligibleDescriptionTextStyle: {
+    marginTop: 8,
+    fontFamily: FONT_FAMILY.SEMI_BOLD,
+    fontSize: 14,
   },
 });
 

@@ -17,6 +17,7 @@ import Wallet from '../Components/Wallet';
 import DomainAvailabilityScreen from '../Components/DomainAvailabilityScreen';
 import CouponsScreen from '../Components/CouponsScreen';
 import InvoiceDetailScreen from '../Components/InvoiceDetailScreen';
+import CheckoutPage from '../Components/CheckoutPage';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -69,7 +70,7 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <SideMenu {...props} />}
-      initialRouteName={SCREEN_NAMES.HOME_SCREEN}
+      initialRouteName={SCREEN_NAMES.CHECKOUT}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
       <Drawer.Screen
         name={SCREEN_NAMES.HOME_SCREEN}
@@ -110,10 +111,7 @@ const MyDrawer = () => {
         component={DomainAvailabilityScreen}
       />
       <Drawer.Screen name={SCREEN_NAMES.COUPONS} component={CouponsScreen} />
-      <Drawer.Screen
-        name={SCREEN_NAMES.INVOICE_DETAIL_SCREEN}
-        component={InvoiceDetailScreen}
-      />
+      <Drawer.Screen name={SCREEN_NAMES.CHECKOUT} component={CheckoutPage} />
     </Drawer.Navigator>
   );
 };

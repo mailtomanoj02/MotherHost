@@ -18,6 +18,10 @@ const Colors = {
   GREEN: '#218c21',
   RED: '#e50c0c',
   ORANGE: '#EF9F38',
+  LIGHTGREEN: '#DEF1D7',
+  BORDER_GREEN: '#1c9115',
+  LIGHT_RED: '#f8dad8',
+  BORDER_RED: '#d70d00',
 };
 
 export default Colors;

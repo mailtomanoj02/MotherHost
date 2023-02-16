@@ -12,6 +12,11 @@ const DomainAvailabilityScreen = props => {
   let isAvailable = whoisData?.status?.toLowerCase() === 'available';
   const {domainName} = props.route.params;
   const AvailableView = () => {
+    const onPress = () => {
+      let arr = {
+
+      };
+    };
     return (
       <View style={styles.totalContainerStyle}>
         {isAvailable ? (
@@ -39,7 +44,9 @@ const DomainAvailabilityScreen = props => {
           <View style={{flexDirection: 'row', marginTop: 10}}>
             <Text style={styles.amountTextStyle}>{'$ 1040'}</Text>
             <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
-            <TouchableOpacity style={styles.addToCartButtonStyle}>
+            <TouchableOpacity
+              style={styles.addToCartButtonStyle}
+              onPress={onPress}>
               <View style={styles.buttonContainerStyle}>
                 <Text style={styles.buttonTextStyle}>ADD TO CART</Text>
               </View>

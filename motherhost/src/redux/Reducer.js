@@ -10,12 +10,22 @@ import {
   GET_PRICING_API_DATA_SUCCESS,
   GET_PRODUCTS_API_DATA_SUCCESS,
   GET_WHOIS_API_DATA_SUCCESS,
-  INVOICE_DETAIL_API_DATA_SUCCESS, RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
+  INVOICE_DETAIL_API_DATA_SUCCESS,
+  RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
+  ADD_CART_ARRAY,
 } from './Type';
 
 const initialState = {
   isLoading: false,
   error: null,
+  invoiceData: null,
+  invoiceDetailData: null,
+  domainData: null,
+  serviceData: null,
+  loginData: null,
+  registerData: null,
+  productData: null,
+  cartArrayData: [],
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -80,6 +90,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         razorOrderIdData: action.razorOrderIdData,
+      };
+    case ADD_CART_ARRAY:
+      return {
+        ...state,
+        cartArrayData: action.cartArrayData,
       };
     case API_DATA_FAILURE:
       return {
