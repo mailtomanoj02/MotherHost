@@ -26,13 +26,7 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (
-    url,
-    params,
-    loader = true,
-    method = 'POST',
-    navigation = null,
-  ) =>
+  (url, params, loader = true, method = 'POST', navigation = null) =>
   dispatch => {
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
@@ -93,6 +87,7 @@ export const fetchAPIAction =
             productData: data,
           });
         } else if (url === 'whois.php') {
+          console.log(data);
           dispatch({
             type: GET_WHOIS_API_DATA_SUCCESS,
             whoisData: data,

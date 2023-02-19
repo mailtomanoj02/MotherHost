@@ -16,7 +16,6 @@ import {useSelector} from 'react-redux';
 import {isValidString} from '../utils/Helper';
 import {getPriceBasedOnDomain} from '../utils/Utils';
 import ModalPopUp from './Modal';
-import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
 
 const CheckoutPage = props => {
   const [value, setValue] = useState('Monthly');

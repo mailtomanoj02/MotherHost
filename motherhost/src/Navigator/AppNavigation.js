@@ -21,6 +21,7 @@ import CheckoutPage from '../Components/CheckoutPage';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
+const HoistingStack = createStackNavigator();
 
 const DomainStackNavigator = () => {
   return (
@@ -49,6 +50,21 @@ const InvoiceStackNavigator = () => {
         component={InvoiceDetailScreen}
       />
     </InvoiceStack.Navigator>
+  );
+};
+
+const HoistingStackNavigator = () => {
+  return (
+    <HoistingStack.Navigator screenOptions={{headerShown: false}}>
+      <HoistingStack.Screen
+        name={SCREEN_NAMES.HOSTING_SCREEN}
+        component={HostingScreen}
+      />
+      <HoistingStack.Screen
+        name={SCREEN_NAMES.DOMAIN_NAME_SCREEN}
+        component={DomainNameScreen}
+      />
+    </HoistingStack.Navigator>
   );
 };
 
@@ -94,8 +110,8 @@ const MyDrawer = () => {
         component={ServiceScreen}
       />
       <Drawer.Screen
-        name={SCREEN_NAMES.HOSTING_SCREEN}
-        component={HostingScreen}
+        name={SCREEN_NAMES.HOSTING_STACK}
+        component={HoistingStackNavigator}
       />
       <Drawer.Screen
         name={SCREEN_NAMES.LOGIN_REGISTRATION}

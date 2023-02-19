@@ -10,7 +10,8 @@ import {useEffect} from 'react';
 import SkeletonLoader from './customUI/SkeletonLoader';
 
 const HostingScreen = props => {
-  const {headerTitle, groupId} = props.route.params;
+  const hostingData = useSelector(state => state.hostingData);
+  const {headerTitle, groupId} = hostingData;
   const dispatch = useDispatch();
   const productData = useSelector(state => state.productData);
   const isLoading = useSelector(state => state.isLoading);

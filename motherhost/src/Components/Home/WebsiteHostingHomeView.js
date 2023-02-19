@@ -2,17 +2,23 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
+import {useDispatch} from 'react-redux';
+import {HOSTING_DATA} from '../../redux/Type';
 
 const WebsiteHostingHomeView = props => {
+  const dispatch = useDispatch();
+  const onPress = () => {
+    dispatch({
+      type: HOSTING_DATA,
+      hostingData: {
+        headerTitle: props.title,
+        groupId: props.groupId,
+      },
+    });
+    props.navigation.navigate(SCREEN_NAMES.HOSTING_STACK);
+  };
   return (
-    <TouchableOpacity
-      style={{flex: 1}}
-      onPress={() =>
-        props.navigation.navigate(SCREEN_NAMES.HOSTING_SCREEN, {
-          headerTitle: props.title,
-          groupId: props.groupId,
-        })
-      }>
+    <TouchableOpacity style={{flex: 1}} onPress={onPress}>
       <View style={styles.viewStyle}>
         <Image style={props.imgStyle} source={props.img} />
         <View style={styles.titleViewStyle}>

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -6,20 +6,42 @@ import {
   Text,
   TextInput,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
-import {FONT_FAMILY} from '../../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
+import {fetchAPIAction} from '../../redux/Action';
+import {useDispatch, useSelector} from 'react-redux';
+import DomainAvailableView from '../DomainAvailableView';
+import {ADD_CART_ARRAY, GET_WHOIS_API_DATA_SUCCESS} from '../../redux/Type';
+import {getUserId} from '../../utils/Utils';
+import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
+import {isValidElement} from '../../utils/Helper';
 
-const DomainNameScreen = () => {
+const DomainNameScreen = props => {
+  const dispatch = useDispatch();
+  let whoisData = useSelector(state => state.whoisData);
+  const isLoading = useSelector(state => state.isLoading);
   const [option1Selected, setOption1Selected] = useState(true);
   const [option2Selected, setOption2Selected] = useState(false);
   const [option3Selected, setOption3Selected] = useState(false);
-  const [value, setValue] = useState('com');
+  const [show, setShow] = useState(false);
+  const [extension, setExtension] = useState({
+    register: 'com',
+    transfer: 'com',
+    update: 'com',
+  });
   const [eligible, setEligible] = useState('');
   const [isFocus, setIsFocus] = useState(null);
+  const [domainName, setDomainName] = useState({
+    register: '',
+    transfer: '',
+    update: '',
+  });
+
   const data = [
     {label: 'com', value: 'com'},
     {label: 'in', value: 'in'},
@@ -29,6 +51,17 @@ const DomainNameScreen = () => {
     {label: 'us', value: 'us'},
   ];
 
+  useEffect(() => {
+    let isAvailable = whoisData?.status;
+    console.log(isAvailable);
+    if (isAvailable === 'unavailable') {
+      console.log('calledif');
+      setEligible('available');
+    } else if (isAvailable === 'available') {
+      console.log('else');
+      setEligible('unAvailable');
+    }
+  }, [whoisData]);
   const onPressOption1 = () => {
     setOption1Selected(true);
     setOption2Selected(false);
@@ -45,6 +78,36 @@ const DomainNameScreen = () => {
     setOption1Selected(false);
     setOption2Selected(false);
     setOption3Selected(true);
+  };
+
+  const getDomain = () => {
+    let domain;
+    if (option1Selected) {
+      domain = domainName.register + '.' + extension.register;
+    } else if (option2Selected) {
+      domain = domainName.transfer + '.' + extension.transfer;
+    } else {
+      domain = domainName.update + '.' + extension.update;
+    }
+    return domain;
+  };
+  let domainSearch = getDomain();
+
+  let params = {
+    action: 'DomainWhois',
+    domain: domainSearch,
+  };
+  const onPressRegister = () => {
+    dispatch(fetchAPIAction('whois.php', params));
+    setShow(true);
+  };
+  const onPressTransfer = async () => {
+    dispatch({type: GET_WHOIS_API_DATA_SUCCESS, whoisData: null});
+    await dispatch(fetchAPIAction('whois.php', params));
+  };
+  const onPressUpdate = () => {
+    dispatch(fetchAPIAction('whois.php', params));
+    setShow(true);
   };
 
   const domainAvailableView = () => {
@@ -101,10 +164,28 @@ const DomainNameScreen = () => {
       </View>
     );
   };
-  const SubmitButton = title => {
+  const SubmitButton = (isCheckout = false) => {
     return (
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
-        <Text style={styles.buttonTextStyle}>{title}</Text>
+      <TouchableOpacity
+        style={isCheckout ? [styles.buttonContainer] : styles.buttonContainer}
+        onPress={
+          isCheckout
+            ? () => {}
+            : option1Selected
+            ? onPressRegister
+            : option2Selected
+            ? onPressTransfer
+            : onPressUpdate
+        }>
+        <Text style={styles.buttonTextStyle}>
+          {isCheckout
+            ? 'CHECKOUT'
+            : option1Selected
+            ? 'REGISTER DOMAIN'
+            : option2Selected
+            ? 'TRANSFER DOMAIN'
+            : 'USE THIS DOMAIN'}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -130,7 +211,7 @@ const DomainNameScreen = () => {
     );
   };
 
-  const renderTextInput = selected => {
+  const renderTextInput = (selected, type) => {
     return (
       <View>
         {selected ? (
@@ -144,16 +225,25 @@ const DomainNameScreen = () => {
               WWW.
             </Text>
             <TextInput
-              style={{
-                borderWidth: 1,
-                width: '60%',
-                height: 30,
-                borderColor: Colors.PLACEHOLDER_GREY,
-                borderRadius: 5,
-                padding: 4,
-                fontSize: 15,
-              }}
+              style={styles.textInputStyle}
               placeholder={'example'}
+              autoCapitalize={'none'}
+              value={
+                type === 'register'
+                  ? domainName.register
+                  : type === 'transfer'
+                  ? domainName.transfer
+                  : domainName.update
+              }
+              onChangeText={value => {
+                if (type === 'register') {
+                  setDomainName({...domainName, register: value});
+                } else if (type === 'transfer') {
+                  setDomainName({...domainName, transfer: value});
+                } else {
+                  setDomainName({...domainName, update: value});
+                }
+              }}
             />
             <Dropdown
               style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
@@ -162,11 +252,23 @@ const DomainNameScreen = () => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              value={value}
+              value={
+                type === 'register'
+                  ? extension.register
+                  : type === 'transfer'
+                  ? extension.transfer
+                  : extension.update
+              }
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
-                setValue(item.value);
+                if (type === 'register') {
+                  setExtension({...extension, register: item.value});
+                } else if (type === 'transfer') {
+                  setExtension({...extension, transfer: item.value});
+                } else {
+                  setExtension({...extension, update: item.value});
+                }
                 setIsFocus(false);
               }}
             />
@@ -174,6 +276,29 @@ const DomainNameScreen = () => {
         ) : null}
       </View>
     );
+  };
+  let cartArrayState = useSelector(state => state.cartArrayData);
+  const [cartArray, setCartArray] = useState([]);
+  const addToCart = () => {
+    const hasValidPid = cartArrayState;
+    cartArrayState?.some(item => isValidElement(item.pid));
+    if (!hasValidPid) {
+      let arrayParams = {
+        clientid: getUserId(),
+        paymentMethod: 'razorpay',
+        domain: domainName,
+        domaintype: 'register',
+        pid: '',
+        eppcode: '',
+        regperiod: 1,
+        billingcycle: 'monthly',
+      };
+      setCartArray(cartArray.push(arrayParams));
+      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
+      props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+    } else {
+      showToastMessage('Item alreay in cart', Colors.RED);
+    }
   };
   return (
     <View style={{flex: 1}}>
@@ -185,26 +310,34 @@ const DomainNameScreen = () => {
           option1Selected,
           onPressOption1,
         )}
-        {renderTextInput(option1Selected)}
+        {renderTextInput(option1Selected, 'register')}
         {renderDescription(
           'Transfer your domain from another registrar',
           option2Selected,
           onPressOption2,
         )}
-        {renderTextInput(option2Selected)}
+        {renderTextInput(option2Selected, 'transfer')}
         {renderDescription(
           'I will use my existing domain and update my name servers',
           option3Selected,
           onPressOption3,
         )}
-        {renderTextInput(option3Selected)}
+        {renderTextInput(option3Selected, 'update')}
       </View>
-      {SubmitButton('USE THIS DOMAIN')}
-      {eligible === 'available'
-        ? domainAvailableView()
-        : eligible === 'unAvailable'
-        ? domainUnAvailableView()
-        : null}
+      {SubmitButton()}
+      {option1Selected && show && !isLoading ? (
+        <DomainAvailableView addToCart={() => {}} domainName={domainSearch} />
+      ) : isLoading && option1Selected ? (
+        <ActivityIndicator size={'large'} style={{marginTop: 30}} />
+      ) : null}
+      {option2Selected && eligible === 'available' && !isLoading ? (
+        domainAvailableView()
+      ) : option2Selected && eligible === 'unAvailable' && !isLoading ? (
+        domainUnAvailableView()
+      ) : isLoading && option2Selected ? (
+        <ActivityIndicator size={'large'} style={{marginTop: 30}} />
+      ) : null}
+      <View style={styles.submitButtonContainer}>{SubmitButton(true)}</View>
     </View>
   );
 };
@@ -315,6 +448,20 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
     fontSize: 14,
+  },
+  textInputStyle: {
+    borderWidth: 1,
+    width: '60%',
+    height: 30,
+    borderColor: Colors.PLACEHOLDER_GREY,
+    borderRadius: 5,
+    padding: 4,
+    fontSize: 15,
+  },
+  submitButtonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 30,
   },
 });
 

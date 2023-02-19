@@ -13,6 +13,7 @@ import {
   INVOICE_DETAIL_API_DATA_SUCCESS,
   RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   ADD_CART_ARRAY,
+  HOSTING_DATA,
 } from './Type';
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
   registerData: null,
   productData: null,
   cartArrayData: null,
+  hostingData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -94,6 +96,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         cartArrayData: action.cartArrayData,
+      };
+    case HOSTING_DATA:
+      return {
+        ...state,
+        hostingData: action.hostingData,
       };
     case API_DATA_FAILURE:
       return {
