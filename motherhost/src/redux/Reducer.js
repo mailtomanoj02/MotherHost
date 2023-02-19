@@ -25,7 +25,7 @@ const initialState = {
   loginData: null,
   registerData: null,
   productData: null,
-  cartArrayData: [],
+  cartArrayData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -61,7 +61,6 @@ export const mainReducer = (state = initialState, action) => {
         serviceData: action.serviceData,
       };
     case LOGIN_API_DATA_SUCCESS:
-      console.log('LOGIN_API_DATA_SUCCESS CALLED');
       return {
         ...state,
         loginData: action.loginData,

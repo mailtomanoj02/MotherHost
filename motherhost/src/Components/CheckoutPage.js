@@ -1,44 +1,135 @@
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {isValidString} from '../utils/Helper';
+import {getPriceBasedOnDomain} from '../utils/Utils';
+import ModalPopUp from './Modal';
+import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
 
-const CheckoutPage = () => {
+const CheckoutPage = props => {
   const [value, setValue] = useState('Monthly');
   const [isFocus, setIsFocus] = useState(null);
+  let cartArrayState = useSelector(state => state.cartArrayData);
+  const [cartArrayFromSearch, setCartArrayFromSearch] =
+    useState(cartArrayState);
+  const [showModal, setShowModal] = useState(false);
   const data = [
     {label: 'Monthly', value: 'Monthly'},
     {label: 'Yearly', value: 'Yearly'},
   ];
-  const renderCartView = () => {
+  useEffect(() => {
+    if (cartArrayFromSearch.length === 0) {
+      props.navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
+    }
+  }, [cartArrayFromSearch, props.navigation]);
+  const increaseRegPeriod = (index, value) => {
+    setCartArrayFromSearch(prevCartArray => {
+      const updatedCartArray = prevCartArray.map((item, i) => {
+        if (i === index) {
+          if (value === 'addregperiod') {
+            return {
+              ...item,
+              regperiod:
+                item.regperiod !== 10 ? item.regperiod + 1 : item.regperiod,
+            };
+          }
+          if (value === 'subregperiod') {
+            return {
+              ...item,
+              regperiod:
+                item.regperiod !== 1 ? item.regperiod - 1 : item.regperiod,
+            };
+          }
+        } else {
+          return item;
+        }
+      });
+      return updatedCartArray;
+    });
+  };
+  const CartContainer = (item, index) => {
+    let qty = item.regperiod;
+    let priceData = getPriceBasedOnDomain(item.domain);
+    let price = (priceData * qty).toFixed(2);
+    const handleClose = () => {
+      setShowModal(false);
+    };
+    const handleConfirm = () => {
+      const newData = [...cartArrayFromSearch]; // Create a copy of the original array
+      newData.splice(index, 1);
+      setCartArrayFromSearch(newData);
+      setShowModal(false);
+    };
     return (
-      <View style={styles.totalCheckoutContainer}>
-        <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD}}>motherhost.com</Text>
-        <View style={styles.cartContainerStyle}>
-          <View style={styles.cartBoxStyle}>
-            <TouchableOpacity style={styles.plusMinusButtonStyle}>
-              <Image
-                source={require('./../Images/RadioButton/minus.png')}
-                style={{height: 18, width: 18}}
-              />
-            </TouchableOpacity>
-            <View style={styles.cartInnerViewStyle}>
-              <Text style={styles.yearsTextStyle}>1 Year(s)</Text>
-            </View>
-            <TouchableOpacity style={styles.plusMinusButtonStyle}>
-              <Image
-                source={require('./../Images/RadioButton/plus.png')}
-                style={{height: 18, width: 18}}
-              />
-            </TouchableOpacity>
+      <View style={styles.cartContainerStyle}>
+        <View style={styles.cartBoxStyle}>
+          <TouchableOpacity
+            style={styles.plusMinusButtonStyle}
+            onPress={() => {
+              if (item?.regperiod > 1) {
+                increaseRegPeriod(index, 'subregperiod');
+              } else {
+                setShowModal(true);
+              }
+            }}>
+            <Image
+              source={require('./../Images/RadioButton/minus.png')}
+              style={{height: 18, width: 18}}
+            />
+          </TouchableOpacity>
+          <View style={styles.cartInnerViewStyle}>
+            <Text style={styles.yearsTextStyle}>{`${qty} Year(s)`}</Text>
           </View>
-          <View>
-            <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>$1040.31</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.plusMinusButtonStyle}
+            onPress={() => {
+              if (item?.regperiod < 10) {
+                increaseRegPeriod(index, 'addregperiod');
+              } else {
+                console.log(cartArrayFromSearch);
+              }
+            }}>
+            <Image
+              source={require('./../Images/RadioButton/plus.png')}
+              style={{height: 18, width: 18}}
+            />
+          </TouchableOpacity>
         </View>
+        <View>
+          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>{`$ ${price}`}</Text>
+        </View>
+        <ModalPopUp
+          visible={showModal}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+          title={'Do you want to clear the cart'}
+        />
+      </View>
+    );
+  };
+
+  const renderCartView = ({item, index}) => {
+    return (
+      <View>
+        <View style={styles.totalCheckoutContainer}>
+          <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD}}>
+            motherhost.com
+          </Text>
+          {isValidString(item?.domain) ? CartContainer(item, index) : null}
+        </View>
+        {isValidString(item?.pid) ? renderDescription() : null}
       </View>
     );
   };
@@ -109,11 +200,12 @@ const CheckoutPage = () => {
       />
     );
   };
+
   const renderTotalView = () => {
     const data = [
       {
         key1: 'Total',
-        value1: '$ 2345.98',
+        value1: '989.0',
       },
       {
         key1: 'Tax (CGST) 9%',
@@ -130,7 +222,7 @@ const CheckoutPage = () => {
       <View style={[styles.totalCheckoutContainer]}>
         {data.map((value, index) => {
           return (
-            <View>
+            <View key={index}>
               <View style={[{flexDirection: 'row'}]}>
                 <View style={{flex: 0.5, padding: 6}}>
                   <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
@@ -168,13 +260,16 @@ const CheckoutPage = () => {
       </TouchableOpacity>
     );
   };
+  // const objWithEmptyPid = cartArrayFromSearch.find(obj => obj.pid === '');
+  // const regPeriod = objWithEmptyPid.regperiod;
   return (
     <View style={{flex: 1}}>
       <AppBar />
       <ScreenTitle title={'Review & Checkout'} />
       <View style={{flex: 1}}>
-        {renderCartView()}
-        {renderDescription()}
+        <FlatList data={cartArrayFromSearch} renderItem={renderCartView} />
+        {/*{cartArrayFromSearch?.length > 0 ? renderCartView(regPeriod) : null}*/}
+        {/*{renderDescription()}*/}
         <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
           {renderOfferView()}
           {renderTotalView()}

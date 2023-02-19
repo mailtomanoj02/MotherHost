@@ -2,20 +2,48 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
-import {useSelector} from 'react-redux';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
+import {useDispatch, useSelector} from 'react-redux';
 import SkeletonLoader from './customUI/SkeletonLoader';
+import {useState} from 'react';
+import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
+import {ADD_CART_ARRAY} from '../redux/Type';
+import {isValidElement} from '../utils/Helper';
+import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
 
 const DomainAvailabilityScreen = props => {
   let whoisData = useSelector(state => state.whoisData);
   let isLoading = useSelector(state => state.isLoading);
+  let cartArrayState = useSelector(state => state.cartArrayData);
+  const dispatch = useDispatch();
+  const [cartArray, setCartArray] = useState([]);
   let isAvailable = whoisData?.status?.toLowerCase() === 'available';
   const {domainName} = props.route.params;
   const AvailableView = () => {
-    const onPress = () => {
-      let arr = {
+    let priceData = getPriceBasedOnDomain(domainName);
+    const addToCart = async () => {
+      const hasEmptyPid = cartArrayState;
+      cartArrayState?.some(item => item.pid === '');
+      if (!hasEmptyPid) {
+        let arrayParams = {
+          clientid: getUserId(),
+          paymentMethod: 'razorpay',
+          domain: domainName,
+          domaintype: 'register',
+          pid: '',
+          eppcode: '',
+          regperiod: 1,
+          billingcycle: 'monthly',
+        };
 
-      };
+        setCartArray(cartArray.push(arrayParams));
+        dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
+        props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+        console.log(cartArray);
+      } else {
+        console.log(cartArray);
+        showToastMessage('Item alreay in cart', Colors.RED);
+      }
     };
     return (
       <View style={styles.totalContainerStyle}>
@@ -42,11 +70,11 @@ const DomainAvailabilityScreen = props => {
         )}
         {isAvailable ? (
           <View style={{flexDirection: 'row', marginTop: 10}}>
-            <Text style={styles.amountTextStyle}>{'$ 1040'}</Text>
+            <Text style={styles.amountTextStyle}>{`$ ${priceData}`}</Text>
             <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
             <TouchableOpacity
               style={styles.addToCartButtonStyle}
-              onPress={onPress}>
+              onPress={addToCart}>
               <View style={styles.buttonContainerStyle}>
                 <Text style={styles.buttonTextStyle}>ADD TO CART</Text>
               </View>

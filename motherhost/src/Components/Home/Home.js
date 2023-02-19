@@ -19,12 +19,12 @@ import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
 import {checkIsValidDomain, isValidElement} from '../../utils/Helper';
-import {isUserLoggedIn} from '../../utils/Utils';
+import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [domainSearch, setDomainSearch] = useState('');
+  const [domainSearch, setDomainSearch] = useState('mathuraihost.com');
   const pricingData = useSelector(state => state.pricingData);
   const loginData = useSelector(state => state.loginData);
   let params = {
@@ -91,16 +91,10 @@ const HomeScreen = () => {
     );
   };
   const domainInView = () => {
-    let priceList = isValidElement(pricingData) ? pricingData : '';
-    let comPrice = isValidElement(priceList[0]?.com.register)
-      ? priceList[0].com.register
-      : '';
-    let netPrice = isValidElement(priceList[1]?.net.register)
-      ? priceList[1].net.register
-      : '';
-    let inPrice = isValidElement(priceList[2]?.in.register)
-      ? priceList[2].in.register
-      : '';
+    const priceList = getPricingData();
+    const comPrice = priceList.comPrice;
+    const netPrice = priceList.netPrice;
+    const inPrice = priceList.inPrice;
     return (
       <View style={{flexDirection: 'row', margin: 5}}>
         <DomainHomeView

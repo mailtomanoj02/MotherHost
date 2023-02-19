@@ -70,7 +70,7 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <SideMenu {...props} />}
-      initialRouteName={SCREEN_NAMES.CHECKOUT}
+      initialRouteName={SCREEN_NAMES.HOME_SCREEN}
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
       <Drawer.Screen
         name={SCREEN_NAMES.HOME_SCREEN}
