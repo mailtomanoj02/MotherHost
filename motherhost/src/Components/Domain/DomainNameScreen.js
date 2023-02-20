@@ -22,6 +22,7 @@ import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 import {isValidElement} from '../../utils/Helper';
 
 const DomainNameScreen = props => {
+  const {pid} = props.route.params;
   const dispatch = useDispatch();
   let whoisData = useSelector(state => state.whoisData);
   const isLoading = useSelector(state => state.isLoading);
@@ -286,13 +287,14 @@ const DomainNameScreen = props => {
       let arrayParams = {
         clientid: getUserId(),
         paymentMethod: 'razorpay',
-        domain: domainName,
+        domain: domainSearch,
         domaintype: 'register',
-        pid: '',
+        pid: pid,
         eppcode: '',
         regperiod: 1,
         billingcycle: 'monthly',
       };
+      console.log(arrayParams)
       setCartArray(cartArray.push(arrayParams));
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
       props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
@@ -326,7 +328,7 @@ const DomainNameScreen = props => {
       </View>
       {SubmitButton()}
       {option1Selected && show && !isLoading ? (
-        <DomainAvailableView addToCart={() => {}} domainName={domainSearch} />
+        <DomainAvailableView addToCart={addToCart} domainName={domainSearch} />
       ) : isLoading && option1Selected ? (
         <ActivityIndicator size={'large'} style={{marginTop: 30}} />
       ) : null}

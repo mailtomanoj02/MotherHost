@@ -27,12 +27,14 @@ const HostingScreen = props => {
   let productList = isValidElement(productData)
     ? productData.products?.product
     : '';
-  const renderButton = () => {
+  const renderButton = item => {
     return (
       <TouchableOpacity
         style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}
         onPress={() =>
-          props.navigation.navigate(SCREEN_NAMES.DOMAIN_NAME_SCREEN)
+          props.navigation.navigate(SCREEN_NAMES.DOMAIN_NAME_SCREEN, {
+            pid: item.pid,
+          })
         }>
         <View style={styles.buttonContainerStyle}>
           <Text style={styles.buttonTextStyle}>ORDER & CONTINUE</Text>
@@ -42,6 +44,7 @@ const HostingScreen = props => {
   };
 
   const renderItem = ({item}) => {
+    console.log(item.pid);
     let description = item.description.replace(/<[^>]+>/g, '');
     let itemPrice = item.pricing.INR.monthly;
     return (
@@ -53,7 +56,7 @@ const HostingScreen = props => {
         <View style={styles.amountContainerStyle}>
           <Text style={styles.amountTextStyle}>{`$ ${itemPrice}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
-          {renderButton()}
+          {renderButton(item)}
         </View>
       </View>
     );

@@ -82,6 +82,7 @@ export const fetchAPIAction =
             });
           }
         } else if (url === 'getproducts.php') {
+
           dispatch({
             type: GET_PRODUCTS_API_DATA_SUCCESS,
             productData: data,
