@@ -18,8 +18,9 @@ const LoginAndRegistration = props => {
     REGISTER: 'REGISTER',
     SIGN_IN: 'SIGN IN',
   };
-  const [isRegisterPressed, setIsRegisterPressed] = useState(true);
-  const [isSignInPressed, setSignInPressed] = useState(false);
+  const {isFromLogin, isFromRegister} = props.route.params;
+  const [isRegisterPressed, setIsRegisterPressed] = useState(isFromRegister);
+  const [isSignInPressed, setSignInPressed] = useState(isFromLogin);
   const handleRegisterPressed = () => {
     setSignInPressed(false);
     setIsRegisterPressed(true);
@@ -58,7 +59,7 @@ const LoginAndRegistration = props => {
       </View>
     );
   };
-
+  console.log(isFromLogin);
   return (
     <View style={{flex: 1}}>
       <AppBar />

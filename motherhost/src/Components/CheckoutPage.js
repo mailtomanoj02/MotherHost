@@ -9,7 +9,7 @@ import {
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
+import {FONT_FAMILY} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';

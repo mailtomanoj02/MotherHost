@@ -116,18 +116,22 @@ const SideMenu = () => {
           <TouchableOpacity
             style={styles.pressableStyle}
             onPress={() =>
-              navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION)
+              navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
+                isFromRegister: true,
+                isFromLogin: false,
+              })
             }>
             <Text style={styles.pressableTextStyle}>Register</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.pressableStyle}>
-            <Text
-              style={styles.pressableTextStyle}
-              onPress={() =>
-                navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION)
-              }>
-              Login
-            </Text>
+          <TouchableOpacity
+            style={styles.pressableStyle}
+            onPress={() =>
+              navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
+                isFromRegister: false,
+                isFromLogin: true,
+              })
+            }>
+            <Text style={styles.pressableTextStyle}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
