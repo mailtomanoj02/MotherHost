@@ -18,22 +18,23 @@ import {getPriceBasedOnDomain} from '../utils/Utils';
 import ModalPopUp from './Modal';
 
 const CheckoutPage = props => {
-  const [value, setValue] = useState('Monthly');
+  const [deleteIndex, setIndex] = useState(0);
   const [isFocus, setIsFocus] = useState(null);
   let cartArrayState = useSelector(state => state.cartArrayData);
   const [cartArrayFromSearch, setCartArrayFromSearch] =
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
-  const data = [
-    {label: 'Monthly', value: 'Monthly'},
-    {label: 'Yearly', value: 'Yearly'},
-  ];
   useEffect(() => {
-    if (cartArrayFromSearch.length === 0) {
-      props.navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
-    }
-  }, [cartArrayFromSearch, props.navigation]);
-  const increaseRegPeriod = (index, value) => {
+    const blurListener = props.navigation.addListener('blur', () => {
+      setCartArrayFromSearch(cartArrayFromSearch);
+    });
+
+    return () => {
+      blurListener();
+    };
+  }, [cartArrayFromSearch, cartArrayState, props.navigation]);
+
+  const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
       const updatedCartArray = prevCartArray.map((item, i) => {
         if (i === index) {
@@ -51,6 +52,21 @@ const CheckoutPage = props => {
                 item.regperiod !== 1 ? item.regperiod - 1 : item.regperiod,
             };
           }
+          if (value === 'changeDuration') {
+            return {
+              ...item,
+              selectedPrice: {
+                key: priceData.key,
+                value: priceData.value,
+              },
+            };
+          }
+          if (value === 'changePrice') {
+            return {
+              ...item,
+              price: (item.regperiod * item.initialPrice).toFixed(2),
+            };
+          }
         } else {
           return item;
         }
@@ -58,91 +74,107 @@ const CheckoutPage = props => {
       return updatedCartArray;
     });
   };
-  const CartContainer = (item, index) => {
+  const plusMinusButtonView = (item, index) => {
     let qty = item.regperiod;
     let priceData = getPriceBasedOnDomain(item.domain);
     let price = (priceData * qty).toFixed(2);
+    return (
+      <View style={styles.cartBoxStyle}>
+        <TouchableOpacity
+          style={styles.plusMinusButtonStyle}
+          onPress={() => {
+            if (item?.regperiod > 1) {
+              changeArrayValue(index, 'subregperiod');
+              changeArrayValue(index, 'changePrice');
+            } else {
+              setIndex(index);
+              setShowModal(true);
+            }
+          }}>
+          <Image
+            source={require('./../Images/RadioButton/minus.png')}
+            style={{height: 18, width: 18}}
+          />
+        </TouchableOpacity>
+        <View style={styles.cartInnerViewStyle}>
+          <Text style={styles.yearsTextStyle}>{`${qty} Year(s)`}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.plusMinusButtonStyle}
+          onPress={() => {
+            if (item?.regperiod < 10) {
+              changeArrayValue(index, 'addregperiod');
+              changeArrayValue(index, 'changePrice');
+            }
+          }}>
+          <Image
+            source={require('./../Images/RadioButton/plus.png')}
+            style={{height: 18, width: 18}}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  const CartContainer = (item, index) => {
     const handleClose = () => {
       setShowModal(false);
     };
     const handleConfirm = () => {
       const newData = [...cartArrayFromSearch]; // Create a copy of the original array
-      newData.splice(index, 1);
+      newData.splice(deleteIndex, 1);
       setCartArrayFromSearch(newData);
       setShowModal(false);
     };
     return (
       <View style={styles.cartContainerStyle}>
-        <View style={styles.cartBoxStyle}>
-          <TouchableOpacity
-            style={styles.plusMinusButtonStyle}
-            onPress={() => {
-              if (item?.regperiod > 1) {
-                increaseRegPeriod(index, 'subregperiod');
-              } else {
-                setShowModal(true);
-              }
-            }}>
-            <Image
-              source={require('./../Images/RadioButton/minus.png')}
-              style={{height: 18, width: 18}}
-            />
-          </TouchableOpacity>
-          <View style={styles.cartInnerViewStyle}>
-            <Text style={styles.yearsTextStyle}>{`${qty} Year(s)`}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.plusMinusButtonStyle}
-            onPress={() => {
-              if (item?.regperiod < 10) {
-                increaseRegPeriod(index, 'addregperiod');
-              } else {
-                console.log(cartArrayFromSearch);
-              }
-            }}>
-            <Image
-              source={require('./../Images/RadioButton/plus.png')}
-              style={{height: 18, width: 18}}
-            />
-          </TouchableOpacity>
-        </View>
+        {item.domaintype !== 'update' ? (
+          plusMinusButtonView(item, index)
+        ) : (
+          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+            Using existing domain
+          </Text>
+        )}
         <View>
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>{`$ ${price}`}</Text>
+          <Text
+            style={{fontFamily: FONT_FAMILY.REGULAR}}>{`₹ ${item.price}`}</Text>
         </View>
         <ModalPopUp
           visible={showModal}
           onConfirm={handleConfirm}
           onClose={handleClose}
-          title={'Do you want to clear the cart'}
+          title={'Do you want to clear item from the cart'}
         />
       </View>
     );
   };
 
   const renderCartView = ({item, index}) => {
+    let name = 'motherhost.com';
     return (
       <View>
         <View style={styles.totalCheckoutContainer}>
-          <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD}}>
-            motherhost.com
-          </Text>
+          <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD}}>{name}</Text>
           {isValidString(item?.domain) ? CartContainer(item, index) : null}
         </View>
-        {isValidString(item?.pid) ? renderDescription() : null}
+        {isValidString(item?.pid) ? renderDescription(item, index) : null}
       </View>
     );
   };
 
-  const renderDescription = () => {
+  const renderDescription = (item, index) => {
+    const data = item.selectedPriceList;
     return (
       <View style={styles.totalCheckoutContainer}>
         <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD, fontSize: 14}}>
-          Small Business
+          {item.descriptionData.title}
         </Text>
-        <Text style={{marginTop: 10, fontSize: 13}}>
-          30 WebsitesFree domain with annual plan60 GB SSD Storage Unlimited
-          Data Transfer2 Email Accounts Each Domain 60 MySQL databases (200MB
-          each)Free SSL Certificate
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 13,
+            fontFamily: FONT_FAMILY.REGULAR,
+          }}>
+          {item.descriptionData.data}
         </Text>
         <View style={styles.cartContainerStyle}>
           <Dropdown
@@ -152,17 +184,20 @@ const CheckoutPage = props => {
             itemContainerStyle={styles.itemContainerStyle}
             data={data}
             maxHeight={300}
-            labelField="label"
+            labelField="key"
             valueField="value"
-            value={value}
+            value={data[0].value}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              setValue(item.value);
+              console.log(cartArrayFromSearch);
+              changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
           />
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>$ 899.00</Text>
+          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+            {item?.selectedPrice?.value}
+          </Text>
         </View>
       </View>
     );
@@ -259,20 +294,19 @@ const CheckoutPage = props => {
       </TouchableOpacity>
     );
   };
-  // const objWithEmptyPid = cartArrayFromSearch.find(obj => obj.pid === '');
-  // const regPeriod = objWithEmptyPid.regperiod;
+
   return (
     <View style={{flex: 1}}>
       <AppBar />
       <ScreenTitle title={'Review & Checkout'} />
       <View style={{flex: 1}}>
         <FlatList data={cartArrayFromSearch} renderItem={renderCartView} />
-        {/*{cartArrayFromSearch?.length > 0 ? renderCartView(regPeriod) : null}*/}
-        {/*{renderDescription()}*/}
         <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
-          {renderOfferView()}
-          {renderTotalView()}
-          {SubmitButton('Checkout & place Order')}
+          {/*{renderOfferView()}*/}
+          {cartArrayFromSearch.length > 0 ? renderTotalView() : null}
+          {cartArrayFromSearch.length > 0
+            ? SubmitButton('Checkout & place Order')
+            : null}
         </View>
       </View>
     </View>
@@ -312,19 +346,19 @@ const styles = StyleSheet.create({
   plusMinusButtonStyle: {justifyContent: 'center', padding: 4, flex: 0.2},
   dropdown: {
     borderWidth: 1,
-    width: '30%',
+    width: '35%',
     height: 30,
     borderColor: Colors.PLACEHOLDER_GREY,
     borderRadius: 5,
     marginHorizontal: 5,
   },
   selectedTextStyle: {
-    fontSize: 15,
+    fontSize: 13,
     marginLeft: 5,
     fontFamily: FONT_FAMILY.REGULAR,
   },
   itemTextStyle: {
-    fontSize: 15,
+    fontSize: 13,
   },
   itemContainerStyle: {
     height: 50,

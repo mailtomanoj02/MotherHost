@@ -27,13 +27,16 @@ const HostingScreen = props => {
   let productList = isValidElement(productData)
     ? productData.products?.product
     : '';
-  const renderButton = item => {
+  const renderButton = (pid, itemPriceData, description, title) => {
     return (
       <TouchableOpacity
         style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}
         onPress={() =>
           props.navigation.navigate(SCREEN_NAMES.DOMAIN_NAME_SCREEN, {
-            pid: item.pid,
+            pid: pid,
+            pricingINR: itemPriceData,
+            description: description,
+            title,
           })
         }>
         <View style={styles.buttonContainerStyle}>
@@ -44,19 +47,21 @@ const HostingScreen = props => {
   };
 
   const renderItem = ({item}) => {
-    console.log(item.pid);
-    let description = item.description.replace(/<[^>]+>/g, '');
-    let itemPrice = item.pricing.INR.monthly;
+    let description = item?.description.replace(/<[^>]+>/g, '');
+    let title = item.name;
+    let itemPriceData = item?.pricing?.INR;
+    let itemPrice = item?.pricing?.INR?.monthly;
+    let pid = item?.pid;
     return (
       <View style={styles.itemContainer}>
         <View style={styles.innerTitleContainerStyle}>
-          <Text style={styles.innerTitleTextStyle}>{item.name}</Text>
+          <Text style={styles.innerTitleTextStyle}>{title}</Text>
         </View>
         <Text style={styles.descriptionTextStyle}>{description}</Text>
         <View style={styles.amountContainerStyle}>
           <Text style={styles.amountTextStyle}>{`$ ${itemPrice}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
-          {renderButton(item)}
+          {renderButton(pid, itemPriceData, description, title)}
         </View>
       </View>
     );

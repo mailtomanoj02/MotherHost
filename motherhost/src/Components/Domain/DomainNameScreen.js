@@ -16,13 +16,15 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
 import DomainAvailableView from '../DomainAvailableView';
-import {ADD_CART_ARRAY, GET_WHOIS_API_DATA_SUCCESS} from '../../redux/Type';
-import {getUserId} from '../../utils/Utils';
+import {
+  ADD_CART_ARRAY,
+  GET_WHOIS_API_DATA_SUCCESS,
+  LOGIN_API_DATA_SUCCESS,
+} from '../../redux/Type';
+import {getPriceBasedOnDomain, getUserId} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
-import {isValidElement} from '../../utils/Helper';
 
 const DomainNameScreen = props => {
-  const {pid} = props.route.params;
   const dispatch = useDispatch();
   let whoisData = useSelector(state => state.whoisData);
   const isLoading = useSelector(state => state.isLoading);
@@ -42,6 +44,39 @@ const DomainNameScreen = props => {
     transfer: '',
     update: '',
   });
+  const {pid, pricingINR, description, title} = props.route.params;
+  let priceListArray = [
+    {
+      key: 'Monthly',
+      value: pricingINR.monthly,
+      prefix: pricingINR.prefix,
+    },
+    {
+      key: 'Quarterly',
+      value: pricingINR.quarterly,
+      prefix: pricingINR.prefix,
+    },
+    {
+      key: 'SemiAnnually',
+      value: pricingINR.semiannually,
+      prefix: pricingINR.prefix,
+    },
+    {
+      key: 'Annually',
+      value: pricingINR.annually,
+      prefix: pricingINR.prefix,
+    },
+    {
+      key: 'Biennially',
+      value: pricingINR.biennially,
+      prefix: pricingINR.prefix,
+    },
+    {
+      key: 'Triennially',
+      value: pricingINR.triennially,
+      prefix: pricingINR.prefix,
+    },
+  ];
 
   const data = [
     {label: 'com', value: 'com'},
@@ -51,31 +86,33 @@ const DomainNameScreen = props => {
     {label: 'uk', value: 'uk'},
     {label: 'us', value: 'us'},
   ];
-
   useEffect(() => {
     let isAvailable = whoisData?.status;
-    console.log(isAvailable);
     if (isAvailable === 'unavailable') {
-      console.log('calledif');
       setEligible('available');
     } else if (isAvailable === 'available') {
-      console.log('else');
       setEligible('unAvailable');
     }
   }, [whoisData]);
+
   const onPressOption1 = () => {
+    setEligible('');
     setOption1Selected(true);
     setOption2Selected(false);
     setOption3Selected(false);
   };
 
   const onPressOption2 = () => {
+    setShow(false);
+    setEligible('');
     setOption1Selected(false);
     setOption2Selected(true);
     setOption3Selected(false);
   };
 
   const onPressOption3 = () => {
+    setShow(false);
+    setEligible('');
     setOption1Selected(false);
     setOption2Selected(false);
     setOption3Selected(true);
@@ -107,8 +144,7 @@ const DomainNameScreen = props => {
     await dispatch(fetchAPIAction('whois.php', params));
   };
   const onPressUpdate = () => {
-    dispatch(fetchAPIAction('whois.php', params));
-    setShow(true);
+    setEligible('available');
   };
 
   const domainAvailableView = () => {
@@ -168,10 +204,15 @@ const DomainNameScreen = props => {
   const SubmitButton = (isCheckout = false) => {
     return (
       <TouchableOpacity
-        style={isCheckout ? [styles.buttonContainer] : styles.buttonContainer}
+        disabled={isCheckout && eligible !== 'available'}
+        style={
+          isCheckout && eligible !== 'available'
+            ? [styles.buttonContainer, {opacity: 0.5}]
+            : styles.buttonContainer
+        }
         onPress={
           isCheckout
-            ? () => {}
+            ? addToCart
             : option1Selected
             ? onPressRegister
             : option2Selected
@@ -279,27 +320,48 @@ const DomainNameScreen = props => {
     );
   };
   let cartArrayState = useSelector(state => state.cartArrayData);
-  const [cartArray, setCartArray] = useState([]);
+  const [cartArray, setCartArray] = useState(cartArrayState);
   const addToCart = () => {
-    const hasValidPid = cartArrayState;
-    cartArrayState?.some(item => isValidElement(item.pid));
-    if (!hasValidPid) {
+    const hasValidPid = cartArrayState?.some(
+      obj => typeof obj.pid === 'number' && parseInt(obj.pid),
+    );
+    if (
+      cartArrayState?.some(
+        obj => typeof obj.pid === 'number' && parseInt(obj.pid),
+      )
+    ) {
+      showToastMessage('Item alreay in cart', Colors.RED);
+    } else {
+      console.log(domainSearch);
       let arrayParams = {
         clientid: getUserId(),
         paymentMethod: 'razorpay',
         domain: domainSearch,
-        domaintype: 'register',
+        domaintype: option1Selected
+          ? 'register'
+          : option2Selected
+          ? 'transfer'
+          : 'update',
         pid: pid,
         eppcode: '',
         regperiod: 1,
         billingcycle: 'monthly',
+        initialPrice: option3Selected ? 0 : getPriceBasedOnDomain(domainSearch),
+        price: option3Selected ? 0 : getPriceBasedOnDomain(domainSearch),
+        descriptionData: {
+          title: title,
+          data: description,
+        },
+        selectedPriceList: priceListArray,
+        selectedPrice: {
+          key: priceListArray[0].key,
+          value: priceListArray[0].value,
+        },
       };
-      console.log(arrayParams)
       setCartArray(cartArray.push(arrayParams));
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
-      props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
-    } else {
-      showToastMessage('Item alreay in cart', Colors.RED);
+      showToastMessage('Item Added Successfully!!', Colors.GREEN);
+      // props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
     }
   };
   return (

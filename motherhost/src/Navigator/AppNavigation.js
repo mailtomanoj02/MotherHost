@@ -127,7 +127,11 @@ const MyDrawer = () => {
         component={DomainAvailabilityScreen}
       />
       <Drawer.Screen name={SCREEN_NAMES.COUPONS} component={CouponsScreen} />
-      <Drawer.Screen name={SCREEN_NAMES.CHECKOUT} component={CheckoutPage} />
+      <Drawer.Screen
+        name={SCREEN_NAMES.CHECKOUT}
+        component={CheckoutPage}
+        options={{unmountOnBlur: false}}
+      />
     </Drawer.Navigator>
   );
 };

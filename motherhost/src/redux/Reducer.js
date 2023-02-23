@@ -26,7 +26,7 @@ const initialState = {
   loginData: null,
   registerData: null,
   productData: null,
-  cartArrayData: null,
+  cartArrayData: [],
   hostingData: null,
 };
 

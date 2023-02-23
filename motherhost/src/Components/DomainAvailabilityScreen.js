@@ -15,12 +15,16 @@ const DomainAvailabilityScreen = props => {
   let isLoading = useSelector(state => state.isLoading);
   let cartArrayState = useSelector(state => state.cartArrayData);
   const dispatch = useDispatch();
-  const [cartArray, setCartArray] = useState([]);
+  const [cartArray, setCartArray] = useState(cartArrayState);
   const {domainName} = props.route.params;
   const addToCart = () => {
-    const hasEmptyPid = cartArrayState;
-    cartArrayState?.some(item => item.pid === '');
-    if (!hasEmptyPid) {
+    console.log('From Availability screen', cartArrayState);
+    // const hasEmptyPid = cartArrayState;
+    // cartArrayState?.some(item => item.pid === '');
+    // console.log(hasEmptyPid)
+    if (cartArrayState?.some(item => item.pid === '')) {
+      showToastMessage('Item alreay in cart', Colors.RED);
+    } else {
       let arrayParams = {
         clientid: getUserId(),
         paymentMethod: 'razorpay',
@@ -30,12 +34,12 @@ const DomainAvailabilityScreen = props => {
         eppcode: '',
         regperiod: 1,
         billingcycle: 'monthly',
+        initialPrice: getPriceBasedOnDomain(domainName),
+        price: getPriceBasedOnDomain(domainName),
       };
       setCartArray(cartArray.push(arrayParams));
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
       props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
-    } else {
-      showToastMessage('Item alreay in cart', Colors.RED);
     }
   };
   return (

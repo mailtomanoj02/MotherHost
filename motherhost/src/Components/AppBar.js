@@ -54,7 +54,11 @@ const AppBar = props => {
             </TouchableOpacity>
           ) : null}
 
-          <TouchableOpacity style={styles.walletCartButtonStyle}>
+          <TouchableOpacity
+            style={styles.walletCartButtonStyle}
+            onPress={() =>
+              navigation.navigate(SCREEN_NAMES.CHECKOUT, {isFromCartIcon: true})
+            }>
             <Image
               source={require('./../Images/AppBar/shopping-cart.png')}
               style={styles.walletCartImageStyle}
