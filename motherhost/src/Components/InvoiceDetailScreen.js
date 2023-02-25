@@ -41,38 +41,38 @@ const InvoiceDetailScreen = props => {
   }, [invoiceDetailsList]);
 
   const onTapPay = async () => {
-    // const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
-    // console.log('orderResponse==?', orderResponse?.id);
+    const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
+    console.log('orderResponse==?', orderResponse?.id);
     let userName = getUserName();
-    // if (isValidElement(orderResponse?.id)) {
-    //   let options = {
-    //     description: 'motherhost.com',
-    //     image: require('./../Images/Logo/razerpaylogo.png'),
-    //     currency: 'INR',
-    //     key: 'rzp_live_NRitIpeIamRiYC', // Your api key
-    //     amount: total * 100,
-    //     name: userName,
-    //     order_id: orderResponse?.id,
-    //     prefill: {
-    //       email: loginData?.email,
-    //       contact: loginData?.phonenumber,
-    //       name: userName,
-    //     },
-    //     theme: {color: Colors.buttonBlue},
-    //   };
-    //   console.log(options);
-    //   await RazorpayCheckout.open(options)
-    //     .then(data => {
-    //       // handle success
-    //       alert(`Success: ${data.razorpay_payment_id}`);
-    //     })
-    //     .catch(error => {
-    //       // handle failure
-    //       alert(`Error: ${error.code} | ${error.description}`);
-    //     });
-    // } else {
-    //   showToastMessage('Oops! payment failed try again later.', Colors.RED);
-    // }
+    if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
+      let options = {
+        description: 'motherhost.com',
+        image: require('./../Images/Logo/razerpaylogo.png'),
+        currency: 'INR',
+        key: 'rzp_live_NRitIpeIamRiYC', // Your api key
+        amount: total * 100,
+        name: userName,
+        order_id: orderResponse?.id,
+        prefill: {
+          email: loginData?.email,
+          contact: loginData?.phonenumber,
+          name: userName,
+        },
+        theme: {color: Colors.buttonBlue},
+      };
+      console.log(options);
+      await RazorpayCheckout.open(options)
+        .then(data => {
+          // handle success
+          alert(`Success: ${data.razorpay_payment_id}`);
+        })
+        .catch(error => {
+          // handle failure
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
+    } else {
+      showToastMessage('Oops! payment failed try again later.', Colors.RED);
+    }
   };
   const renderItem = () => {
     return (
