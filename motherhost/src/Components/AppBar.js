@@ -4,6 +4,7 @@ import Colors from '../Themes/Colors';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
 import {SCREEN_NAMES} from '../Config/Constant';
+import {isUserLoggedIn} from '../utils/Utils';
 
 const AppBar = props => {
   let imageBack = props.image
@@ -22,7 +23,7 @@ const AppBar = props => {
         unsubscribe();
       };
     }
-  }, [navigation]);
+  }, [navigation, screenName]);
   return (
     <SafeAreaView>
       <View style={styles.containerStyle}>
@@ -43,7 +44,7 @@ const AppBar = props => {
           source={require('./../Images/Logo/NameLogo-White.png')}
         />
         <View style={styles.walletCartViewStyle}>
-          {showWallet ? (
+          {isUserLoggedIn() && showWallet ? (
             <TouchableOpacity
               style={styles.walletCartButtonStyle}
               onPress={() => navigation.navigate(SCREEN_NAMES.WALLET)}>

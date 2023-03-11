@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, Keyboard, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Keyboard,
+  ActivityIndicator,
+} from 'react-native';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import colors from '../../Themes/Colors';
@@ -15,11 +22,10 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
     email: '',
     password: '',
   });
-  const isLoading = useSelector(state => state.isLoading)
-  
+  const isLoading = useSelector(state => state.isLoading);
+
   const SubmitButtonSignIn = title => {
     return (
-
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => {
@@ -40,7 +46,6 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
       </TouchableOpacity>
     );
   };
-
 
   return (
     <View style={styles.containerStyle} onTouchStart={() => Keyboard.dismiss()}>
@@ -69,7 +74,7 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
           placeholder: 'Password',
         }}
       />
-      {!isLoading ?  SubmitButtonSignIn('SUBMIT') : <ButtonLoader />}
+      {!isLoading ? SubmitButtonSignIn('SUBMIT') : <ButtonLoader />}
       <View style={{flexDirection: 'row', marginTop: 20}}>
         <Text style={styles.textNewToMotherHostStyle}>New to Motherhost?</Text>
         <TouchableOpacity

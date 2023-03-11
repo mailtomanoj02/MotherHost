@@ -17,8 +17,10 @@ import CountryPicker from 'react-native-country-picker-modal';
 import {getIpAddress} from 'react-native-device-info';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
+import ButtonLoader from '../customUI/ButtonLoader';
 
-const Register = () => {
+const Register = ({navigation}) => {
+  console.log(navigation);
   const [countryCode, setCountryCode] = useState('IN');
   const [callCode, setCallCode] = useState('91');
   const [deviceIp, setDeviceIp] = useState('');
@@ -61,7 +63,7 @@ const Register = () => {
     getIpAddress().then(res => setDeviceIp(res));
   }, []);
 
-  const details = useSelector(state => state.registerData);
+  const isLoading = useSelector(state => state.isLoading);
 
   const SubmitButton = title => {
     const {
@@ -83,23 +85,29 @@ const Register = () => {
         style={styles.buttonContainer}
         onPress={() => {
           dispatch(
-            fetchAPIAction('clientadd.php', {
-              action: 'AddClient', //hardcode
-              firstname: firstname,
-              lastname: lastname,
-              email: email,
-              password2: password2,
-              phonenumber: phoneNumber,
-              companyname: companyName,
-              address1: address1,
-              country: countryCode,
-              city: city,
-              state: state,
-              postcode: postcode,
-              clientip: deviceIp,
-              usertype: platform === 'ios' ? 'IOSApp' : 'AndroidApp',
-              playerid: 'jdshfjdhfk', // give dummy string
-            }),
+            fetchAPIAction(
+              'clientadd.php',
+              {
+                action: 'AddClient', //hardcode
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password2: password2,
+                phonenumber: phoneNumber,
+                companyname: companyName,
+                address1: address1,
+                country: countryCode,
+                city: city,
+                state: state,
+                postcode: postcode,
+                clientip: deviceIp,
+                usertype: platform === 'ios' ? 'IOSApp' : 'AndroidApp',
+                playerid: 'jdshfjdhfk', // give dummy string
+              },
+              true,
+              'POST',
+              navigation,
+            ),
           );
         }}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
@@ -276,7 +284,13 @@ const Register = () => {
             placeholder: 'GST Number',
           }}
         />
-        {SubmitButton('REGISTER')}
+        {!isLoading ? (
+          SubmitButton('REGISTER')
+        ) : (
+          <View style={styles.buttonLoaderViewStyle}>
+            <ButtonLoader />
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -326,5 +340,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
+  buttonLoaderViewStyle: {flexDirection: 'row', justifyContent: 'center'},
 });
 export default Register;

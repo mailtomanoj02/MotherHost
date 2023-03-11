@@ -74,7 +74,7 @@ const LoginAndRegistration = props => {
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Register />
+          <Register navigation={props.navigation} />
         </KeyboardAvoidingView>
       )}
     </View>

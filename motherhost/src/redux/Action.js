@@ -76,6 +76,23 @@ export const fetchAPIAction =
             type: REGISTER_API_DATA_SUCCESS,
             registerData: data,
           });
+          if (data) {
+            if (data.result === 'success') {
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: SCREEN_NAMES.LOGIN_REGISTRATION,
+                    params: {
+                      isFromRegister: false,
+                      isFromLogin: true,
+                    },
+                  },
+                ],
+              });
+              showToastMessage('Registered Successfully!!', Colors.GREEN);
+            }
+          }
         } else if (url === 'gettldprice.php') {
           if (isValidElement(data[0]?.com.register)) {
             dispatch({
@@ -90,26 +107,24 @@ export const fetchAPIAction =
             productData: data,
           });
         } else if (url === 'whois.php') {
-          
           dispatch({
             type: GET_WHOIS_API_DATA_SUCCESS,
             whoisData: data,
           });
         } else if (url === 'gettickets.php') {
-          console.log(JSON.parse(res))
+          console.log(JSON.parse(res));
 
-          if(params.action == 'GetTickets'){
+          if (params.action == 'GetTickets') {
             dispatch({
               type: TICKET_LIST_API_DATA_SUCCESS,
               ticketData: data?.tickets?.ticket,
             });
-          }else{
-                console.log(JSON.parse(res))
-                navigation.goBack();
-          }         
-        }
-        else if(url === 'addinvoicepayment.php'){
+          } else {
+            console.log(JSON.parse(res));
             navigation.goBack();
+          }
+        } else if (url === 'addinvoicepayment.php') {
+          navigation.goBack();
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});
