@@ -99,7 +99,12 @@ const SideMenu = () => {
       params.weburl = WEBPAGE_REDIRECT_LINK.TERMS_CONDITIONS;
     } else if (item.title === 'Chat Support') {
       params.weburl = WEBPAGE_REDIRECT_LINK.CHAT_SUPPORT;
-    } else {
+    } else if (item.title == 'Whatsapp Support'){
+      params.weburl = WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK;
+
+    }
+    
+    else {
     }
     navigation.navigate(item.screen, params);
   };

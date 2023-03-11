@@ -28,8 +28,8 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
 
 export const fetchRazorAPIRequest = async (total, invoiceId) => {
   console.log('called');
-  let userName = 'dummy@rzp_live_NRitIpeIamRiYC';
-  let password = 'dummy@QLNnSQS21jYsT5NQm4EVqeBV';
+  let userName = 'rzp_live_NRitIpeIamRiYC';
+  let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
   let razorParams = {
     amount: total * 100,
     currency: 'INR',
@@ -49,9 +49,10 @@ export const fetchRazorAPIRequest = async (total, invoiceId) => {
       data: razorParams,
     })
     .then(response => {
+      console.log('response ==> ', response);
       return response.data;
     })
     .catch(error => {
-      // console.log(error);
+      console.log(error);
     });
 };

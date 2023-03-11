@@ -14,6 +14,8 @@ import {
   RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   ADD_CART_ARRAY,
   HOSTING_DATA,
+  TICKET_LIST_API_DATA_SUCCESS,
+  TICKET_ADD_API_DATA_SUCCESS
 } from './Type';
 
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
   productData: null,
   cartArrayData: [],
   hostingData: null,
+  ticketData: null
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -107,6 +110,11 @@ export const mainReducer = (state = initialState, action) => {
         ...state,
         error: action.error,
       };
+    case TICKET_LIST_API_DATA_SUCCESS:
+      return {
+        ...state,
+        ticketData: action.ticketData
+      }
     default:
       return state;
   }

@@ -12,6 +12,8 @@ import {
   GET_WHOIS_API_DATA_SUCCESS,
   INVOICE_DETAIL_API_DATA_SUCCESS,
   RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
+  TICKET_LIST_API_DATA_SUCCESS,
+  TICKET_ADD_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -88,11 +90,26 @@ export const fetchAPIAction =
             productData: data,
           });
         } else if (url === 'whois.php') {
-          console.log(data);
+          
           dispatch({
             type: GET_WHOIS_API_DATA_SUCCESS,
             whoisData: data,
           });
+        } else if (url === 'gettickets.php') {
+          console.log(JSON.parse(res))
+
+          if(params.action == 'GetTickets'){
+            dispatch({
+              type: TICKET_LIST_API_DATA_SUCCESS,
+              ticketData: data?.tickets?.ticket,
+            });
+          }else{
+                console.log(JSON.parse(res))
+                navigation.goBack();
+          }         
+        }
+        else if(url === 'addinvoicepayment.php'){
+            navigation.goBack();
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});
