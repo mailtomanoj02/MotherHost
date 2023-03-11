@@ -24,7 +24,7 @@ import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [domainSearch, setDomainSearch] = useState('mathuraihost.com');
+  const [domainSearch, setDomainSearch] = useState('');
   const pricingData = useSelector(state => state.pricingData);
   const loginData = useSelector(state => state.loginData);
   let params = {
@@ -76,7 +76,7 @@ const HomeScreen = () => {
             title={'Tickets'}
             count={ticketCount}
             img={require('../../Images/Home/tickets.png')}
-            screenName={SCREEN_NAMES.HOME_SCREEN}
+            screenName={SCREEN_NAMES.TICKETS_STACK}
             navigation={navigation}
           />
           <HomeUserTrackingView

@@ -1,22 +1,25 @@
-import {StyleSheet, Text, View, TouchableOpacity, Keyboard} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Keyboard, ActivityIndicator} from 'react-native';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import colors from '../../Themes/Colors';
 import PlaceHolderComponent from './PlaceHolderComponent';
-import React, {useRef, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
+import ButtonLoader from '../customUI/ButtonLoader';
 const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
   const dispatch = useDispatch();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginDetails, setLoginDetails] = useState({
-    email: 'kramnath84@gmail.com',
-    password: '$+X5J4W3kmJ%mBG',
+    email: '',
+    password: '',
   });
-
+  const isLoading = useSelector(state => state.isLoading)
+  
   const SubmitButtonSignIn = title => {
     return (
+
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => {
@@ -27,7 +30,7 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
                 email: loginDetails.email,
                 password2: loginDetails.password,
               },
-              false,
+              true,
               'POST',
               navigation,
             ),
@@ -37,6 +40,7 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
       </TouchableOpacity>
     );
   };
+
 
   return (
     <View style={styles.containerStyle} onTouchStart={() => Keyboard.dismiss()}>
@@ -65,7 +69,7 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
           placeholder: 'Password',
         }}
       />
-      {SubmitButtonSignIn('SUBMIT')}
+      {!isLoading ?  SubmitButtonSignIn('SUBMIT') : <ButtonLoader />}
       <View style={{flexDirection: 'row', marginTop: 20}}>
         <Text style={styles.textNewToMotherHostStyle}>New to Motherhost?</Text>
         <TouchableOpacity

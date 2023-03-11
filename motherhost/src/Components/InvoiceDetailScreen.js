@@ -40,9 +40,20 @@ const InvoiceDetailScreen = props => {
     setTotal(total);
   }, [invoiceDetailsList]);
 
+  const invoicePaymentInvoiceAdd = (paymentId) => {
+      params = {
+        'action' : 'AddInvoicePayment',
+        'invoiceid' : invoiceId,
+        transid: paymentId,
+        gateway: 'razorpay',
+        date: Date()
+      }
+
+      dispatch(fetchAPIAction('addinvoicepayment.php', params, 'POST',props.navigation))
+  }
+
   const onTapPay = async () => {
     const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
-    console.log('orderResponse==?', orderResponse?.id);
     let userName = getUserName();
     if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
       let options = {
@@ -63,8 +74,8 @@ const InvoiceDetailScreen = props => {
       console.log(options);
       await RazorpayCheckout.open(options)
         .then(data => {
-          // handle success
           alert(`Success: ${data.razorpay_payment_id}`);
+          invoicePaymentInvoiceAdd(data.razorpay_payment_id)
         })
         .catch(error => {
           // handle failure

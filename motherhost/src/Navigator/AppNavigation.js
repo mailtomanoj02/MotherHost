@@ -18,10 +18,13 @@ import DomainAvailabilityScreen from '../Components/DomainAvailabilityScreen';
 import CouponsScreen from '../Components/CouponsScreen';
 import InvoiceDetailScreen from '../Components/InvoiceDetailScreen';
 import CheckoutPage from '../Components/CheckoutPage';
+import TicketList from '../Components/TicketList.js';
+import AddTicket from '../Components/AddTicket.js';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
 const HoistingStack = createStackNavigator();
+const TicketStack = createStackNavigator();
 
 const DomainStackNavigator = () => {
   return (
@@ -53,6 +56,20 @@ const InvoiceStackNavigator = () => {
   );
 };
 
+const TicketStackNavigator = () => {
+  return (
+    <TicketStack.Navigator screenOptions={{headerShown: false}}>
+      <TicketStack.Screen
+        name={SCREEN_NAMES.TICKETS}
+        component={TicketList}
+      />
+      <TicketStack.Screen 
+        name={SCREEN_NAMES.ADD_TICKETS}
+        component={AddTicket}
+      />
+    </TicketStack.Navigator>
+  );
+};
 const HoistingStackNavigator = () => {
   return (
     <HoistingStack.Navigator screenOptions={{headerShown: false}}>
@@ -104,6 +121,10 @@ const MyDrawer = () => {
       <Drawer.Screen
         name={SCREEN_NAMES.INVOICE_STACK}
         component={InvoiceStackNavigator}
+      />
+      <Drawer.Screen
+        name={SCREEN_NAMES.TICKETS_STACK}
+        component={TicketStackNavigator}
       />
       <Drawer.Screen
         name={SCREEN_NAMES.SERVICE_SCREEN}
