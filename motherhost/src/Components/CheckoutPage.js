@@ -12,31 +12,33 @@ import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {isValidString, isValidElement} from '../utils/Helper';
+import {useDispatch, useSelector} from 'react-redux';
+import {isValidString} from '../utils/Helper';
 import {getPriceBasedOnDomain} from '../utils/Utils';
 import ModalPopUp from './Modal';
+import {ADD_CART_ARRAY} from '../redux/Type';
 
 const CheckoutPage = props => {
+  const dispatch = useDispatch();
   const [deleteIndex, setIndex] = useState(0);
   const [isFocus, setIsFocus] = useState(null);
   let cartArrayState = useSelector(state => state.cartArrayData);
-  const [cartArrayFromSearch, setCartArrayFromSearch] =
-    useState(cartArrayState);
+  const [cartArrayFromSearch, setCartArrayFromSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
   useEffect(() => {
     updateTotalInReceipt();
-    const blurListener = props.navigation.addListener('blur', () => {
-      setCartArrayFromSearch(cartArrayFromSearch);
-
+    const focusListener = props.navigation.addListener('focus', () => {
+      setCartArrayFromSearch(cartArrayState);
     });
-
+    const blurListener = props.navigation.addListener('blur', () => {
+      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
+    });
     return () => {
+      focusListener();
       blurListener();
     };
-
-  }, [cartArrayFromSearch, cartArrayState, props.navigation]);
+  }, [cartArrayFromSearch, cartArrayState, dispatch, props.navigation]);
 
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -254,7 +256,7 @@ const CheckoutPage = props => {
 
   const renderTotalView = () => {
     const tax = ((total * 9) / 100).toFixed(2)
-    const netTotal = parseFloat(total + (2 * tax)).toFixed(2) 
+    const netTotal = parseFloat(total + (2 * tax)).toFixed(2)
     const data = [
       {
         key1: 'Total',
@@ -313,20 +315,40 @@ const CheckoutPage = props => {
       </TouchableOpacity>
     );
   };
+  const cartArrayLength = cartArrayFromSearch.length > 0;
 
   return (
     <View style={{flex: 1}}>
-      <AppBar />
+      <AppBar
+        localCartArray={cartArrayFromSearch}
+        setLocalCartArray={setCartArrayFromSearch}
+      />
       <ScreenTitle title={'Review & Checkout'} />
       <View style={{flex: 1}}>
-        <FlatList data={cartArrayFromSearch} renderItem={renderCartView} />
-        <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
-          {/*{renderOfferView()}*/}
-          {cartArrayFromSearch.length > 0 ? renderTotalView() : null}
-          {cartArrayFromSearch.length > 0
-            ? SubmitButton('Checkout & place Order')
-            : null}
-        </View>
+        {cartArrayLength ? (
+          <>
+            <FlatList data={cartArrayFromSearch} renderItem={renderCartView} />
+            <View
+              style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
+              {/*{renderOfferView()}*/}
+              {cartArrayLength ? renderTotalView() : null}
+              {cartArrayLength > 0
+                ? SubmitButton('Checkout & place Order')
+                : null}
+            </View>
+          </>
+        ) : (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+              style={{
+                fontFamily: FONT_FAMILY.SEMI_BOLD,
+                color: Colors.DARK_GREY,
+              }}>
+              Oops no item available in cart!!!!
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

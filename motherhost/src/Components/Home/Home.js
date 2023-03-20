@@ -22,6 +22,8 @@ import {checkIsValidDomain, isValidElement} from '../../utils/Helper';
 import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
+  let cartArrayState = useSelector(state => state.cartArrayData);
+  console.log('cartArrayState==>',cartArrayState);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [domainSearch, setDomainSearch] = useState('');

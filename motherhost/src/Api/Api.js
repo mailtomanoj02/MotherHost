@@ -3,7 +3,6 @@ import {Buffer} from 'buffer';
 let BASE_URL = 'https://api.motherhost.com/app/';
 
 export const fetchAPIRequest = (url, params, method = 'POST') => {
-  console.log('API Called ', url);
   let header = {
     'Content-Type': 'application/json',
   };
@@ -16,18 +15,15 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
         data: params,
       })
       .then(response => {
-        // console.log('response == ', response)
         resolve(response);
       })
       .catch(error => {
-        // console.log('error == ', error)
         reject(error);
       });
   });
 };
 
 export const fetchRazorAPIRequest = async (total, invoiceId) => {
-  console.log('called');
   let userName = 'rzp_live_NRitIpeIamRiYC';
   let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
   let razorParams = {
@@ -49,10 +45,7 @@ export const fetchRazorAPIRequest = async (total, invoiceId) => {
       data: razorParams,
     })
     .then(response => {
-      console.log('response ==> ', response);
       return response.data;
     })
-    .catch(error => {
-      console.log(error);
-    });
+    .catch(error => {});
 };

@@ -59,7 +59,6 @@ const LoginAndRegistration = props => {
       </View>
     );
   };
-  console.log(isFromLogin);
   return (
     <View style={{flex: 1}}>
       <AppBar />

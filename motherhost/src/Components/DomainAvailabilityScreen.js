@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
@@ -18,7 +18,6 @@ const DomainAvailabilityScreen = props => {
   const [cartArray, setCartArray] = useState(cartArrayState);
   const {domainName} = props.route.params;
   const addToCart = () => {
-      console.log(cartArrayState);
     if (cartArrayState?.some(item => item.pid === '')) {
       showToastMessage('Item alreay in cart', Colors.RED);
     } else {

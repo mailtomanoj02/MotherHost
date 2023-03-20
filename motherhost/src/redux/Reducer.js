@@ -15,7 +15,7 @@ import {
   ADD_CART_ARRAY,
   HOSTING_DATA,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS
+  TICKET_ADD_API_DATA_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -30,7 +30,7 @@ const initialState = {
   productData: null,
   cartArrayData: [],
   hostingData: null,
-  ticketData: null
+  ticketData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -113,8 +113,8 @@ export const mainReducer = (state = initialState, action) => {
     case TICKET_LIST_API_DATA_SUCCESS:
       return {
         ...state,
-        ticketData: action.ticketData
-      }
+        ticketData: action.ticketData,
+      };
     default:
       return state;
   }

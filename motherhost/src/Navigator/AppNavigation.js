@@ -59,11 +59,8 @@ const InvoiceStackNavigator = () => {
 const TicketStackNavigator = () => {
   return (
     <TicketStack.Navigator screenOptions={{headerShown: false}}>
+      <TicketStack.Screen name={SCREEN_NAMES.TICKETS} component={TicketList} />
       <TicketStack.Screen
-        name={SCREEN_NAMES.TICKETS}
-        component={TicketList}
-      />
-      <TicketStack.Screen 
         name={SCREEN_NAMES.ADD_TICKETS}
         component={AddTicket}
       />

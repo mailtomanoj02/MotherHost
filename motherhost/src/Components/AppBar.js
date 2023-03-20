@@ -5,8 +5,13 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
 import {SCREEN_NAMES} from '../Config/Constant';
 import {isUserLoggedIn} from '../utils/Utils';
+import ModalPopUp from './Modal';
+import {useDispatch, useSelector} from 'react-redux';
+import {ADD_CART_ARRAY} from '../redux/Type';
 
 const AppBar = props => {
+  const dispatch = useDispatch();
+  let cartArrayState = useSelector(state => state.cartArrayData);
   let imageBack = props.image
     ? props.image
     : require('./../Images/AppBar/left-arrow.png');
@@ -14,16 +19,31 @@ const AppBar = props => {
   const route = useRoute();
   let screenName = route.name;
   const [showWallet, setShowWallet] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [showMinusCart, setShowMinusCart] = useState(false);
   useEffect(() => {
-    if (screenName === 'Wallet') {
+    if (screenName === 'Wallet' || screenName === 'Checkout') {
       const unsubscribe = navigation.addListener('focus', () => {
-        setShowWallet(false);
+        if (screenName === 'Wallet') {
+          setShowWallet(false);
+        } else if (screenName === 'Checkout') {
+          setShowMinusCart(true);
+        }
       });
       return () => {
         unsubscribe();
       };
     }
   }, [navigation, screenName]);
+  const handleClose = () => {
+    setShowModal(false);
+  };
+  const handleConfirm = () => {
+    // props.setLocalCartArray([]);
+    // navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
+    // setShowModal(false);
+    // console.log(cartArrayState);
+  };
   return (
     <SafeAreaView>
       <View style={styles.containerStyle}>
@@ -58,7 +78,13 @@ const AppBar = props => {
           <TouchableOpacity
             style={styles.walletCartButtonStyle}
             onPress={() =>
-              navigation.navigate(SCREEN_NAMES.CHECKOUT, {isFromCartIcon: true})
+              showMinusCart
+                ? props.localCartArray.length > 0
+                  ? setShowModal(true)
+                  : null
+                : navigation.navigate(SCREEN_NAMES.CHECKOUT, {
+                    isFromCartIcon: true,
+                  })
             }>
             <Image
               source={require('./../Images/AppBar/shopping-cart.png')}
@@ -66,6 +92,12 @@ const AppBar = props => {
             />
           </TouchableOpacity>
         </View>
+        <ModalPopUp
+          visible={showModal}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+          title={'Do you want to clear item from the cart'}
+        />
       </View>
     </SafeAreaView>
   );
