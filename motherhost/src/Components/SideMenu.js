@@ -7,6 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
+  Linking,
+  Share
 } from 'react-native';
 import {
   FONT_FAMILY,
@@ -88,6 +90,26 @@ const SideMenu = () => {
       screen: SCREEN_NAMES.WEBVIEW_SCREEN,
     },
   ];
+  const onShare = async () => {
+    try {
+      const url = '\n\niOS: https://apps.apple.com/us/app/motherhost/id1577482366 \n Android: https://play.google.com/store/apps/details?id=com.motherhost.webhosting'
+      const result = await Share.share({
+        message:
+          'Hello, Checkout this reliable Hosting Provider in India.' + url,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   const onHandleItemClicked = item => {
     let params = {};
@@ -100,10 +122,13 @@ const SideMenu = () => {
     } else if (item.title === 'Chat Support') {
       params.weburl = WEBPAGE_REDIRECT_LINK.CHAT_SUPPORT;
     } else if (item.title == 'Whatsapp Support'){
-      params.weburl = WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK;
-
+      Linking.openURL(WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK)
+      return;
     }
-    
+    else if (item.title == 'Share'){
+      onShare();
+      return;
+    }
     else {
     }
     navigation.navigate(item.screen, params);

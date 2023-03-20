@@ -5,7 +5,6 @@ import {
   API_DATA_FAILURE,
   SERVICE_API_DATA_SUCCESS,
   LOGIN_API_DATA_SUCCESS,
-  REGISTER_API_DATA_SUCCESS,
   RESPONSE_API_DATA,
   GET_PRICING_API_DATA_SUCCESS,
   GET_PRODUCTS_API_DATA_SUCCESS,
@@ -28,14 +27,16 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (url, params, loader = true, method = 'POST', navigation = null) =>
+    (url, params, loader = true, method = 'POST', navigation = null) =>
   dispatch => {
+    
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
+        console.log(data);
         if (url === 'getinvoices.php') {
           if (params.action === 'GetInvoices') {
             dispatch({
@@ -112,15 +113,13 @@ export const fetchAPIAction =
             whoisData: data,
           });
         } else if (url === 'gettickets.php') {
-          console.log(JSON.parse(res));
-
-          if (params.action == 'GetTickets') {
+          if (params.action === 'GetTickets') {
             dispatch({
               type: TICKET_LIST_API_DATA_SUCCESS,
               ticketData: data?.tickets?.ticket,
             });
           } else {
-            console.log(JSON.parse(res));
+            showToastMessage('Ticket Successfully Created', Colors.GREEN);
             navigation.goBack();
           }
         } else if (url === 'addinvoicepayment.php') {

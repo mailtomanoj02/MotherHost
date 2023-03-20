@@ -18,10 +18,7 @@ const DomainAvailabilityScreen = props => {
   const [cartArray, setCartArray] = useState(cartArrayState);
   const {domainName} = props.route.params;
   const addToCart = () => {
-    console.log('From Availability screen', cartArrayState);
-    // const hasEmptyPid = cartArrayState;
-    // cartArrayState?.some(item => item.pid === '');
-    // console.log(hasEmptyPid)
+      console.log(cartArrayState);
     if (cartArrayState?.some(item => item.pid === '')) {
       showToastMessage('Item alreay in cart', Colors.RED);
     } else {

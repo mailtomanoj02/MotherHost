@@ -4,6 +4,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Modal,
+  Image
 } from 'react-native';
 import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
@@ -25,6 +27,9 @@ const InvoiceDetailScreen = props => {
   let status = invoiceDetailData?.status;
   let invoiceDetailsList = invoiceDetailData?.items?.item;
   const [total, setTotal] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [paymentType, setPaymentType] = useState('');
+
   let params = {
     action: 'GetInvoice',
     invoiceid: invoiceId,
@@ -62,7 +67,7 @@ const InvoiceDetailScreen = props => {
         currency: 'INR',
         key: 'rzp_live_NRitIpeIamRiYC', // Your api key
         amount: total * 100,
-        name: userName,
+        name: 'Mothersoft Technologies',
         order_id: orderResponse?.id,
         prefill: {
           email: loginData?.email,
@@ -74,12 +79,12 @@ const InvoiceDetailScreen = props => {
       console.log(options);
       await RazorpayCheckout.open(options)
         .then(data => {
-          alert(`Success: ${data.razorpay_payment_id}`);
+          setPaymentType('S')
           invoicePaymentInvoiceAdd(data.razorpay_payment_id)
         })
         .catch(error => {
-          // handle failure
-          alert(`Error: ${error.code} | ${error.description}`);
+          setPaymentType('F')
+          setModalVisible(true)
         });
     } else {
       showToastMessage('Oops! payment failed try again later.', Colors.RED);
@@ -116,6 +121,42 @@ const InvoiceDetailScreen = props => {
       </View>
     );
   };
+
+  const paymentStatusModel = () => {
+    return(
+    <Modal
+    animationType="slide"
+    transparent={true}
+    visible={modalVisible}
+    onRequestClose={() => {
+      setModalVisible(false);
+    }}>
+       <TouchableOpacity 
+            style={{flex: 1}} 
+            activeOpacity={1} 
+            onPressOut={() => {setModalVisible(false)}}>
+    <View style={{flex: 1, backgroundColor: Colors.BLUR_BLACK, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{ width: 300, height: 200, backgroundColor: paymentType === 'S' ? Colors.GREEN : Colors.RED, borderRadius: 10,}}>
+      <View style={ {flex: 1, margin: 5, backgroundColor: Colors.backgroundColor, borderRadius: 10, alignItems: 'center', borderColor: paymentType === 'S' ? Colors.GREEN : Colors.RED, borderWidth: 1}}>
+      <Image
+          style={{
+            width: 124,
+            height: 124,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          source={paymentType === 'S' ? require( '../Images/Common/patyment_success.png') : require( '../Images/Common/payment_failed.png')}
+        />
+        <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD, fontSize: 20, color: paymentType === 'S' ? Colors.GREEN : Colors.RED}} >
+          {paymentType === 'S' ? `Payment Successful!` : `Payment Failed!`}
+          </Text>
+      </View>
+      </View>
+    </View>
+    </TouchableOpacity>
+  </Modal>
+    )
+  }
 
   const renderDetailView = () => {
     return (
@@ -194,6 +235,7 @@ const InvoiceDetailScreen = props => {
     <View style={{flex: 1}}>
       <AppBar />
       {renderDetailView()}
+      {paymentStatusModel()}
     </View>
   );
 };

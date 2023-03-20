@@ -59,7 +59,7 @@ const HostingScreen = props => {
         </View>
         <Text style={styles.descriptionTextStyle}>{description}</Text>
         <View style={styles.amountContainerStyle}>
-          <Text style={styles.amountTextStyle}>{`$ ${itemPrice}`}</Text>
+          <Text style={styles.amountTextStyle}>{`₹${itemPrice}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
           {renderButton(pid, itemPriceData, description, title)}
         </View>

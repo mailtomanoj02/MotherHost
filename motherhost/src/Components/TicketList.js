@@ -69,7 +69,7 @@ const TicketList = (props) => {
             )}
             <TouchableOpacity
              onPress={() =>
-                props.navigation.navigate(SCREEN_NAMES.ADD_TICKETS)}
+                props.navigation.navigate(SCREEN_NAMES.ADD_TICKETS, props.navigation)}
             >
                 <View style={styles.addTicketView}>
                     <SafeAreaView> 

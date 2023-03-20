@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 
 import FlashMessageManager from './FlashMessageManager';
 import FlashMessageWrapper, {styleWithInset} from './FlashMessageWrapper';
+import Colors from '../../../Themes/Colors';
+import { FONT_FAMILY } from '../../../Config/Constant';
 
 /**
  * MessageComponent `minHeight` property used mainly in vertical transitions
@@ -160,7 +162,7 @@ export const renderFlashMessageIcon = (
       return (
         <Image
           style={[styles.flashIcon, style]}
-          source={require('./icons/fm_icon_success.png')}
+          source={require('./icons/fm_done.png')}
           {...customProps}
         />
       );
@@ -184,7 +186,7 @@ export const renderFlashMessageIcon = (
       return (
         <Image
           style={[styles.flashIcon, style]}
-          source={require('./icons/fm_icon_danger.png')}
+          source={require('./icons/fm_error.png')}
           {...customProps}
         />
       );
@@ -667,9 +669,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 99,
+    margin: 10
   },
   rootTop: {
-    top: 60,
+    top: 100,
   },
   rootBottom: {
     bottom: 0,
@@ -713,6 +716,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: '#fff',
+    fontFamily: FONT_FAMILY.REGULAR
   },
   flashTitle: {
     fontSize: 16,
