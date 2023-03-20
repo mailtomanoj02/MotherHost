@@ -291,14 +291,16 @@ const HomeScreen = () => {
             flexDirection: 'row',
             backgroundColor: 'white',
             marginBottom: 8,
-            marginHorizontal: 15,
-            borderRadius: 5,
+            marginHorizontal: 10,
+            borderRadius: 8,
           }}>
           <TextInput
             style={{
-              height: 30,
+              height: 40,
               flex: 0.9,
               marginHorizontal: 10,
+              fontFamily: FONT_FAMILY.REGULAR,
+              fontSize: 14
             }}
             placeholder={'Search your domain. ex: montherhost.com'}
             onChangeText={value => setDomainSearch(value)}
@@ -311,8 +313,8 @@ const HomeScreen = () => {
               flex: 0.1,
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: 5,
-              height: 30,
+              borderRadius: 8,
+              height: 40,
             }}
             onPress={onPress}>
             <Image

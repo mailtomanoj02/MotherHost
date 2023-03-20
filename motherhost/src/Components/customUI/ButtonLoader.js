@@ -12,6 +12,7 @@ const ButtonLoader = () => {
         borderRadius: 20,
         alignItems: 'center',
         marginTop: 20,
+        alignSelf: 'center'
       }}>
       <ActivityIndicator
         style={{justifyContent: 'center', flex: 1}}

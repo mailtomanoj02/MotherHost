@@ -11,12 +11,14 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigation from '../motherhost/src/Navigator/AppNavigation.js';
 import {Persistor, Store} from './src/redux/store';
 import {Provider, useSelector} from 'react-redux';
-import Toast from './src/Components/Toast';
+import {useEffect} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from './src/Components/customUI/FlashMessageComponent';
 import {renderFlashMessageIcon} from './src/Components/customUI/FlashMessageComponent/FlashMessage';
 import styles from './src/Components/customUI/FlashMessageComponent/FlashMessageStyle';
+
 const App = () => {
+
   return (
     <SafeAreaProvider>
       <Provider store={Store}>

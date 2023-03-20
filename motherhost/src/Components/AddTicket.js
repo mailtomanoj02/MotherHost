@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableWithoutFeedback, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView,Keyboard } from 'react-native'
 import { FONT_FAMILY } from '../Config/Constant';
 import AppBar from './AppBar';
@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAPIAction } from '../redux/Action';
 import Colors from '../Themes/Colors';
 import { showToastMessage } from "./customUI/FlashMessageComponent/Helper";
-import { color } from "react-native-reanimated";
-
+import ButtonLoader from "./customUI/ButtonLoader"
+import { useNavigation } from "@react-navigation/native";
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -19,11 +19,13 @@ const AddTicket = (props) => {
     const dispatch = useDispatch();
     const [ subject, setSubject ] = useState('')
     const [ description, setDescription ] = useState('')
-
+    const isLoading = useSelector(state => state.isLoading);
+    const nativgation = useNavigation()
     const handleCreateTicket = () => {
 
-        if(subject === '' && description === ''){
+        if(subject === '' || description === ''){
             showToastMessage('Fields should not be empty.', Colors.RED)
+            return
         }
         let params = {
             action: 'OpenTicket',
@@ -32,7 +34,7 @@ const AddTicket = (props) => {
             message: description,
             subject: subject
         };
-       dispatch(fetchAPIAction('gettickets.php', params,false,'POST',props.navigation));
+       dispatch(fetchAPIAction('gettickets.php', params,true,'POST',nativgation));
        
     }
 
@@ -41,15 +43,15 @@ const AddTicket = (props) => {
                            <View style={styles.container}>
             <AppBar />
             <ScreenTitle title="Create Ticket" />
-            <View style = {{backgroundColor: Colors.white, height: 300, margin: 10, borderColor: Colors.GreyBorderWhiteBG, borderWidth: 0.5, borderRadius: 8, fontFamily: FONT_FAMILY.REGULAR}}>
+            <View style = {{backgroundColor: Colors.white, height: 300, margin: 10, borderColor: Colors.GreyBorderWhiteBG, borderWidth: 0.5, borderRadius: 8, fontFamily: FONT_FAMILY.REGULAR, fontSize: 14}}>
                 <TextInput
-                    style = {{flex: 0.2, margin: 10, borderBottomColor: Colors.GreyBorderWhiteBG, borderBottomWidth: 0.5, ontFamily: FONT_FAMILY.REGULAR}}
+                    style = {{flex: 0.2, margin: 10, borderBottomColor: Colors.GreyBorderWhiteBG, borderBottomWidth: 0.5, FontFamily: FONT_FAMILY.REGULAR, fontSize: 14}}
                     value={subject}
                     onChangeText={(text) => setSubject(text)}
                     placeholder="Subject"
                 ></TextInput>
                 <TextInput
-                    style = {{flex: 0.8, margin: 10}}
+                    style = {{flex: 0.8, margin: 10, FontFamily: FONT_FAMILY.REGULAR}}
                     onChangeText={(text) => setDescription(text)}
                     value={description}
                     placeholder="Description"
@@ -57,7 +59,9 @@ const AddTicket = (props) => {
                 ></TextInput>
                 
             </View>
-            <TouchableOpacity
+            {isLoading ? 
+                <ButtonLoader />
+            : <TouchableOpacity
              style= {{margin: 10, borderRadius: 10}}
              onPress={handleCreateTicket}
             >
@@ -66,7 +70,7 @@ const AddTicket = (props) => {
                     <Text style={styles.addTicketTxt}>CREATE TICKET</Text>
                     </SafeAreaView> 
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>} 
             </View>
         </HideKeyboard>
         );  

@@ -13,7 +13,7 @@ import {FONT_FAMILY} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {isValidString} from '../utils/Helper';
+import {isValidString, isValidElement} from '../utils/Helper';
 import {getPriceBasedOnDomain} from '../utils/Utils';
 import ModalPopUp from './Modal';
 
@@ -24,14 +24,18 @@ const CheckoutPage = props => {
   const [cartArrayFromSearch, setCartArrayFromSearch] =
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
+  const [total, setTotalValue] = useState(0.0);
   useEffect(() => {
+    updateTotalInReceipt();
     const blurListener = props.navigation.addListener('blur', () => {
       setCartArrayFromSearch(cartArrayFromSearch);
+
     });
 
     return () => {
       blurListener();
     };
+
   }, [cartArrayFromSearch, cartArrayState, props.navigation]);
 
   const changeArrayValue = (index, value, priceData = null) => {
@@ -74,6 +78,19 @@ const CheckoutPage = props => {
       return updatedCartArray;
     });
   };
+  const updateTotalInReceipt = () =>{
+      let totalPrice = 0.0;
+      cartArrayFromSearch.map((item) => {
+        console.log(item);
+      if(isValidElement(item?.price)){
+        totalPrice = totalPrice + parseFloat(item?.price)
+      }
+      if(isValidElement(item?.selectedPrice?.value)){
+        totalPrice = totalPrice + parseFloat(item?.selectedPrice?.value)
+      }
+  });
+  setTotalValue(totalPrice.toFixed(2));
+  }
   const plusMinusButtonView = (item, index) => {
     let qty = item.regperiod;
     let priceData = getPriceBasedOnDomain(item.domain);
@@ -236,20 +253,22 @@ const CheckoutPage = props => {
   };
 
   const renderTotalView = () => {
+    const tax = ((total * 9) / 100).toFixed(2)
+    const netTotal = parseFloat(total + (2 * tax)).toFixed(2) 
     const data = [
       {
         key1: 'Total',
-        value1: '989.0',
+        value1: `₹ ${total}`,
       },
       {
         key1: 'Tax (CGST) 9%',
-        value1: '$ 2345.98',
+        value1: `₹ ${tax}`,
         key2: 'Tax (SGST) 9%',
-        value2: '$ 2345.98',
+        value2: `₹ ${tax}`,
       },
       {
         key1: 'Net. Total',
-        value1: '$ 2345.98',
+        value1: `₹ ${netTotal}`,
       },
     ];
     return (
