@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 20,
-    shadowColor: Colors.headerBlue,
+    shadowColor: Colors.MEDIUM_GREY,
   },
   titleViewStyle: {
     justifyContent: 'center',
@@ -54,10 +54,12 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     paddingTop: 5,
     textAlign: 'center',
+    color: Colors.BLACK,
   },
   priceTxtStyle: {
     fontSize: 12,
     fontFamily: FONT_FAMILY.REGULAR,
+    color: Colors.BLACK,
   },
 });
 

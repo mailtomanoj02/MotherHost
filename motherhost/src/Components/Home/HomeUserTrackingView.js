@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.headerBlue,
     padding: 20,
     backgroundColor: Colors.white,
-    shadowColor: Colors.GreyBorderWhiteBG,
     shadowOffset: {width: -2, height: 5},
     shadowRadius: 3,
     elevation: 20,
     shadowOpacity: 0.2,
+    shadowColor: Colors.MEDIUM_GREY,
   },
   titleViewStyle: {
     height: 70,

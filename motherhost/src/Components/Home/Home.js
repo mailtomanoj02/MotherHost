@@ -23,7 +23,7 @@ import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
   let cartArrayState = useSelector(state => state.cartArrayData);
-  console.log('cartArrayState==>',cartArrayState);
+  console.log('cartArrayState==>', cartArrayState);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [domainSearch, setDomainSearch] = useState('');
@@ -287,24 +287,11 @@ const HomeScreen = () => {
     };
     return (
       <View style={{backgroundColor: Colors.headerBlue}}>
-        <View
-          style={{
-            alignItems: 'center',
-            flexDirection: 'row',
-            backgroundColor: 'white',
-            marginBottom: 8,
-            marginHorizontal: 10,
-            borderRadius: 8,
-          }}>
+        <View style={homeStyle.searchViewStyle}>
           <TextInput
-            style={{
-              height: 40,
-              flex: 0.9,
-              marginHorizontal: 10,
-              fontFamily: FONT_FAMILY.REGULAR,
-              fontSize: 14
-            }}
+            style={homeStyle.searchInputTextStyle}
             placeholder={'Search your domain. ex: montherhost.com'}
+            placeholderTextColor={Colors.DARK_GREY}
             onChangeText={value => setDomainSearch(value)}
             value={domainSearch}
             autoCapitalize={false}
@@ -389,6 +376,21 @@ const homeStyle = StyleSheet.create({
     height: 30,
     width: 30,
     resizeMode: 'contain',
+  },
+  searchViewStyle: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    marginBottom: 8,
+    marginHorizontal: 10,
+    borderRadius: 8,
+  },
+  searchInputTextStyle: {
+    height: 40,
+    flex: 0.9,
+    marginHorizontal: 10,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: 14,
   },
 });
 

@@ -12,9 +12,9 @@ export const showToastMessage = (message, color) => {
       backgroundColor: color,
       color: Colors.white,
       duration: 2000,
-      style: { borderRadius: 8 },
+      style: {borderRadius: 8},
       titleStyle: styles.welcomeTextStyle,
-      icon: {icon: color === Colors.RED ? 'danger'  : 'success'},
+      icon: {icon: color === Colors.RED ? 'danger' : 'success'},
     };
     showMessage(flashMessageObject);
   }

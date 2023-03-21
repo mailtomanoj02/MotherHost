@@ -12,7 +12,7 @@ import {
   INVOICE_DETAIL_API_DATA_SUCCESS,
   RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS,
+  TICKET_ADD_API_DATA_SUCCESS, REGISTER_API_DATA_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -27,9 +27,8 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-    (url, params, loader = true, method = 'POST', navigation = null) =>
+  (url, params, loader = true, method = 'POST', navigation = null) =>
   dispatch => {
-    
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }

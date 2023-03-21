@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 20,
-    shadowColor: Colors.headerBlue,
+    shadowColor: Colors.MEDIUM_GREY,
   },
   imgStyle: {
     flex: 7,

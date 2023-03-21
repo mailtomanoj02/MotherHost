@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import FlashMessageManager from './FlashMessageManager';
 import FlashMessageWrapper, {styleWithInset} from './FlashMessageWrapper';
 import Colors from '../../../Themes/Colors';
-import { FONT_FAMILY } from '../../../Config/Constant';
+import {FONT_FAMILY} from '../../../Config/Constant';
 
 /**
  * MessageComponent `minHeight` property used mainly in vertical transitions
@@ -669,10 +669,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 99,
-    margin: 10
+    margin: 10,
   },
   rootTop: {
-    top: 100,
+    top: 20,
   },
   rootBottom: {
     bottom: 0,
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: '#fff',
-    fontFamily: FONT_FAMILY.REGULAR
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   flashTitle: {
     fontSize: 16,

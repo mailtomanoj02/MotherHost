@@ -11,16 +11,12 @@ import {
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
-import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
+import {FONT_FAMILY} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
 import DomainAvailableView from '../DomainAvailableView';
-import {
-  ADD_CART_ARRAY,
-  GET_WHOIS_API_DATA_SUCCESS,
-  LOGIN_API_DATA_SUCCESS,
-} from '../../redux/Type';
+import {ADD_CART_ARRAY, GET_WHOIS_API_DATA_SUCCESS} from '../../redux/Type';
 import {getPriceBasedOnDomain, getUserId} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 
@@ -28,9 +24,9 @@ const DomainNameScreen = props => {
   const dispatch = useDispatch();
   let whoisData = useSelector(state => state.whoisData);
   const isLoading = useSelector(state => state.isLoading);
-  const [option1Selected, setOption1Selected] = useState(true);
-  const [option2Selected, setOption2Selected] = useState(false);
-  const [option3Selected, setOption3Selected] = useState(false);
+  const [registerSelected, setRegisterSelected] = useState(true);
+  const [transferSelected, setTransferSelected] = useState(false);
+  const [updateSelected, setUpdateSelected] = useState(false);
   const [show, setShow] = useState(false);
   const [extension, setExtension] = useState({
     register: 'com',
@@ -97,32 +93,32 @@ const DomainNameScreen = props => {
 
   const onPressOption1 = () => {
     setEligible('');
-    setOption1Selected(true);
-    setOption2Selected(false);
-    setOption3Selected(false);
+    setRegisterSelected(true);
+    setTransferSelected(false);
+    setUpdateSelected(false);
   };
 
   const onPressOption2 = () => {
     setShow(false);
     setEligible('');
-    setOption1Selected(false);
-    setOption2Selected(true);
-    setOption3Selected(false);
+    setRegisterSelected(false);
+    setTransferSelected(true);
+    setUpdateSelected(false);
   };
 
   const onPressOption3 = () => {
     setShow(false);
     setEligible('');
-    setOption1Selected(false);
-    setOption2Selected(false);
-    setOption3Selected(true);
+    setRegisterSelected(false);
+    setTransferSelected(false);
+    setUpdateSelected(true);
   };
 
   const getDomain = () => {
     let domain;
-    if (option1Selected) {
+    if (registerSelected) {
       domain = domainName.register + '.' + extension.register;
-    } else if (option2Selected) {
+    } else if (transferSelected) {
       domain = domainName.transfer + '.' + extension.transfer;
     } else {
       domain = domainName.update + '.' + extension.update;
@@ -213,18 +209,18 @@ const DomainNameScreen = props => {
         onPress={
           isCheckout
             ? addToCart
-            : option1Selected
+            : registerSelected
             ? onPressRegister
-            : option2Selected
+            : transferSelected
             ? onPressTransfer
             : onPressUpdate
         }>
         <Text style={styles.buttonTextStyle}>
           {isCheckout
             ? 'CHECKOUT'
-            : option1Selected
+            : registerSelected
             ? 'REGISTER DOMAIN'
-            : option2Selected
+            : transferSelected
             ? 'TRANSFER DOMAIN'
             : 'USE THIS DOMAIN'}
         </Text>
@@ -269,6 +265,7 @@ const DomainNameScreen = props => {
             <TextInput
               style={styles.textInputStyle}
               placeholder={'example'}
+              placeholderTextColor={Colors.PLACEHOLDER_GREY}
               autoCapitalize={'none'}
               value={
                 type === 'register'
@@ -290,6 +287,11 @@ const DomainNameScreen = props => {
             <Dropdown
               style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
               selectedTextStyle={styles.selectedTextStyle}
+              itemTextStyle={{
+                color: Colors.BLACK,
+                fontFamily: FONT_FAMILY.REGULAR,
+                fontSize: 14,
+              }}
               data={data}
               maxHeight={300}
               labelField="label"
@@ -337,17 +339,17 @@ const DomainNameScreen = props => {
         clientid: getUserId(),
         paymentMethod: 'razorpay',
         domain: domainSearch,
-        domaintype: option1Selected
+        domaintype: registerSelected
           ? 'register'
-          : option2Selected
+          : transferSelected
           ? 'transfer'
           : 'update',
         pid: pid,
         eppcode: '',
         regperiod: 1,
         billingcycle: 'monthly',
-        initialPrice: option3Selected ? 0 : getPriceBasedOnDomain(domainSearch),
-        price: option3Selected ? 0 : getPriceBasedOnDomain(domainSearch),
+        initialPrice: updateSelected ? 0 : getPriceBasedOnDomain(domainSearch),
+        price: updateSelected ? 0 : getPriceBasedOnDomain(domainSearch),
         descriptionData: {
           title: title,
           data: description,
@@ -371,34 +373,34 @@ const DomainNameScreen = props => {
       <View style={styles.totalContainerStyle}>
         {renderDescription(
           'Register a new domain',
-          option1Selected,
+          registerSelected,
           onPressOption1,
         )}
-        {renderTextInput(option1Selected, 'register')}
+        {renderTextInput(registerSelected, 'register')}
         {renderDescription(
           'Transfer your domain from another registrar',
-          option2Selected,
+          transferSelected,
           onPressOption2,
         )}
-        {renderTextInput(option2Selected, 'transfer')}
+        {renderTextInput(transferSelected, 'transfer')}
         {renderDescription(
           'I will use my existing domain and update my name servers',
-          option3Selected,
+          updateSelected,
           onPressOption3,
         )}
-        {renderTextInput(option3Selected, 'update')}
+        {renderTextInput(updateSelected, 'update')}
       </View>
       {SubmitButton()}
-      {option1Selected && show && !isLoading ? (
+      {registerSelected && show && !isLoading ? (
         <DomainAvailableView addToCart={addToCart} domainName={domainSearch} />
-      ) : isLoading && option1Selected ? (
+      ) : isLoading && registerSelected ? (
         <ActivityIndicator size={'large'} style={{marginTop: 30}} />
       ) : null}
-      {option2Selected && eligible === 'available' && !isLoading ? (
+      {transferSelected && eligible === 'available' && !isLoading ? (
         domainAvailableView()
-      ) : option2Selected && eligible === 'unAvailable' && !isLoading ? (
+      ) : transferSelected && eligible === 'unAvailable' && !isLoading ? (
         domainUnAvailableView()
-      ) : isLoading && option2Selected ? (
+      ) : isLoading && transferSelected ? (
         <ActivityIndicator size={'large'} style={{marginTop: 30}} />
       ) : null}
       <View style={styles.submitButtonContainer}>{SubmitButton(true)}</View>
@@ -444,9 +446,10 @@ const styles = StyleSheet.create({
     fontSize: 8,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 15,
     marginLeft: 5,
     fontFamily: FONT_FAMILY.REGULAR,
+    color: Colors.BLACK,
   },
   iconStyle: {
     width: 20,
@@ -480,6 +483,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
+    color: Colors.BLACK,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -520,7 +524,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.PLACEHOLDER_GREY,
     borderRadius: 5,
     padding: 4,
-    fontSize: 15,
+    fontSize: 14,
+    color: Colors.BLACK,
+    fontFamily: FONT_FAMILY.REGULAR,
   },
   submitButtonContainer: {
     flex: 1,

@@ -13,7 +13,7 @@ const WebviewScreen = props => {
   }, [props.route.params.weburl]);
   const handleLoad = () => {
     setIsLoading(false);
-  }
+  };
   return (
     <View style={{flex: 1}}>
       <AppBar />
@@ -23,15 +23,14 @@ const WebviewScreen = props => {
         }}
         onLoad={handleLoad}
       />
-       {isLoading && (
-    <View style={styles.loader}>
-      <ActivityIndicator size='large' color={Colors.headerBlue} />
-    </View>
-  )}
+      {isLoading && (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color={Colors.headerBlue} />
+        </View>
+      )}
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   loader: {
@@ -42,6 +41,6 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 export default WebviewScreen;
