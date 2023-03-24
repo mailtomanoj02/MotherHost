@@ -35,7 +35,6 @@ export const fetchAPIAction =
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
-        console.log(data);
         if (url === 'getinvoices.php') {
           if (params.action === 'GetInvoices') {
             dispatch({

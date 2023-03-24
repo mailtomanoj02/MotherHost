@@ -26,9 +26,9 @@ const HomeScreen = () => {
   console.log('cartArrayState==>', cartArrayState);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [domainSearch, setDomainSearch] = useState('');
-  const pricingData = useSelector(state => state.pricingData);
+  const [domainNameFromSearch, setDomainNameFromSearch] = useState('');
   const loginData = useSelector(state => state.loginData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   let params = {
     action: 'GetTLDPricing',
     tld: 'com,net,in,co.in,uk,us,org',
@@ -47,7 +47,7 @@ const HomeScreen = () => {
   };
   useEffect(() => {
     dispatch(fetchAPIAction('gettldprice.php', params));
-  }, []);
+  }, [dispatch, params]);
   const userTrackingView = () => {
     let loginList = isValidElement(loginData) ? loginData : '';
     let serviceCount = loginList?.stats?.productsnumactive;
@@ -272,15 +272,15 @@ const HomeScreen = () => {
   const searchView = () => {
     let params = {
       action: 'DomainWhois',
-      domain: domainSearch,
+      domain: domainNameFromSearch.replace(/ /g, ''),
     };
     const onPress = () => {
-      if (checkIsValidDomain(domainSearch)) {
+      if (checkIsValidDomain(domainNameFromSearch)) {
         dispatch(fetchAPIAction('whois.php', params));
         navigation.navigate(SCREEN_NAMES.DOMAIN_AVAILABILITY, {
-          domainName: domainSearch,
+          domainName: domainNameFromSearch,
         });
-        setDomainSearch('');
+        setDomainNameFromSearch('');
       } else {
         showToastMessage('Please enter a valid domain', Colors.RED);
       }
@@ -292,8 +292,8 @@ const HomeScreen = () => {
             style={homeStyle.searchInputTextStyle}
             placeholder={'Search your domain. ex: montherhost.com'}
             placeholderTextColor={Colors.DARK_GREY}
-            onChangeText={value => setDomainSearch(value)}
-            value={domainSearch}
+            onChangeText={value => setDomainNameFromSearch(value)}
+            value={domainNameFromSearch}
             autoCapitalize={false}
           />
           <TouchableOpacity
@@ -391,6 +391,7 @@ const homeStyle = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
+    color:Colors.black
   },
 });
 

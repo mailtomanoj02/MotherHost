@@ -76,7 +76,6 @@ const InvoiceDetailScreen = props => {
         },
         theme: {color: Colors.buttonBlue},
       };
-      console.log(options);
       await RazorpayCheckout.open(options)
         .then(data => {
           setPaymentType('S')

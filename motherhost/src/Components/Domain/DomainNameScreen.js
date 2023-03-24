@@ -129,7 +129,7 @@ const DomainNameScreen = props => {
 
   let params = {
     action: 'DomainWhois',
-    domain: domainSearch,
+    domain: domainSearch.toString().replace(/ /g, ''),
   };
   const onPressRegister = () => {
     dispatch(fetchAPIAction('whois.php', params));
@@ -322,7 +322,7 @@ const DomainNameScreen = props => {
     );
   };
   let cartArrayState = useSelector(state => state.cartArrayData);
-  const [cartArray, setCartArray] = useState(cartArrayState);
+  const [cartArray, setCartArray] = useState([]);
   const addToCart = () => {
     const hasValidPid = cartArrayState?.some(
       obj => typeof obj.pid === 'number' && parseInt(obj.pid),
@@ -334,7 +334,6 @@ const DomainNameScreen = props => {
     ) {
       showToastMessage('Item alreay in cart', Colors.RED);
     } else {
-      console.log(domainSearch);
       let arrayParams = {
         clientid: getUserId(),
         paymentMethod: 'razorpay',
@@ -361,7 +360,10 @@ const DomainNameScreen = props => {
         },
       };
       setCartArray(cartArray.push(arrayParams));
-      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
+      dispatch({
+        type: ADD_CART_ARRAY,
+        cartArrayData: [...cartArrayState, ...cartArray],
+      });
       showToastMessage('Item Added Successfully!!', Colors.GREEN);
       // props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
     }

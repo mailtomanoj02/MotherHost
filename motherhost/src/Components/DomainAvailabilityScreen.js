@@ -5,7 +5,7 @@ import Colors from '../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 import {useDispatch, useSelector} from 'react-redux';
 import SkeletonLoader from './customUI/SkeletonLoader';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
@@ -15,8 +15,9 @@ const DomainAvailabilityScreen = props => {
   let isLoading = useSelector(state => state.isLoading);
   let cartArrayState = useSelector(state => state.cartArrayData);
   const dispatch = useDispatch();
-  const [cartArray, setCartArray] = useState(cartArrayState);
+  const [cartArray, setCartArray] = useState([]);
   const {domainName} = props.route.params;
+
   const addToCart = () => {
     if (cartArrayState?.some(item => item.pid === '')) {
       showToastMessage('Item alreay in cart', Colors.RED);
@@ -34,7 +35,10 @@ const DomainAvailabilityScreen = props => {
         price: getPriceBasedOnDomain(domainName),
       };
       setCartArray(cartArray.push(arrayParams));
-      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArray});
+      dispatch({
+        type: ADD_CART_ARRAY,
+        cartArrayData: [...cartArrayState, ...cartArray],
+      });
       props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
     }
   };

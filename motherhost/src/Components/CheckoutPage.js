@@ -13,7 +13,7 @@ import {FONT_FAMILY} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {isValidString} from '../utils/Helper';
+import {isValidString, isValidElement} from '../utils/Helper';
 import {getPriceBasedOnDomain} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
@@ -23,22 +23,20 @@ const CheckoutPage = props => {
   const [deleteIndex, setIndex] = useState(0);
   const [isFocus, setIsFocus] = useState(null);
   let cartArrayState = useSelector(state => state.cartArrayData);
-  const [cartArrayFromSearch, setCartArrayFromSearch] = useState('');
+  const [cartArrayFromSearch, setCartArrayFromSearch] =
+    useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
+
+  useEffect(() => {
+    console.log('Checkout==>', cartArrayState);
+    return () => {
+      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
+    };
+  }, [cartArrayFromSearch]);
   useEffect(() => {
     updateTotalInReceipt();
-    const focusListener = props.navigation.addListener('focus', () => {
-      setCartArrayFromSearch(cartArrayState);
-    });
-    const blurListener = props.navigation.addListener('blur', () => {
-      dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
-    });
-    return () => {
-      focusListener();
-      blurListener();
-    };
-  }, [cartArrayFromSearch, cartArrayState, dispatch, props.navigation]);
+  }, [cartArrayFromSearch]);
 
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -80,19 +78,20 @@ const CheckoutPage = props => {
       return updatedCartArray;
     });
   };
-  const updateTotalInReceipt = () =>{
-      let totalPrice = 0.0;
-      cartArrayFromSearch.map((item) => {
-        console.log(item);
-      if(isValidElement(item?.price)){
-        totalPrice = totalPrice + parseFloat(item?.price)
-      }
-      if(isValidElement(item?.selectedPrice?.value)){
-        totalPrice = totalPrice + parseFloat(item?.selectedPrice?.value)
-      }
-  });
-  setTotalValue(totalPrice.toFixed(2));
-  }
+  const updateTotalInReceipt = () => {
+    let totalPrice = 0.0;
+    if (cartArrayFromSearch?.length > 0) {
+      cartArrayFromSearch.map(item => {
+        if (isValidElement(item?.price)) {
+          totalPrice = totalPrice + parseFloat(item?.price);
+        }
+        if (isValidElement(item?.selectedPrice?.value)) {
+          totalPrice = totalPrice + parseFloat(item?.selectedPrice?.value);
+        }
+      });
+      setTotalValue(totalPrice.toFixed(2));
+    }
+  };
   const plusMinusButtonView = (item, index) => {
     let qty = item.regperiod;
     let priceData = getPriceBasedOnDomain(item.domain);
@@ -139,23 +138,27 @@ const CheckoutPage = props => {
       setShowModal(false);
     };
     const handleConfirm = () => {
-      const newData = [...cartArrayFromSearch]; // Create a copy of the original array
+      const newData = [...cartArrayFromSearch];
       newData.splice(deleteIndex, 1);
       setCartArrayFromSearch(newData);
       setShowModal(false);
+      // dispatch({type: ADD_CART_ARRAY, cartArrayData: newData});
     };
     return (
       <View style={styles.cartContainerStyle}>
         {item.domaintype !== 'update' ? (
           plusMinusButtonView(item, index)
         ) : (
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+          <Text style={{fontFamily: FONT_FAMILY.REGULAR, color: Colors.BLACK}}>
             Using existing domain
           </Text>
         )}
         <View>
           <Text
-            style={{fontFamily: FONT_FAMILY.REGULAR}}>{`₹ ${item.price}`}</Text>
+            style={{
+              fontFamily: FONT_FAMILY.REGULAR,
+              color: Colors.BLACK,
+            }}>{`₹ ${item.price}`}</Text>
         </View>
         <ModalPopUp
           visible={showModal}
@@ -172,7 +175,13 @@ const CheckoutPage = props => {
     return (
       <View>
         <View style={styles.totalCheckoutContainer}>
-          <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD}}>{name}</Text>
+          <Text
+            style={{
+              fontFamily: FONT_FAMILY.SEMI_BOLD,
+              color: Colors.DARK_GREY,
+            }}>
+            {name}
+          </Text>
           {isValidString(item?.domain) ? CartContainer(item, index) : null}
         </View>
         {isValidString(item?.pid) ? renderDescription(item, index) : null}
@@ -184,7 +193,12 @@ const CheckoutPage = props => {
     const data = item.selectedPriceList;
     return (
       <View style={styles.totalCheckoutContainer}>
-        <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD, fontSize: 14}}>
+        <Text
+          style={{
+            fontFamily: FONT_FAMILY.SEMI_BOLD,
+            fontSize: 14,
+            color: Colors.BLACK,
+          }}>
           {item.descriptionData.title}
         </Text>
         <Text
@@ -192,6 +206,7 @@ const CheckoutPage = props => {
             marginTop: 10,
             fontSize: 13,
             fontFamily: FONT_FAMILY.REGULAR,
+            color: Colors.BLACK,
           }}>
           {item.descriptionData.data}
         </Text>
@@ -209,13 +224,12 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              console.log(cartArrayFromSearch);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
           />
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
-            {item?.selectedPrice?.value}
+          <Text style={{fontFamily: FONT_FAMILY.REGULAR, color: Colors.BLACK}}>
+            {`₹ ${item?.selectedPrice?.value}`}
           </Text>
         </View>
       </View>
@@ -225,13 +239,20 @@ const CheckoutPage = props => {
     return (
       <View style={[{flexDirection: 'row'}, styles.totalCheckoutContainer]}>
         <View style={{flex: 0.5}}>
-          <Text style={{fontFamily: FONT_FAMILY.BOLD}}>Offers</Text>
+          <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.black}}>
+            Offers
+          </Text>
           <View style={styles.discountInnerViewStyle}>
             <Image
               source={require('./../Images/RadioButton/discount.png')}
               style={{height: 25, width: 25}}
             />
-            <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD, marginLeft: 5}}>
+            <Text
+              style={{
+                fontFamily: FONT_FAMILY.SEMI_BOLD,
+                marginLeft: 5,
+                color: Colors.black,
+              }}>
               Select a coupon code
             </Text>
           </View>
@@ -255,8 +276,8 @@ const CheckoutPage = props => {
   };
 
   const renderTotalView = () => {
-    const tax = ((total * 9) / 100).toFixed(2)
-    const netTotal = parseFloat(total + (2 * tax)).toFixed(2)
+    const tax = ((total * 9) / 100).toFixed(2);
+    const netTotal = parseFloat(total + 2 * tax).toFixed(2);
     const data = [
       {
         key1: 'Total',
@@ -280,21 +301,37 @@ const CheckoutPage = props => {
             <View key={index}>
               <View style={[{flexDirection: 'row'}]}>
                 <View style={{flex: 0.5, padding: 6}}>
-                  <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+                  <Text
+                    style={{
+                      fontFamily: FONT_FAMILY.REGULAR,
+                      color: Colors.black,
+                    }}>
                     {value.key1}
                   </Text>
                   {value.key2 ? (
-                    <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+                    <Text
+                      style={{
+                        fontFamily: FONT_FAMILY.REGULAR,
+                        color: Colors.black,
+                      }}>
                       {value.key2}
                     </Text>
                   ) : null}
                 </View>
                 <View style={styles.viewOfferContainer}>
-                  <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+                  <Text
+                    style={{
+                      fontFamily: FONT_FAMILY.REGULAR,
+                      color: Colors.black,
+                    }}>
                     {value.value1}
                   </Text>
                   {value.value2 ? (
-                    <Text style={{fontFamily: FONT_FAMILY.REGULAR}}>
+                    <Text
+                      style={{
+                        fontFamily: FONT_FAMILY.REGULAR,
+                        color: Colors.black,
+                      }}>
                       {value.value2}
                     </Text>
                   ) : null}
@@ -315,8 +352,7 @@ const CheckoutPage = props => {
       </TouchableOpacity>
     );
   };
-  const cartArrayLength = cartArrayFromSearch.length > 0;
-
+  const cartArrayLength = cartArrayFromSearch?.length > 0;
   return (
     <View style={{flex: 1}}>
       <AppBar
@@ -397,6 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 5,
     fontFamily: FONT_FAMILY.REGULAR,
+    color: Colors.black,
   },
   itemTextStyle: {
     fontSize: 13,

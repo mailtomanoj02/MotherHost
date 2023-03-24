@@ -148,7 +148,7 @@ const MyDrawer = () => {
       <Drawer.Screen
         name={SCREEN_NAMES.CHECKOUT}
         component={CheckoutPage}
-        options={{unmountOnBlur: false}}
+        // options={{unmountOnBlur: false}}
       />
     </Drawer.Navigator>
   );

@@ -6,12 +6,10 @@ import {SafeAreaView} from 'react-native';
 import {SCREEN_NAMES} from '../Config/Constant';
 import {isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {ADD_CART_ARRAY} from '../redux/Type';
-
 const AppBar = props => {
   const dispatch = useDispatch();
-  let cartArrayState = useSelector(state => state.cartArrayData);
   let imageBack = props.image
     ? props.image
     : require('./../Images/AppBar/left-arrow.png');
@@ -39,10 +37,10 @@ const AppBar = props => {
     setShowModal(false);
   };
   const handleConfirm = () => {
-    // props.setLocalCartArray([]);
-    // navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
-    // setShowModal(false);
-    // console.log(cartArrayState);
+    props.setLocalCartArray([]);
+    // dispatch({type: ADD_CART_ARRAY, cartArrayData: props.localCartArray});
+    navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
+    setShowModal(false);
   };
   return (
     <SafeAreaView>
@@ -79,7 +77,7 @@ const AppBar = props => {
             style={styles.walletCartButtonStyle}
             onPress={() =>
               showMinusCart
-                ? props.localCartArray.length > 0
+                ? props.localCartArray?.length > 0
                   ? setShowModal(true)
                   : null
                 : navigation.navigate(SCREEN_NAMES.CHECKOUT, {

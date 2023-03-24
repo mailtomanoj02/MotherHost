@@ -20,7 +20,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import ButtonLoader from '../customUI/ButtonLoader';
 
 const Register = ({navigation}) => {
-  console.log(navigation);
   const [countryCode, setCountryCode] = useState('IN');
   const [callCode, setCallCode] = useState('91');
   const [deviceIp, setDeviceIp] = useState('');
