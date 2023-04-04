@@ -14,7 +14,7 @@ import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {fetchAPIAction} from '../../redux/Action';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import DomainAvailableView from '../DomainAvailableView';
 import {ADD_CART_ARRAY, GET_WHOIS_API_DATA_SUCCESS} from '../../redux/Type';
 import {getPriceBasedOnDomain, getUserId} from '../../utils/Utils';
@@ -324,9 +324,6 @@ const DomainNameScreen = props => {
   let cartArrayState = useSelector(state => state.cartArrayData);
   const [cartArray, setCartArray] = useState([]);
   const addToCart = () => {
-    const hasValidPid = cartArrayState?.some(
-      obj => typeof obj.pid === 'number' && parseInt(obj.pid),
-    );
     if (
       cartArrayState?.some(
         obj => typeof obj.pid === 'number' && parseInt(obj.pid),

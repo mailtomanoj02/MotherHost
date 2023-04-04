@@ -12,7 +12,9 @@ import {
   INVOICE_DETAIL_API_DATA_SUCCESS,
   RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS, REGISTER_API_DATA_SUCCESS,
+  TICKET_ADD_API_DATA_SUCCESS,
+  REGISTER_API_DATA_SUCCESS,
+  CHECKOUT_API_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -122,6 +124,12 @@ export const fetchAPIAction =
           }
         } else if (url === 'addinvoicepayment.php') {
           navigation.goBack();
+        } else if (url === 'addorder.php') {
+          console.log('data==>',data)
+          dispatch({
+            type: CHECKOUT_API_SUCCESS,
+            checkoutData: data,
+          });
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});

@@ -3,7 +3,7 @@ import colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import Colors from '../Themes/Colors';
 
-const ModalPopUp = ({visible, onClose, onConfirm,title}) => {
+const ModalPopUp = ({visible, onClose, onConfirm, title}) => {
   return (
     <Modal
       visible={visible}
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalPopUp
+export default ModalPopUp;

@@ -23,7 +23,7 @@ import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const HomeScreen = () => {
   let cartArrayState = useSelector(state => state.cartArrayData);
-  console.log('cartArrayState==>', cartArrayState);
+  // console.log('cartArrayState==>', cartArrayState);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [domainNameFromSearch, setDomainNameFromSearch] = useState('');
@@ -290,7 +290,7 @@ const HomeScreen = () => {
         <View style={homeStyle.searchViewStyle}>
           <TextInput
             style={homeStyle.searchInputTextStyle}
-            placeholder={'Search your domain. ex: montherhost.com'}
+            placeholder={'Search your domain. ex: mo therhost.com'}
             placeholderTextColor={Colors.DARK_GREY}
             onChangeText={value => setDomainNameFromSearch(value)}
             value={domainNameFromSearch}

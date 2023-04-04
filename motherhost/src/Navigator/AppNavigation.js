@@ -78,6 +78,11 @@ const HoistingStackNavigator = () => {
         name={SCREEN_NAMES.DOMAIN_NAME_SCREEN}
         component={DomainNameScreen}
       />
+      <HoistingStack.Screen
+        name={SCREEN_NAMES.CHECKOUT}
+        component={CheckoutPage}
+        // options={{unmountOnBlur: false}}
+      />
     </HoistingStack.Navigator>
   );
 };

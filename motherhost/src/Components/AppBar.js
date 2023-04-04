@@ -38,8 +38,7 @@ const AppBar = props => {
   };
   const handleConfirm = () => {
     props.setLocalCartArray([]);
-    // dispatch({type: ADD_CART_ARRAY, cartArrayData: props.localCartArray});
-    navigation.navigate(SCREEN_NAMES.HOME_SCREEN);
+    dispatch({type: ADD_CART_ARRAY, cartArrayData: props.localCartArray});
     setShowModal(false);
   };
   return (

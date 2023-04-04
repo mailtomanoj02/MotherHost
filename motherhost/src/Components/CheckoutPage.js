@@ -14,9 +14,10 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {isValidString, isValidElement} from '../utils/Helper';
-import {getPriceBasedOnDomain} from '../utils/Utils';
+import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
+import {fetchAPIAction} from '../redux/Action';
 
 const CheckoutPage = props => {
   const dispatch = useDispatch();
@@ -27,9 +28,9 @@ const CheckoutPage = props => {
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
+  console.log(cartArrayFromSearch);
 
   useEffect(() => {
-    console.log('Checkout==>', cartArrayState);
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
     };
@@ -63,6 +64,7 @@ const CheckoutPage = props => {
                 key: priceData.key,
                 value: priceData.value,
               },
+              billingcycle: priceData.key,
             };
           }
           if (value === 'changePrice') {
@@ -224,6 +226,7 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
+              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -346,8 +349,46 @@ const CheckoutPage = props => {
   };
 
   const SubmitButton = title => {
+    const onPress = () => {
+      const finalArray = cartArrayFromSearch.reduce(
+        (acc, curr, index) => {
+          let lastIndex = index !== cartArrayFromSearch.length - 1;
+          acc.pid +=
+            (curr.pid ? curr.pid : "'" + '' + "'") + (lastIndex ? ',' : '');
+          acc.billingcycle +=
+            (curr.billingcycle ? curr.billingcycle : "'" + '' + "'") +
+            (lastIndex ? ',' : '');
+          acc.domain +=
+            (curr.domain ? curr.domain : "'" + '' + "'") +
+            (lastIndex ? ',' : '');
+          acc.domaintype +=
+            (curr.domaintype ? curr.domaintype : "'" + '' + "'") +
+            (lastIndex ? ',' : '');
+          acc.regperiod +=
+            (curr.regperiod ? curr.regperiod : "'" + '' + "'") +
+            (lastIndex ? ',' : '');
+          // acc.eppcode +=
+          //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
+          //   (lastIndex ? ',' : '');
+          console.log(acc);
+          return acc;
+        },
+        {
+          clientid: getUserId(),
+          paymentmethod: 'razorpay', //hardcode
+          billingcycle: '',
+          domain: '',
+          domaintype: '',
+          regperiod: '',
+          pid: '',
+          eppcode: [],
+        },
+      );
+      dispatch(fetchAPIAction('addorder.php', finalArray));
+    };
+
     return (
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
       </TouchableOpacity>
     );

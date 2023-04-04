@@ -16,6 +16,7 @@ import {
   HOSTING_DATA,
   TICKET_LIST_API_DATA_SUCCESS,
   TICKET_ADD_API_DATA_SUCCESS,
+  CHECKOUT_API_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -31,6 +32,7 @@ const initialState = {
   cartArrayData: [],
   hostingData: null,
   ticketData: null,
+  checkoutData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -105,15 +107,20 @@ export const mainReducer = (state = initialState, action) => {
         ...state,
         hostingData: action.hostingData,
       };
-    case API_DATA_FAILURE:
-      return {
-        ...state,
-        error: action.error,
-      };
     case TICKET_LIST_API_DATA_SUCCESS:
       return {
         ...state,
         ticketData: action.ticketData,
+      };
+    case CHECKOUT_API_SUCCESS:
+      return {
+        ...state,
+        checkoutData: action.checkoutData,
+      };
+    case API_DATA_FAILURE:
+      return {
+        ...state,
+        error: action.error,
       };
     default:
       return state;

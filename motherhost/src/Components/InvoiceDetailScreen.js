@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  Image
+  Image,
 } from 'react-native';
 import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
@@ -45,17 +45,19 @@ const InvoiceDetailScreen = props => {
     setTotal(total);
   }, [invoiceDetailsList]);
 
-  const invoicePaymentInvoiceAdd = (paymentId) => {
-      params = {
-        'action' : 'AddInvoicePayment',
-        'invoiceid' : invoiceId,
-        transid: paymentId,
-        gateway: 'razorpay',
-        date: Date()
-      }
+  const invoicePaymentInvoiceAdd = paymentId => {
+    params = {
+      action: 'AddInvoicePayment',
+      invoiceid: invoiceId,
+      transid: paymentId,
+      gateway: 'razorpay',
+      date: Date(),
+    };
 
-      dispatch(fetchAPIAction('addinvoicepayment.php', params, 'POST',props.navigation))
-  }
+    dispatch(
+      fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
+    );
+  };
 
   const onTapPay = async () => {
     const orderResponse = await fetchRazorAPIRequest(total, invoiceId);
@@ -78,12 +80,12 @@ const InvoiceDetailScreen = props => {
       };
       await RazorpayCheckout.open(options)
         .then(data => {
-          setPaymentType('S')
-          invoicePaymentInvoiceAdd(data.razorpay_payment_id)
+          setPaymentType('S');
+          invoicePaymentInvoiceAdd(data.razorpay_payment_id);
         })
         .catch(error => {
-          setPaymentType('F')
-          setModalVisible(true)
+          setPaymentType('F');
+          setModalVisible(true);
         });
     } else {
       showToastMessage('Oops! payment failed try again later.', Colors.RED);
@@ -122,42 +124,85 @@ const InvoiceDetailScreen = props => {
   };
 
   const paymentStatusModel = () => {
-    return(
-    <Modal
-    animationType="slide"
-    transparent={true}
-    visible={modalVisible}
-    onRequestClose={() => {
-      setModalVisible(false);
-    }}>
-       <TouchableOpacity 
-            style={{flex: 1}} 
-            activeOpacity={1} 
-            onPressOut={() => {setModalVisible(false)}}>
-    <View style={{flex: 1, backgroundColor: Colors.BLUR_BLACK, alignItems: 'center', justifyContent: 'center'}}>
-      <View style={{ width: 300, height: 200, backgroundColor: paymentType === 'S' ? Colors.GREEN : Colors.RED, borderRadius: 10,}}>
-      <View style={ {flex: 1, margin: 5, backgroundColor: Colors.backgroundColor, borderRadius: 10, alignItems: 'center', borderColor: paymentType === 'S' ? Colors.GREEN : Colors.RED, borderWidth: 1}}>
-      <Image
-          style={{
-            width: 124,
-            height: 124,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          source={paymentType === 'S' ? require( '../Images/Common/patyment_success.png') : require( '../Images/Common/payment_failed.png')}
-        />
-        <Text style={{fontFamily: FONT_FAMILY.SEMI_BOLD, fontSize: 20, color: paymentType === 'S' ? Colors.GREEN : Colors.RED}} >
-          {paymentType === 'S' ? `Payment Successful!` : `Payment Failed!`}
-          </Text>
-      </View>
-      </View>
-    </View>
-    </TouchableOpacity>
-  </Modal>
-    )
-  }
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}>
+        <TouchableOpacity
+          style={{flex: 1}}
+          activeOpacity={1}
+          onPressOut={() => {
+            setModalVisible(false);
+          }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: Colors.BLUR_BLACK,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View
+              style={{
+                width: 300,
+                height: 200,
+                backgroundColor:
+                  paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                borderRadius: 10,
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  margin: 5,
+                  backgroundColor: Colors.backgroundColor,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  borderColor: paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                  borderWidth: 1,
+                }}>
+                <Image
+                  style={{
+                    width: 124,
+                    height: 124,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  source={
+                    paymentType === 'S'
+                      ? require('../Images/Common/patyment_success.png')
+                      : require('../Images/Common/payment_failed.png')
+                  }
+                />
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.SEMI_BOLD,
+                    fontSize: 20,
+                    color: paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                  }}>
+                  {paymentType === 'S'
+                    ? 'Payment Successful!'
+                    : 'Payment Failed!'}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    );
+  };
 
   const renderDetailView = () => {
+    const statusCheck = () => {
+      console.log(status?.toLowerCase());
+      return (
+        status?.toLowerCase() !== 'paid' &&
+        status?.toLowerCase() !== 'cancelled'
+      );
+    };
+    console.log(statusCheck());
     return (
       <ScrollView style={styles.totalContainerStyle}>
         <Text style={styles.headerStyle}>Mothersoft Technologies</Text>
@@ -167,7 +212,16 @@ const InvoiceDetailScreen = props => {
             <Text style={styles.textRowStyle}>{`\t${invoiceId}`}</Text>
           </View>
           <View style={styles.statusViewStyle}>
-            <Text style={[styles.statusText, {color: Colors.RED}]}>
+            <Text
+              style={[
+                styles.statusText,
+                {
+                  color:
+                    status?.toLowerCase() === 'paid'
+                      ? Colors.GREEN
+                      : Colors.RED,
+                },
+              ]}>
               {status}
             </Text>
           </View>
@@ -224,9 +278,12 @@ const InvoiceDetailScreen = props => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.buttonViewStyle} onPress={onTapPay}>
-          <Text style={styles.buttonTextStyle}>PAY NOW</Text>
-        </TouchableOpacity>
+
+        {statusCheck() ? (
+          <TouchableOpacity style={styles.buttonViewStyle} onPress={onTapPay}>
+            <Text style={styles.buttonTextStyle}>PAY NOW</Text>
+          </TouchableOpacity>
+        ) : null}
       </ScrollView>
     );
   };

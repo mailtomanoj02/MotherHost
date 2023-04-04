@@ -1,4 +1,4 @@
-import {isValidString, isValidElement} from '../../../utils/Helper';
+import {isValidString} from '../../../utils/Helper';
 import {StyleSheet} from 'react-native';
 
 import {showMessage} from './FlashMessage';
