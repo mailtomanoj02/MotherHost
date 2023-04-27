@@ -21,23 +21,20 @@ import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Hel
 import Colors from '../Themes/Colors';
 import {isValidElement} from '../utils/Helper';
 import {SCREEN_NAMES} from '../Config/Constant';
-
+import {isNetworkConnectionAvailable} from './../utils/Utils'
 export const requestApiData = () => {
   return {
     type: REQUEST_API_DATA,
   };
 };
 
-export const fetchAPIAction =
-  (
-    url,
-    params,
-    loader = true,
-    method = 'POST',
-    navigation = null,
-    isFromCheckout,
-  ) =>
-  dispatch => {
+export const fetchAPIAction = (url, params, loader = true, method = 'POST', navigation = null,isFromCheckout) => {
+return async dispatch => {
+    const isNetworkAvailable = await isNetworkConnectionAvailable();
+    if(!isNetworkAvailable){
+      showToastMessage('There is no network connection available.', Colors.RED);
+      return;
+    }
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
     }
@@ -159,4 +156,5 @@ export const fetchAPIAction =
           dispatch({type: RESPONSE_API_DATA});
         }
       });
+    }
   };

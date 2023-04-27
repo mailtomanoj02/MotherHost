@@ -1,6 +1,7 @@
 import {isValidElement, isValidString} from './Helper';
 import {selectUserID, selectUserName} from './Selectors';
 import {state} from './Selectors';
+import NetInfo from "@react-native-community/netinfo";
 
 export const isUserLoggedIn = () => {
   let userId = selectUserID();
@@ -97,3 +98,13 @@ export const getPriceBasedOnDomain = domain => {
   }
   return priceData;
 };
+
+
+export const isNetworkConnectionAvailable = async () => {
+
+  const result = await NetInfo.fetch();
+    // console.log("Connection type", state.type);
+    // console.log("Is connected?", result.isConnected);
+    return result.isConnected;
+
+}

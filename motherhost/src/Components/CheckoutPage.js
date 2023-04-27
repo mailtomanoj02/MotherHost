@@ -18,6 +18,9 @@ import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
+import {fetchRazorAPIRequest} from '../Api/Api';
+import  {getUserName} from '../utils/Utils';
+import RazorpayCheckout from 'react-native-razorpay';
 import {DrawerActions} from 'react-navigation-drawer';
 
 const CheckoutPage = props => {
@@ -30,6 +33,10 @@ const CheckoutPage = props => {
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
 
+  const checkoutResponse = useSelector(state => state.checkoutData)
+  let loginData = useSelector(state => state.loginData);
+
+  console.log(cartArrayFromSearch);
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
@@ -39,6 +46,64 @@ const CheckoutPage = props => {
     updateTotalInReceipt();
   }, [cartArrayFromSearch]);
 
+  useEffect(() => {
+    console.log('checkoutResponse == ', checkoutResponse);
+    if(isValidElement(checkoutResponse?.invoiceid)){
+      onTapPay()
+    }
+  },[checkoutResponse])
+
+  const onTapPay = async () => {
+    const orderResponse = await fetchRazorAPIRequest(total, checkoutResponse?.invoiceid);
+    let userName = getUserName();
+    // console.log(loginData);
+    // return;
+    if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
+      let options = {
+        description: 'motherhost.com',
+        image: require('./../Images/Logo/razerpaylogo.png'),
+        currency: 'INR',
+        key: 'rzp_live_NRitIpeIamRiYC', // Your api key
+        amount: total * 100,
+        name: 'Mothersoft Technologies',
+        order_id: orderResponse?.orderid,
+        prefill: {
+          email: loginData?.email,
+          contact: '9095094831',
+          name: userName,
+        },
+        theme: {color: Colors.buttonBlue},
+      };
+      console.log(options)
+      await RazorpayCheckout.open(options)
+        .then(data => {
+          // setPaymentType('S');
+          invoicePaymentInvoiceAdd(data.razorpay_payment_id);
+        })
+        .catch(error => {
+          console.log(error)
+          // setPaymentType('F');
+          // setModalVisible(true);
+        });
+    } else {
+      showToastMessage('Oops! payment failed try again later.', Colors.RED);
+    }
+  };
+  const invoicePaymentInvoiceAdd = paymentId => {
+    params = {
+      action: 'AddInvoicePayment',
+      invoiceid: checkoutResponse?.invoiceid,
+      transid: paymentId,
+      gateway: 'razorpay',
+      date: Date(),
+    };
+
+    dispatch(
+      fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
+    );
+
+    //Goto Home screen.
+  };
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
       const updatedCartArray = prevCartArray.map((item, i) => {
