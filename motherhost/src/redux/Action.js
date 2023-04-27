@@ -29,7 +29,14 @@ export const requestApiData = () => {
 };
 
 export const fetchAPIAction =
-  (url, params, loader = true, method = 'POST', navigation = null) =>
+  (
+    url,
+    params,
+    loader = true,
+    method = 'POST',
+    navigation = null,
+    isFromCheckout,
+  ) =>
   dispatch => {
     if (loader) {
       dispatch({type: REQUEST_API_DATA});
@@ -60,16 +67,21 @@ export const fetchAPIAction =
             serviceData: data.products.product,
           });
         } else if (url === 'validatelogin.php') {
+          console.log('isFromCheckout',isFromCheckout)
           dispatch({
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
           });
           if (data) {
             if (data.result === 'success') {
-              navigation.reset({
-                index: 0,
-                routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
-              });
+              if (isFromCheckout) {
+                navigation.pop()
+              } else {
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
+                });
+              }
             }
           }
         } else if (url === 'clientadd.php') {
@@ -125,7 +137,7 @@ export const fetchAPIAction =
         } else if (url === 'addinvoicepayment.php') {
           navigation.goBack();
         } else if (url === 'addorder.php') {
-          console.log('data==>',data)
+          console.log('data==>', data);
           dispatch({
             type: CHECKOUT_API_SUCCESS,
             checkoutData: data,

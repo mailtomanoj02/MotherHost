@@ -9,7 +9,7 @@ import {
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,6 +18,7 @@ import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
+import {DrawerActions} from 'react-navigation-drawer';
 
 const CheckoutPage = props => {
   const dispatch = useDispatch();
@@ -28,7 +29,6 @@ const CheckoutPage = props => {
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
-  console.log(cartArrayFromSearch);
 
   useEffect(() => {
     return () => {
@@ -226,7 +226,6 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -370,7 +369,6 @@ const CheckoutPage = props => {
           // acc.eppcode +=
           //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
           //   (lastIndex ? ',' : '');
-          console.log(acc);
           return acc;
         },
         {
@@ -384,7 +382,15 @@ const CheckoutPage = props => {
           eppcode: [],
         },
       );
-      dispatch(fetchAPIAction('addorder.php', finalArray));
+      if (isValidElement(getUserId())) {
+        dispatch(fetchAPIAction('addorder.php', finalArray));
+      } else {
+        props.navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
+          isFromRegister: false,
+          isFromLogin: true,
+          isFromCheckout: true,
+        });
+      }
     };
 
     return (

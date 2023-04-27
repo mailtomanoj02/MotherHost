@@ -14,7 +14,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
 import ButtonLoader from '../customUI/ButtonLoader';
-const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
+const SignIn = ({
+  isRegisterPressed,
+  isSignInPressed,
+  navigation,
+  isFromCheckout,
+}) => {
   const dispatch = useDispatch();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -39,6 +44,7 @@ const SignIn = ({isRegisterPressed, isSignInPressed, navigation}) => {
               true,
               'POST',
               navigation,
+              isFromCheckout,
             ),
           );
         }}>

@@ -68,6 +68,7 @@ const LoginAndRegistration = props => {
           isRegisterPressed={setIsRegisterPressed}
           isSignInPressed={setSignInPressed}
           navigation={props.navigation}
+          isFromCheckout={props.route.params.isFromCheckout}
         />
       ) : (
         <KeyboardAvoidingView

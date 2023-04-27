@@ -10,7 +10,7 @@ const checkRegexPatternTest = (pattern, data) => {
   return testPattern.test(data);
 };
 function isValidElementCheck(data) {
-  return data !== null && data !== undefined;
+  return data !== null && data !== undefined && data !== '';
 }
 function isValidStringCheck(data) {
   return data !== null && data !== undefined && data !== '' && data !== 'null';

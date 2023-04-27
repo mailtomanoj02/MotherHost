@@ -38,7 +38,7 @@ const AppBar = props => {
   };
   const handleConfirm = () => {
     props.setLocalCartArray([]);
-    dispatch({type: ADD_CART_ARRAY, cartArrayData: props.localCartArray});
+    dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
     setShowModal(false);
   };
   return (

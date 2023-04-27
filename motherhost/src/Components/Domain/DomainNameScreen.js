@@ -11,7 +11,7 @@ import {
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
-import {FONT_FAMILY} from '../../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector, useStore} from 'react-redux';
@@ -23,6 +23,7 @@ import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const DomainNameScreen = props => {
   const dispatch = useDispatch();
   let whoisData = useSelector(state => state.whoisData);
+  let cartArrayState = useSelector(state => state.cartArrayData);
   const isLoading = useSelector(state => state.isLoading);
   const [registerSelected, setRegisterSelected] = useState(true);
   const [transferSelected, setTransferSelected] = useState(false);
@@ -92,7 +93,7 @@ const DomainNameScreen = props => {
   }, [whoisData]);
 
   const onPressOption1 = () => {
-    setEligible('');
+    setEligible('available');
     setRegisterSelected(true);
     setTransferSelected(false);
     setUpdateSelected(false);
@@ -140,7 +141,16 @@ const DomainNameScreen = props => {
     await dispatch(fetchAPIAction('whois.php', params));
   };
   const onPressUpdate = () => {
-    setEligible('available');
+    if (domainName.update !== '') {
+      setEligible('available');
+    } else {
+      showToastMessage('Please Enter Domain Name', Colors.RED);
+    }
+  };
+  const onPressCheckout = () => {
+    transferSelected || updateSelected
+      ? addToCart()
+      : props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
   };
 
   const domainAvailableView = () => {
@@ -200,15 +210,19 @@ const DomainNameScreen = props => {
   const SubmitButton = (isCheckout = false) => {
     return (
       <TouchableOpacity
-        disabled={isCheckout && eligible !== 'available'}
+        disabled={
+          (isCheckout && !registerSelected && eligible !== 'available') ||
+          (isCheckout && registerSelected && cartArrayState?.length < 1)
+        }
         style={
-          isCheckout && eligible !== 'available'
+          (isCheckout && !registerSelected && eligible !== 'available') ||
+          (isCheckout && registerSelected && cartArrayState?.length < 1)
             ? [styles.buttonContainer, {opacity: 0.5}]
             : styles.buttonContainer
         }
         onPress={
           isCheckout
-            ? addToCart
+            ? onPressCheckout
             : registerSelected
             ? onPressRegister
             : transferSelected
@@ -321,8 +335,8 @@ const DomainNameScreen = props => {
       </View>
     );
   };
-  let cartArrayState = useSelector(state => state.cartArrayData);
   const [cartArray, setCartArray] = useState([]);
+  console.log('cartArray==>', cartArray);
   const addToCart = () => {
     if (
       cartArrayState?.some(
@@ -356,10 +370,10 @@ const DomainNameScreen = props => {
           value: priceListArray[0].value,
         },
       };
-      setCartArray(cartArray.push(arrayParams));
+      // setCartArray([...cartArray, arrayParams]);
       dispatch({
         type: ADD_CART_ARRAY,
-        cartArrayData: [...cartArrayState, ...cartArray],
+        cartArrayData: [...cartArrayState, arrayParams],
       });
       showToastMessage('Item Added Successfully!!', Colors.GREEN);
       // props.navigation.navigate(SCREEN_NAMES.CHECKOUT);

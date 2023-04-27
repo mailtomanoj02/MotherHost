@@ -83,6 +83,11 @@ const HoistingStackNavigator = () => {
         component={CheckoutPage}
         // options={{unmountOnBlur: false}}
       />
+      <HoistingStack.Screen
+        name={SCREEN_NAMES.LOGIN_REGISTRATION}
+        component={LoginAndRegistration}
+        // options={{unmountOnBlur: false}}
+      />
     </HoistingStack.Navigator>
   );
 };
