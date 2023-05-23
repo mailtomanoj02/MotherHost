@@ -9,7 +9,7 @@ import {
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
+import {FONT_FAMILY} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,9 +19,10 @@ import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
 import {fetchRazorAPIRequest} from '../Api/Api';
-import {getUserName} from '../utils/Utils';
+import  {getUserName} from '../utils/Utils';
 import RazorpayCheckout from 'react-native-razorpay';
-import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
+import { useNavigation } from '@react-navigation/native';
+import ButtonLoader from './customUI/ButtonLoader';
 
 const CheckoutPage = props => {
   const dispatch = useDispatch();
@@ -32,11 +33,11 @@ const CheckoutPage = props => {
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
-
-  const checkoutResponse = useSelector(state => state.checkoutData);
+  const checkoutResponse = useSelector(state => state.checkoutData)
   let loginData = useSelector(state => state.loginData);
+  const navigation = useNavigation()
+  const isLoading = useSelector(state => state.isLoading);
 
-  console.log(cartArrayFromSearch);
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
@@ -48,18 +49,16 @@ const CheckoutPage = props => {
 
   useEffect(() => {
     console.log('checkoutResponse == ', checkoutResponse);
-    if (isValidElement(checkoutResponse?.invoiceid)) {
-      onTapPay();
+    if(isValidElement(checkoutResponse?.invoiceid)){
+      onTapPay()
     }
-  }, [checkoutResponse]);
+  },[checkoutResponse])
 
   const onTapPay = async () => {
-    alert('onTapPay callec');
-    const orderResponse = await fetchRazorAPIRequest(
-      total,
-      checkoutResponse?.invoiceid,
-    );
+    const orderResponse = await fetchRazorAPIRequest(total, checkoutResponse?.invoiceid);
     let userName = getUserName();
+    // console.log(loginData);
+    // return;
     if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
       let options = {
         description: 'motherhost.com',
@@ -76,13 +75,14 @@ const CheckoutPage = props => {
         },
         theme: {color: Colors.buttonBlue},
       };
+      console.log(options)
       await RazorpayCheckout.open(options)
         .then(data => {
           // setPaymentType('S');
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
         })
         .catch(error => {
-          console.log(error);
+          console.log(error)
           // setPaymentType('F');
           // setModalVisible(true);
         });
@@ -91,7 +91,7 @@ const CheckoutPage = props => {
     }
   };
   const invoicePaymentInvoiceAdd = paymentId => {
-    let params = {
+    params = {
       action: 'AddInvoicePayment',
       invoiceid: checkoutResponse?.invoiceid,
       transid: paymentId,
@@ -102,8 +102,11 @@ const CheckoutPage = props => {
     dispatch(
       fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
     );
-
+      
     //Goto Home screen.
+    dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
+    navigation.reset();
+      
   };
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -292,6 +295,7 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
+              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -435,6 +439,7 @@ const CheckoutPage = props => {
           // acc.eppcode +=
           //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
           //   (lastIndex ? ',' : '');
+          console.log(acc);
           return acc;
         },
         {
@@ -448,15 +453,7 @@ const CheckoutPage = props => {
           eppcode: [],
         },
       );
-      if (isValidElement(getUserId())) {
-        dispatch(fetchAPIAction('addorder.php', finalArray));
-      } else {
-        props.navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
-          isFromRegister: false,
-          isFromLogin: true,
-          isFromCheckout: true,
-        });
-      }
+      dispatch(fetchAPIAction('addorder.php', finalArray));
     };
 
     return (
@@ -482,7 +479,7 @@ const CheckoutPage = props => {
               {/*{renderOfferView()}*/}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0
-                ? SubmitButton('Checkout & place Order')
+                ? !isLoading ? SubmitButton('Checkout & place Order') : <ButtonLoader />
                 : null}
             </View>
           </>
