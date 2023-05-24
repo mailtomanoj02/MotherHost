@@ -45,7 +45,14 @@ const HomeScreen = () => {
     LINUX: 'Linux',
     WINDOWS: 'Windows',
   };
+  let cartAarray = useSelector(state => state.cartArrayData);
+
   useEffect(() => {
+      if(isValidElement(cartAarray) && cartAarray.length > 0 && isUserLoggedIn()) {
+          navigation.navigate(SCREEN_NAMES.CHECKOUT)
+      }
+  },[]);
+  useEffect(() => { 
     dispatch(fetchAPIAction('gettldprice.php', params));
   }, [dispatch, params]);
   const userTrackingView = () => {
@@ -290,7 +297,7 @@ const HomeScreen = () => {
         <View style={homeStyle.searchViewStyle}>
           <TextInput
             style={homeStyle.searchInputTextStyle}
-            placeholder={'Search your domain. ex: mo therhost.com'}
+            placeholder={'Search your domain. ex: motherhost.com'}
             placeholderTextColor={Colors.DARK_GREY}
             onChangeText={value => setDomainNameFromSearch(value)}
             value={domainNameFromSearch}

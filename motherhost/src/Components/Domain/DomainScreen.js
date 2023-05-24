@@ -33,7 +33,7 @@ const DomainScreen = props => {
     return (
       <TouchableOpacity
         onPress={() =>
-          props.navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN)
+          props.navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN, {domain: item})
         }>
         <View style={styles.itemContainer}>
           <View style={styles.innerViewTop}>

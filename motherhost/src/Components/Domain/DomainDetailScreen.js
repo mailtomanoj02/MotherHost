@@ -3,7 +3,9 @@ import AppBar from '../AppBar';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {TextInput} from 'react-native-gesture-handler';
-const DomainDetailScreen = () => {
+const DomainDetailScreen = (props) => {
+  const domainData =  props.route.params.domain;
+  
   const RenderPlaceHolder = ({title, placeHolderValue}) => {
     return (
       <View style={styles.nameServerPlaceHolderView}>
@@ -20,20 +22,33 @@ const DomainDetailScreen = () => {
 
       <View style={styles.itemContainer}>
         <View style={styles.innerViewTop}>
-          <Text style={styles.hostText}>{'www.foodhub.com'}</Text>
+          <Text style={styles.hostText}>{domainData.domainname}</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View>
             <Text style={styles.dateText}>
-              {'Registration Date\t: 20/12/2020'}
+              {`Registration Date\t: ${domainData.regdate}`}
             </Text>
             <Text style={styles.dateText}>
-              {'Expiry Date\t\t\t: 20/12/2020'}
+              {`Expiry Date\t\t\t: ${domainData.nextduedate}`}
             </Text>
+
+            <View style={styles.statusStyle}>
+            <Text style={styles.dateText}>{'Status : ' }</Text>
+            <View style={styles.statusBox}>
+              <Text
+                style={
+                  domainData?.status === 'Active'
+                    ? styles.statusTextColorGreen
+                    : styles.statusTextColorRed
+                }>
+                {domainData.status}
+              </Text>
+            </View>
           </View>
-          <View style={styles.statusStyle}>
-            <Text style={{color: Colors.DARK_GREY}}>{'Status: Active'}</Text>
+
           </View>
+      
         </View>
         <Text style={styles.nameServerHeaderTextStyle}>Name Servers</Text>
         <Text style={styles.nameServerDescriptionStyle}>
@@ -44,11 +59,11 @@ const DomainDetailScreen = () => {
         <View>
           <RenderPlaceHolder
             title={'Name Server 1:'}
-            placeHolderValue="foodhub.co.uk"
+            placeHolderValue=""
           />
           <RenderPlaceHolder
             title={'Name Server 2:'}
-            placeHolderValue="foodhub.co.uk"
+            placeHolderValue=""
           />
           <TouchableOpacity style={styles.buttonContainerStyle} disabled={true}>
             <Text style={styles.buttonTextStyle}>UPDATE NAME SERVERS</Text>
@@ -76,8 +91,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   statusStyle: {
-    padding: 8,
-    marginTop: 28,
+    marginTop: 10,
+    flexDirection:'row',
     fontFamily: FONT_FAMILY.REGULAR,
   },
   hostText: {
@@ -123,5 +138,20 @@ const styles = StyleSheet.create({
     padding: 4,
     color: 'white',
     opacity: 0.5,
+  },
+  statusBox: {
+    minWidth: 70,
+    padding: 8,
+    backgroundColor: Colors.MEDIUM_GREY,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    fontFamily: FONT_FAMILY.REGULAR,
+  },
+  statusTextColorGreen: {
+    color: Colors.GREEN,
+  },
+  statusTextColorRed: {
+    color: Colors.RED,
   },
 });

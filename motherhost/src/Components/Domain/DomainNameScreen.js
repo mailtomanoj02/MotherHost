@@ -151,6 +151,8 @@ const DomainNameScreen = props => {
     transferSelected || updateSelected
       ? addToCart()
       : props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+
+      props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
   };
 
   const domainAvailableView = () => {

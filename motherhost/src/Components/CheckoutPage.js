@@ -9,12 +9,12 @@ import {
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
-import {FONT_FAMILY} from '../Config/Constant';
+import {FONT_FAMILY, SCREEN_NAMES} from '../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {isValidString, isValidElement} from '../utils/Helper';
-import {getPriceBasedOnDomain, getUserId} from '../utils/Utils';
+import {getPriceBasedOnDomain, getUserId, isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
@@ -23,7 +23,6 @@ import  {getUserName} from '../utils/Utils';
 import RazorpayCheckout from 'react-native-razorpay';
 import { useNavigation } from '@react-navigation/native';
 import ButtonLoader from './customUI/ButtonLoader';
-
 const CheckoutPage = props => {
   const dispatch = useDispatch();
   const [deleteIndex, setIndex] = useState(0);
@@ -417,8 +416,17 @@ const CheckoutPage = props => {
     );
   };
 
-  const SubmitButton = title => {
+  const submitButton = (title) => {
+   
     const onPress = () => {
+      if(!isUserLoggedIn()){
+        navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
+          isFromRegister: false,
+          isFromLogin: true,
+        })
+        return;
+      }
+      
       const finalArray = cartArrayFromSearch.reduce(
         (acc, curr, index) => {
           let lastIndex = index !== cartArrayFromSearch.length - 1;
@@ -479,7 +487,7 @@ const CheckoutPage = props => {
               {/*{renderOfferView()}*/}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0
-                ? !isLoading ? SubmitButton('Checkout & place Order') : <ButtonLoader />
+                ? !isLoading ? submitButton('Checkout & place Order') : <ButtonLoader />
                 : null}
             </View>
           </>

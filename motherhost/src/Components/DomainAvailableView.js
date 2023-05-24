@@ -34,7 +34,7 @@ const DomainAvailableView = ({addToCart, domainName}) => {
       )}
       {isAvailable ? (
         <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Text style={styles.amountTextStyle}>{`$ ${priceData}`}</Text>
+          <Text style={styles.amountTextStyle}>{`₹ ${priceData}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
           <TouchableOpacity
             style={styles.addToCartButtonStyle}

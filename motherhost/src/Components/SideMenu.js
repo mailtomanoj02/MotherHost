@@ -75,11 +75,6 @@ const SideMenu = () => {
       screen: SCREEN_NAMES.WEBVIEW_SCREEN,
     },
     {
-      icon: require('../Images/Drawer/chat.png'),
-      title: 'Chat Support',
-      screen: SCREEN_NAMES.WEBVIEW_SCREEN,
-    },
-    {
       icon: require('../Images/Drawer/whatsapp.png'),
       title: 'Whatsapp Support',
       screen: SCREEN_NAMES.WEBVIEW_SCREEN,
@@ -119,9 +114,7 @@ const SideMenu = () => {
       params.weburl = WEBPAGE_REDIRECT_LINK.PRIVACY_POLICY;
     } else if (item.title === 'Terms & Conditions') {
       params.weburl = WEBPAGE_REDIRECT_LINK.TERMS_CONDITIONS;
-    } else if (item.title === 'Chat Support') {
-      params.weburl = WEBPAGE_REDIRECT_LINK.CHAT_SUPPORT;
-    } else if (item.title == 'Whatsapp Support'){
+    }  else if (item.title == 'Whatsapp Support'){
       Linking.openURL(WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK)
       return;
     }
