@@ -22,7 +22,7 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {LOGIN_API_DATA_SUCCESS} from '../redux/Type';
 import colors from '../Themes/Colors';
-
+import DeviceInfo from 'react-native-device-info';
 const SideMenu = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
@@ -211,7 +211,8 @@ const SideMenu = () => {
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
+      <View>
       <View style={styles.headerViewContainer}>
         <Image
           style={styles.logoStyle}
@@ -236,6 +237,10 @@ const SideMenu = () => {
         onConfirm={handleConfirm}
         onClose={handleClose}
       />
+      </View>
+      <View style={styles.versionView}>
+        <Text style={styles.versionTextStyle}>Ver {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})</Text>
+      </View>
     </View>
   );
 };
@@ -327,6 +332,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: FONT_FAMILY.BOLD,
   },
+  versionView: {
+    flex: 1,
+    alignContent: 'flex-end',
+    margin: 25,
+    flexDirection: 'row',
+    alignItems: 'flex-end'
+  },
+  versionTextStyle:{
+    flex: 1,
+    fontSize: 12,
+    fontFamily: FONT_FAMILY.REGULAR,
+    textAlign: 'center'
+  }
 });
 
 export default SideMenu;
