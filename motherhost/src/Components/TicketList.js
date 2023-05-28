@@ -10,10 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAPIAction } from '../redux/Action';
 
 
-let params = {
-    action: 'GetTickets',
-    clientid: getUserId()
-};
+
 
 
 const TicketList = (props) => {
@@ -21,9 +18,15 @@ const TicketList = (props) => {
     const tiketData = useSelector(state => state.ticketData);
     const isLoading = useSelector(state => state.isLoading);
     const [refreshing, setRefreshing] = useState(false);
+
     useEffect(() => {
+        let params = {
+            action: 'GetTickets',
+            clientid: getUserId()
+        };
         dispatch(fetchAPIAction('gettickets.php', params));
     }, []);
+
     const handleRefresh = () => {
         setRefreshing(true);
         dispatch(fetchAPIAction('gettickets.php', params, false));
