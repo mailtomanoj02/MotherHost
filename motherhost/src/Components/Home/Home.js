@@ -21,6 +21,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {checkIsValidDomain, isValidElement} from '../../utils/Helper';
 import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
+import OneSignalNotificationManager from '../NotificationManager/OneSignalNotification.js';
 const HomeScreen = () => {
   let cartArrayState = useSelector(state => state.cartArrayData);
   // console.log('cartArrayState==>', cartArrayState);
@@ -338,7 +339,9 @@ const HomeScreen = () => {
           {hostHeader('Security')}
           {securityView()}
         </View>
+        <OneSignalNotificationManager/>
       </ScrollView>
+      
     );
   };
 
