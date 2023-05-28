@@ -19,10 +19,11 @@ import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
 import {fetchRazorAPIRequest} from '../Api/Api';
-import  {getUserName} from '../utils/Utils';
+import {getUserName} from '../utils/Utils';
 import RazorpayCheckout from 'react-native-razorpay';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ButtonLoader from './customUI/ButtonLoader';
+import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
 const CheckoutPage = props => {
   const dispatch = useDispatch();
   const [deleteIndex, setIndex] = useState(0);
@@ -32,29 +33,31 @@ const CheckoutPage = props => {
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
-  const checkoutResponse = useSelector(state => state.checkoutData)
+  const checkoutResponse = useSelector(state => state.checkoutData);
   let loginData = useSelector(state => state.loginData);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const isLoading = useSelector(state => state.isLoading);
 
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
     };
-  }, [cartArrayFromSearch]);
+  }, [cartArrayFromSearch, dispatch]);
   useEffect(() => {
     updateTotalInReceipt();
   }, [cartArrayFromSearch]);
 
   useEffect(() => {
-    console.log('checkoutResponse == ', checkoutResponse);
-    if(isValidElement(checkoutResponse?.invoiceid)){
-      onTapPay()
+    if (isValidElement(checkoutResponse?.invoiceid)) {
+      onTapPay();
     }
-  },[checkoutResponse])
+  }, [checkoutResponse]);
 
   const onTapPay = async () => {
-    const orderResponse = await fetchRazorAPIRequest(total, checkoutResponse?.invoiceid);
+    const orderResponse = await fetchRazorAPIRequest(
+      total,
+      checkoutResponse?.invoiceid,
+    );
     let userName = getUserName();
     // console.log(loginData);
     // return;
@@ -74,14 +77,14 @@ const CheckoutPage = props => {
         },
         theme: {color: Colors.buttonBlue},
       };
-      console.log(options)
+      console.log(options);
       await RazorpayCheckout.open(options)
         .then(data => {
           // setPaymentType('S');
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
         })
         .catch(error => {
-          console.log(error)
+          console.log(error);
           // setPaymentType('F');
           // setModalVisible(true);
         });
@@ -90,7 +93,7 @@ const CheckoutPage = props => {
     }
   };
   const invoicePaymentInvoiceAdd = paymentId => {
-    params = {
+    const params = {
       action: 'AddInvoicePayment',
       invoiceid: checkoutResponse?.invoiceid,
       transid: paymentId,
@@ -101,11 +104,10 @@ const CheckoutPage = props => {
     dispatch(
       fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
     );
-      
+
     //Goto Home screen.
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
     navigation.reset();
-      
   };
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -416,17 +418,16 @@ const CheckoutPage = props => {
     );
   };
 
-  const submitButton = (title) => {
-   
+  const submitButton = title => {
     const onPress = () => {
-      if(!isUserLoggedIn()){
+      if (!isUserLoggedIn()) {
         navigation.navigate(SCREEN_NAMES.LOGIN_REGISTRATION, {
           isFromRegister: false,
           isFromLogin: true,
-        })
+        });
         return;
       }
-      
+
       const finalArray = cartArrayFromSearch.reduce(
         (acc, curr, index) => {
           let lastIndex = index !== cartArrayFromSearch.length - 1;
@@ -486,9 +487,13 @@ const CheckoutPage = props => {
               style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
               {/*{renderOfferView()}*/}
               {cartArrayLength ? renderTotalView() : null}
-              {cartArrayLength > 0
-                ? !isLoading ? submitButton('Checkout & place Order') : <ButtonLoader />
-                : null}
+              {cartArrayLength > 0 ? (
+                !isLoading ? (
+                  submitButton('Checkout & place Order')
+                ) : (
+                  <ButtonLoader />
+                )
+              ) : null}
             </View>
           </>
         ) : (

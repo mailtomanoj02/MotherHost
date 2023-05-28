@@ -1,3 +1,4 @@
+import React from 'react';
 import Colors from '../../Themes/Colors';
 import {Image, View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
