@@ -141,10 +141,18 @@ const DomainNameScreen = props => {
     await dispatch(fetchAPIAction('whois.php', params));
   };
   const onPressUpdate = () => {
-    if (domainName.update !== '') {
-      setEligible('available');
+    if (
+      cartArrayState?.some(
+        obj => typeof obj.pid === 'number' && parseInt(obj.pid),
+      )
+    ) {
+      showToastMessage('Item alreay in cart', Colors.RED);
     } else {
-      showToastMessage('Please Enter Domain Name', Colors.RED);
+      if (domainName.update !== '') {
+        setEligible('available');
+      } else {
+        showToastMessage('Please Enter Domain Name', Colors.RED);
+      }
     }
   };
   const onPressCheckout = () => {
