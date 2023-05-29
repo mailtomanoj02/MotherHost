@@ -33,6 +33,8 @@ const CheckoutPage = props => {
     useState(cartArrayState);
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
+  const [netTotal, setNetTotalValue] = useState(0.0);
+  const [orderResponse, setorderResponse] = useState(null);
   const checkoutResponse = useSelector(state => state.checkoutData);
   let loginData = useSelector(state => state.loginData);
   const navigation = useNavigation();
@@ -45,7 +47,7 @@ const CheckoutPage = props => {
   }, [cartArrayFromSearch, dispatch]);
   useEffect(() => {
     updateTotalInReceipt();
-  }, [cartArrayFromSearch]);
+  }, [cartArrayFromSearch, netTotal]);
 
   useEffect(() => {
     if (isValidElement(checkoutResponse?.invoiceid)) {
@@ -54,22 +56,30 @@ const CheckoutPage = props => {
   }, [checkoutResponse]);
 
   const onTapPay = async () => {
-    const orderResponse = await fetchRazorAPIRequest(
-      total,
-      checkoutResponse?.invoiceid,
-    );
+    var orderPayResoponse = orderResponse;
+    if(!isValidElement(orderResponse) || netTotal * 100 !== orderResponse?.amount){
+      orderPayResoponse = await fetchRazorAPIRequest(
+        netTotal,
+        checkoutResponse?.invoiceid,
+      );
+      setorderResponse(orderPayResoponse);
+    }else{
+      orderPayResoponse = orderResponse;
+      console.log('called')
+    }
+    
     let userName = getUserName();
     // console.log(loginData);
     // return;
-    if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
+    if (isValidElement(orderPayResoponse?.id) && isValidElement(userName)) {
       let options = {
         description: 'motherhost.com',
         image: require('./../Images/Logo/razerpaylogo.png'),
         currency: 'INR',
         key: 'rzp_live_NRitIpeIamRiYC', // Your api key
-        amount: total * 100,
+        amount: netTotal * 100,
         name: 'Mothersoft Technologies',
-        order_id: orderResponse?.orderid,
+        order_id: orderPayResoponse?.orderid,
         prefill: {
           email: loginData?.email,
           contact: '9095094831',
@@ -77,19 +87,21 @@ const CheckoutPage = props => {
         },
         theme: {color: Colors.buttonBlue},
       };
-      console.log(options);
       await RazorpayCheckout.open(options)
         .then(data => {
           // setPaymentType('S');
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
+          setorderResponse(null);
         })
         .catch(error => {
           console.log(error);
           // setPaymentType('F');
           // setModalVisible(true);
+          setorderResponse(null);
         });
     } else {
       showToastMessage('Oops! payment failed try again later.', Colors.RED);
+      setorderResponse(null);
     }
   };
   const invoicePaymentInvoiceAdd = paymentId => {
@@ -162,6 +174,8 @@ const CheckoutPage = props => {
         }
       });
       setTotalValue(totalPrice.toFixed(2));
+      const tax = parseFloat(((totalPrice * 9) / 100).toFixed(2));
+      setNetTotalValue(parseFloat(totalPrice + tax + tax).toFixed(2));
     }
   };
   const plusMinusButtonView = (item, index) => {
@@ -350,7 +364,6 @@ const CheckoutPage = props => {
 
   const renderTotalView = () => {
     const tax = ((total * 9) / 100).toFixed(2);
-    const netTotal = parseFloat(total + 2 * tax).toFixed(2);
     const data = [
       {
         key1: 'Total',
@@ -367,6 +380,7 @@ const CheckoutPage = props => {
         value1: `₹ ${netTotal}`,
       },
     ];
+    console.log('data ==> ', data);
     return (
       <View style={[styles.totalCheckoutContainer]}>
         {data.map((value, index) => {
