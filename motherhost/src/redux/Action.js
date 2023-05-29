@@ -134,7 +134,6 @@ return async dispatch => {
         } else if (url === 'addinvoicepayment.php') {
           navigation.goBack();
         } else if (url === 'addorder.php') {
-          console.log('data==>', data);
           dispatch({
             type: CHECKOUT_API_SUCCESS,
             checkoutData: data,

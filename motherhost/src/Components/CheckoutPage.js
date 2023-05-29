@@ -56,7 +56,7 @@ const CheckoutPage = props => {
   }, [checkoutResponse]);
 
   const onTapPay = async () => {
-    var orderPayResoponse = orderResponse;
+    const orderPayResoponse = orderResponse;
     if(!isValidElement(orderResponse) || netTotal * 100 !== orderResponse?.amount){
       orderPayResoponse = await fetchRazorAPIRequest(
         netTotal,
@@ -65,7 +65,6 @@ const CheckoutPage = props => {
       setorderResponse(orderPayResoponse);
     }else{
       orderPayResoponse = orderResponse;
-      console.log('called')
     }
     
     let userName = getUserName();
