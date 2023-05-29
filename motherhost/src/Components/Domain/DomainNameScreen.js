@@ -358,7 +358,7 @@ const DomainNameScreen = props => {
           ? 'register'
           : transferSelected
           ? 'transfer'
-          : 'update',
+          : '',
         pid: pid,
         eppcode: '',
         regperiod: 1,
