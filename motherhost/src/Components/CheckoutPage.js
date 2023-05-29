@@ -75,7 +75,6 @@ const CheckoutPage = props => {
       setorderResponse(orderPayResoponse);
     } else {
       orderPayResoponse = orderResponse;
-      console.log('called');
     }
 
     let userName = getUserName();
