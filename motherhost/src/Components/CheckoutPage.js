@@ -50,7 +50,6 @@ const CheckoutPage = props => {
   }, [cartArrayFromSearch, netTotal]);
 
   useEffect(() => {
-    console.log('called success', checkoutResponse);
     return () =>
       dispatch({
         type: CHECKOUT_API_SUCCESS,
@@ -59,7 +58,6 @@ const CheckoutPage = props => {
   }, []);
 
   useEffect(() => {
-    console.log('called on tap pay', checkoutResponse?.invoiceid);
     if (isValidElement(checkoutResponse?.invoiceid)) {
       onTapPay();
     }
