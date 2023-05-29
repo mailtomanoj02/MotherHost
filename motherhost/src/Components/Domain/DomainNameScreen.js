@@ -14,7 +14,7 @@ import Colors from '../../Themes/Colors';
 import {FONT_FAMILY, SCREEN_NAMES} from '../../Config/Constant';
 import {Dropdown} from 'react-native-element-dropdown';
 import {fetchAPIAction} from '../../redux/Action';
-import {useDispatch, useSelector, useStore} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DomainAvailableView from '../DomainAvailableView';
 import {ADD_CART_ARRAY, GET_WHOIS_API_DATA_SUCCESS} from '../../redux/Type';
 import {getPriceBasedOnDomain, getUserId} from '../../utils/Utils';
@@ -152,7 +152,7 @@ const DomainNameScreen = props => {
       ? addToCart()
       : props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
 
-      props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+    props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
   };
 
   const domainAvailableView = () => {
@@ -292,8 +292,10 @@ const DomainNameScreen = props => {
               }
               onChangeText={value => {
                 if (type === 'register') {
+                  setShow(false);
                   setDomainName({...domainName, register: value});
                 } else if (type === 'transfer') {
+                  setEligible('');
                   setDomainName({...domainName, transfer: value});
                 } else {
                   setDomainName({...domainName, update: value});

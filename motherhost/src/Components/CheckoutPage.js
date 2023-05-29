@@ -243,7 +243,7 @@ const CheckoutPage = props => {
   };
 
   const renderCartView = ({item, index}) => {
-    let name = 'motherhost.com';
+    let name = item.domain;
     return (
       <View>
         <View style={styles.totalCheckoutContainer}>
@@ -482,9 +482,13 @@ const CheckoutPage = props => {
       <View style={{flex: 1}}>
         {cartArrayLength ? (
           <>
-            <FlatList data={cartArrayFromSearch} renderItem={renderCartView} />
-            <View
-              style={{flex: 1, justifyContent: 'flex-end', marginBottom: 50}}>
+            <View style={{flex: 1}}>
+              <FlatList
+                data={cartArrayFromSearch}
+                renderItem={renderCartView}
+              />
+            </View>
+            <View style={styles.totalContainerStyle}>
               {/*{renderOfferView()}*/}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0 ? (
@@ -516,7 +520,7 @@ const styles = StyleSheet.create({
   totalCheckoutContainer: {
     backgroundColor: Colors.white,
     marginHorizontal: 14,
-    marginTop: 12,
+    marginTop: 9,
     borderRadius: 10,
     padding: 10,
   },
@@ -588,5 +592,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
+  totalContainerStyle:{justifyContent: 'flex-end', marginBottom: 50}
 });
 export default CheckoutPage;
