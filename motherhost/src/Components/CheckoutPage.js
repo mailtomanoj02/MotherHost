@@ -16,7 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {isValidString, isValidElement} from '../utils/Helper';
 import {getPriceBasedOnDomain, getUserId, isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
-import {ADD_CART_ARRAY} from '../redux/Type';
+import {ADD_CART_ARRAY, CHECKOUT_API_SUCCESS} from '../redux/Type';
 import {fetchAPIAction} from '../redux/Action';
 import {fetchRazorAPIRequest} from '../Api/Api';
 import {getUserName} from '../utils/Utils';
@@ -50,6 +50,13 @@ const CheckoutPage = props => {
   }, [cartArrayFromSearch, netTotal]);
 
   useEffect(() => {
+    dispatch({
+      type: CHECKOUT_API_SUCCESS,
+      checkoutData: [],
+    });
+  }, []);
+
+  useEffect(() => {
     if (isValidElement(checkoutResponse?.invoiceid)) {
       onTapPay();
     }
@@ -57,17 +64,20 @@ const CheckoutPage = props => {
 
   const onTapPay = async () => {
     var orderPayResoponse = orderResponse;
-    if(!isValidElement(orderResponse) || netTotal * 100 !== orderResponse?.amount){
+    if (
+      !isValidElement(orderResponse) ||
+      netTotal * 100 !== orderResponse?.amount
+    ) {
       orderPayResoponse = await fetchRazorAPIRequest(
         netTotal,
         checkoutResponse?.invoiceid,
       );
       setorderResponse(orderPayResoponse);
-    }else{
+    } else {
       orderPayResoponse = orderResponse;
-      console.log('called')
+      console.log('called');
     }
-    
+
     let userName = getUserName();
     // console.log(loginData);
     // return;
@@ -606,6 +616,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
-  totalContainerStyle:{justifyContent: 'flex-end', marginBottom: 50}
+  totalContainerStyle: {justifyContent: 'flex-end', marginBottom: 50},
 });
 export default CheckoutPage;
