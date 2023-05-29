@@ -50,13 +50,16 @@ const CheckoutPage = props => {
   }, [cartArrayFromSearch, netTotal]);
 
   useEffect(() => {
-    dispatch({
-      type: CHECKOUT_API_SUCCESS,
-      checkoutData: [],
-    });
+    console.log('called success', checkoutResponse);
+    return () =>
+      dispatch({
+        type: CHECKOUT_API_SUCCESS,
+        checkoutData: [],
+      });
   }, []);
 
   useEffect(() => {
+    console.log('called on tap pay', checkoutResponse?.invoiceid);
     if (isValidElement(checkoutResponse?.invoiceid)) {
       onTapPay();
     }
@@ -78,8 +81,6 @@ const CheckoutPage = props => {
     }
 
     let userName = getUserName();
-    // console.log(loginData);
-    // return;
     if (isValidElement(orderPayResoponse?.id) && isValidElement(userName)) {
       let options = {
         description: 'motherhost.com',
@@ -103,7 +104,6 @@ const CheckoutPage = props => {
           setorderResponse(null);
         })
         .catch(error => {
-          console.log(error);
           // setPaymentType('F');
           // setModalVisible(true);
           setorderResponse(null);
@@ -319,7 +319,6 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -389,7 +388,6 @@ const CheckoutPage = props => {
         value1: `₹ ${netTotal}`,
       },
     ];
-    console.log('data ==> ', data);
     return (
       <View style={[styles.totalCheckoutContainer]}>
         {data.map((value, index) => {
@@ -471,7 +469,6 @@ const CheckoutPage = props => {
           // acc.eppcode +=
           //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
           //   (lastIndex ? ',' : '');
-          console.log(acc);
           return acc;
         },
         {
