@@ -4,9 +4,11 @@ import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
+import { getUserName } from '../utils/Utils';
 
 const Wallet = () => {
   const creditBalance = useSelector(state => state.loginData?.credit);
+  const name = getUserName();
   return (
     <View style={{flex: 1}}>
       <AppBar />
@@ -15,7 +17,7 @@ const Wallet = () => {
           <View style={{flexDirection: 'row'}}>
             <View style={{flex: 0.5}}>
               <Text style={styles.helloTextStyle}>Hello,</Text>
-              <Text style={styles.nameText}>Ramnath k</Text>
+              <Text style={styles.nameText}>{name}</Text>
             </View>
             <View style={{flex: 0.5, alignItems: 'flex-end'}}>
               <Image

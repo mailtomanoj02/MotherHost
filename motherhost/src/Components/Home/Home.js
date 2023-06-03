@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
-import {checkIsValidDomain, isValidElement} from '../../utils/Helper';
+import {checkIsValidDomain, isValidElement, isValidString} from '../../utils/Helper';
 import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 import OneSignalNotificationManager from '../NotificationManager/OneSignalNotification.js';
@@ -55,7 +55,7 @@ const HomeScreen = () => {
   },[]);
   useEffect(() => { 
     dispatch(fetchAPIAction('gettldprice.php', params));
-  }, [dispatch, params]);
+  }, []);
   const userTrackingView = () => {
     let loginList = isValidElement(loginData) ? loginData : '';
     let serviceCount = loginList?.stats?.productsnumactive;
@@ -102,9 +102,9 @@ const HomeScreen = () => {
   };
   const domainInView = () => {
     const priceList = getPricingData();
-    const comPrice = priceList.comPrice;
-    const netPrice = priceList.netPrice;
-    const inPrice = priceList.inPrice;
+    const comPrice = isValidString(priceList.comPrice) ? priceList.comPrice : '1040.99';
+    const netPrice = isValidString(priceList.netPrice) ? priceList.netPrice : '1276.99';
+    const inPrice = isValidString(priceList.inPrice) ? priceList.inPrice : '598.88';
     return (
       <View style={{flexDirection: 'row', margin: 5}}>
         <DomainHomeView

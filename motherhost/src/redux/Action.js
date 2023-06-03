@@ -132,10 +132,8 @@ return async dispatch => {
             navigation.goBack();
           }
         } else if (url === 'addinvoicepayment.php') {
-            dispatch({
-              type: ADD_CART_ARRAY,
-              cartArrayData: [],
-            });
+            dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
+
         } else if (url === 'addorder.php') {
           dispatch({
             type: CHECKOUT_API_SUCCESS,

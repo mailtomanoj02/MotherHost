@@ -87,7 +87,6 @@ const CheckoutPage = props => {
           console.log('data ==> ', data);
           setPaymentType('S');
           setModalVisible(true);
-          dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
         })
         .catch(error => {
