@@ -36,7 +36,6 @@ const CheckoutPage = props => {
   const [showModal, setShowModal] = useState(false);
   const [total, setTotalValue] = useState(0.0);
   const [netTotal, setNetTotalValue] = useState(0.0);
-  const [orderResponse, setorderResponse] = useState(null);
   const checkoutResponse = useSelector(state => state.checkoutData);
   let loginData = useSelector(state => state.loginData);
   const navigation = useNavigation();
@@ -93,11 +92,9 @@ const CheckoutPage = props => {
           console.log(error);
           setPaymentType('F');
           setModalVisible(true);
-          setorderResponse(null);
         });
     } else {
       showToastMessage('Oops! payment failed try again later.', Colors.RED);
-      setorderResponse(null);
     }
   };
   const invoicePaymentInvoiceAdd = paymentId => {
@@ -111,7 +108,7 @@ const CheckoutPage = props => {
     dispatch(
       fetchAPIAction('addinvoicepayment.php', params, 'POST'),
     );
-
+    
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
     navigation.reset({
       index: 0,

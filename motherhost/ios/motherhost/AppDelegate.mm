@@ -31,6 +31,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
@@ -48,6 +49,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];
+    if (@available(iOS 13.0, *)) {
+           rootView.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
   } else {
     rootView.backgroundColor = [UIColor whiteColor];
   }

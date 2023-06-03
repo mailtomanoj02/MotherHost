@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.org.reactjs.native.example.motherhost.onesignal</string>
+		<string>group.com.motherhost.onesignal</string>
 	</array>
 </dict>
 </plist>
