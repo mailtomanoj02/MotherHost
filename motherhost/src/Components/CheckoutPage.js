@@ -43,19 +43,12 @@ const CheckoutPage = props => {
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
+      dispatch({type: CHECKOUT_API_SUCCESS, checkoutData: null});
     };
   }, [cartArrayFromSearch, dispatch]);
   useEffect(() => {
     updateTotalInReceipt();
   }, [cartArrayFromSearch, netTotal]);
-
-  useEffect(() => {
-    return () =>
-      dispatch({
-        type: CHECKOUT_API_SUCCESS,
-        checkoutData: [],
-      });
-  }, []);
 
   useEffect(() => {
     if (isValidElement(checkoutResponse?.invoiceid)) {
@@ -64,20 +57,11 @@ const CheckoutPage = props => {
   }, [checkoutResponse]);
 
   const onTapPay = async () => {
-    var orderPayResoponse = orderResponse;
-    if (
-      !isValidElement(orderResponse) ||
-      netTotal * 100 !== orderResponse?.amount
-    ) {
-      orderPayResoponse = await fetchRazorAPIRequest(
+  console.log('checkoutResponse?.invoiceid == ', checkoutResponse?.invoiceid);
+     const  orderPayResoponse = await fetchRazorAPIRequest(
         netTotal,
         checkoutResponse?.invoiceid,
       );
-      setorderResponse(orderPayResoponse);
-    } else {
-      orderPayResoponse = orderResponse;
-    }
-
     let userName = getUserName();
     if (isValidElement(orderPayResoponse?.id) && isValidElement(userName)) {
       let options = {
@@ -102,6 +86,7 @@ const CheckoutPage = props => {
           setorderResponse(null);
         })
         .catch(error => {
+          console.log(error);
           // setPaymentType('F');
           // setModalVisible(true);
           setorderResponse(null);
@@ -317,6 +302,7 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
+              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -386,7 +372,7 @@ const CheckoutPage = props => {
         value1: `₹ ${netTotal}`,
       },
     ];
-    return (
+        return (
       <View style={[styles.totalCheckoutContainer]}>
         {data.map((value, index) => {
           return (
@@ -447,39 +433,66 @@ const CheckoutPage = props => {
         return;
       }
 
-      const finalArray = cartArrayFromSearch.reduce(
-        (acc, curr, index) => {
-          let lastIndex = index !== cartArrayFromSearch.length - 1;
-          acc.pid +=
-            (curr.pid ? curr.pid : "'" + '' + "'") + (lastIndex ? ',' : '');
-          acc.billingcycle +=
-            (curr.billingcycle ? curr.billingcycle : "'" + '' + "'") +
-            (lastIndex ? ',' : '');
-          acc.domain +=
-            (curr.domain ? curr.domain : "'" + '' + "'") +
-            (lastIndex ? ',' : '');
-          acc.domaintype +=
-            (curr.domaintype ? curr.domaintype : "'" + '' + "'") +
-            (lastIndex ? ',' : '');
-          acc.regperiod +=
-            (curr.regperiod ? curr.regperiod : "'" + '' + "'") +
-            (lastIndex ? ',' : '');
-          // acc.eppcode +=
-          //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
-          //   (lastIndex ? ',' : '');
-          return acc;
-        },
-        {
-          clientid: getUserId(),
-          paymentmethod: 'razorpay', //hardcode
-          billingcycle: '',
-          domain: '',
-          domaintype: '',
-          regperiod: '',
-          pid: '',
-          eppcode: [],
-        },
-      );
+      // const finalArray = cartArrayFromSearch.reduce(
+      //   (acc, curr, index) => {
+      //     let lastIndex = index !== cartArrayFromSearch.length - 1;
+      //     acc.pid +=
+      //       (curr.pid ? curr.pid : "") + (lastIndex ? ',' : '');
+      //     acc.billingcycle +=
+      //       (curr.billingcycle ? curr.billingcycle : "") +
+      //       (lastIndex ? ',' : '');
+      //     acc.domain +=
+      //       (curr.domain ? curr.domain : "") +
+      //       (lastIndex ? ',' : '');
+      //     acc.domaintype +=
+      //       (curr.domaintype ? curr.domaintype : "") +
+      //       (lastIndex ? ',' : '');
+      //     acc.regperiod +=
+      //       (curr.regperiod ? curr.regperiod : "") +
+      //       (lastIndex ? ',' : '');
+      //     // acc.eppcode +=
+      //     //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
+      //     //   (lastIndex ? ',' : '');
+      //     console.log(acc);
+      //     return acc;
+      //   },
+      //   {
+      //     clientid: getUserId(),
+      //     paymentmethod: 'razorpay', //hardcode
+      //     billingcycle: '',
+      //     domain: '',
+      //     domaintype: '',
+      //     regperiod: '',
+      //     pid: '',
+      //     eppcode: [''], 
+      //   },
+      // );
+      let billingcycleArray = [];
+      let domainArray = [];
+      let regperiodArray = [];
+      let pidArray = [];
+      let domaintypeArray = [];
+      let eppArray = [];
+      for(let i=0; i < cartArrayFromSearch.length; i++){
+          const obj = cartArrayFromSearch[i];
+          pidArray.push(isValidElement(obj?.pid) ? obj?.pid : '');
+          billingcycleArray.push(isValidElement(obj?.billingcycle) ? obj?.billingcycle : '');
+          domainArray.push(isValidElement(obj?.domain) ? obj.domain : '');
+          domaintypeArray.push(isValidElement(obj?.domaintype) ? obj.domaintype : '');
+          regperiodArray.push(isValidElement(obj?.regperiod) ? obj.regperiod : '');
+          eppArray.push('');
+      }
+
+      const finalArray = {
+        'clientid': getUserId(),
+        'paymentmethod' : 'razorpay',
+        'billingcycle': billingcycleArray.toString(),
+        'domain' : domainArray.toString(),
+        'domaintype' : domaintypeArray.toString(),
+        'regperiod' : regperiodArray.toString(),
+        'pid' : pidArray.toString(),
+        'eppcode' : eppArray
+      }
       dispatch(fetchAPIAction('addorder.php', finalArray));
     };
 
@@ -610,6 +623,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
-  totalContainerStyle: {justifyContent: 'flex-end', marginBottom: 50},
+  totalContainerStyle:{justifyContent: 'flex-end', marginBottom: 50}
 });
 export default CheckoutPage;
