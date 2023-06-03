@@ -6,6 +6,7 @@ import {
   View,
   Modal,
   Image,
+  Platform
 } from 'react-native';
 import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
@@ -18,6 +19,7 @@ import {isValidElement} from '../utils/Helper';
 import RazorpayCheckout from 'react-native-razorpay';
 import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
 import {fetchRazorAPIRequest} from '../Api/Api';
+import DeviceInfo from 'react-native-device-info';
 const InvoiceDetailScreen = props => {
   let useAddress = getAddress();
   let dispatch = useDispatch();
@@ -27,6 +29,7 @@ const InvoiceDetailScreen = props => {
   let status = invoiceDetailData?.status;
   let invoiceDetailsList = invoiceDetailData?.items?.item;
   const [total, setTotal] = useState(0);
+  const [tax, setTax] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [paymentType, setPaymentType] = useState('');
 
@@ -42,7 +45,10 @@ const InvoiceDetailScreen = props => {
       (a, v) => (a = a + parseFloat(v?.amount)),
       0,
     );
-    setTotal(total);
+    const taxes = ((total * 9) / 100).toFixed(2);
+    const netTotal = parseFloat((taxes * 2) + total).toFixed(2);
+    setTotal(netTotal) ;
+    setTax(taxes * 2)
   }, [invoiceDetailsList]);
 
   const invoicePaymentInvoiceAdd = paymentId => {
@@ -53,10 +59,16 @@ const InvoiceDetailScreen = props => {
       gateway: 'razorpay',
       date: Date(),
     };
-
     dispatch(
-      fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
+      fetchAPIAction('addinvoicepayment.php', params, 'POST'),
     );
+    params = {
+      action: 'GetInvoice',
+      invoiceid: invoiceId,
+    };
+    setTimeout(() => {
+      dispatch(fetchAPIAction('getinvoices.php', params));
+    }, 1000)
   };
 
   const onTapPay = async () => {
@@ -64,7 +76,8 @@ const InvoiceDetailScreen = props => {
     let userName = getUserName();
     if (isValidElement(orderResponse?.id) && isValidElement(userName)) {
       let options = {
-        description: 'motherhost.com',
+        description: `Invoice # ${invoiceId.toString()}`,
+        note: Platform.OS.toLowerCase() === 'ios' ? 'IOSApp' : 'AndroidApp',
         image: require('./../Images/Logo/razerpaylogo.png'),
         currency: 'INR',
         key: 'rzp_live_NRitIpeIamRiYC', // Your api key
@@ -81,6 +94,7 @@ const InvoiceDetailScreen = props => {
       await RazorpayCheckout.open(options)
         .then(data => {
           setPaymentType('S');
+          setModalVisible(true);
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
         })
         .catch(error => {
@@ -260,6 +274,27 @@ const InvoiceDetailScreen = props => {
             style={[
               styles.invoiceNoRowStyle,
               styles.boxInnerViewStyle,
+              {backgroundColor: Colors.white},
+            ]}>
+            <Text
+              style={[
+                styles.boxTextStyle,
+                {fontFamily: FONT_FAMILY.SEMI_BOLD, flex: 0.85},
+              ]}>
+              Tax (CGST 9% & SGST 9%)
+            </Text>
+            <Text
+              style={[
+                styles.boxTextStyle,
+                {fontFamily: FONT_FAMILY.SEMI_BOLD, flex: 0.15},
+              ]}>
+              {tax}
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.invoiceNoRowStyle,
+              styles.boxInnerViewStyle,
               {backgroundColor: Colors.MEDIUM_GREY},
             ]}>
             <Text
@@ -274,7 +309,7 @@ const InvoiceDetailScreen = props => {
                 styles.boxTextStyle,
                 {fontFamily: FONT_FAMILY.SEMI_BOLD, flex: 0.15},
               ]}>
-              {total?.toFixed(2)}
+              {total}
             </Text>
           </View>
         </View>

@@ -41,6 +41,7 @@ return async dispatch => {
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
+        console.log('data ==> ', data);
         if (url === 'getinvoices.php') {
           if (params.action === 'GetInvoices') {
             dispatch({
@@ -64,7 +65,6 @@ return async dispatch => {
             serviceData: data.products.product,
           });
         } else if (url === 'validatelogin.php') {
-          console.log('isFromCheckout',isFromCheckout)
           dispatch({
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
@@ -132,7 +132,10 @@ return async dispatch => {
             navigation.goBack();
           }
         } else if (url === 'addinvoicepayment.php') {
-          navigation.goBack();
+            dispatch({
+              type: ADD_CART_ARRAY,
+              cartArrayData: [],
+            });
         } else if (url === 'addorder.php') {
           dispatch({
             type: CHECKOUT_API_SUCCESS,

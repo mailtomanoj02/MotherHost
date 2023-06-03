@@ -24,8 +24,7 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
 };
 
 export const fetchRazorAPIRequest = async (total, invoiceId) => {
-  console.log('total == ', total);
-  console.log('invoiceId == ', invoiceId);
+ 
   let userName = 'rzp_live_NRitIpeIamRiYC';
   let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
   let razorParams = {
@@ -47,7 +46,6 @@ export const fetchRazorAPIRequest = async (total, invoiceId) => {
       data: razorParams,
     })
     .then(response => {
-      console.log('https://api.razorpay.com/v1/orders == ', response);
       return response.data;
     })
     .catch(error => {

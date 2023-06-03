@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Modal,
+  Platform
 } from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
@@ -39,7 +41,8 @@ const CheckoutPage = props => {
   let loginData = useSelector(state => state.loginData);
   const navigation = useNavigation();
   const isLoading = useSelector(state => state.isLoading);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [paymentType, setPaymentType] = useState('');
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
@@ -57,7 +60,6 @@ const CheckoutPage = props => {
   }, [checkoutResponse]);
 
   const onTapPay = async () => {
-  console.log('checkoutResponse?.invoiceid == ', checkoutResponse?.invoiceid);
      const  orderPayResoponse = await fetchRazorAPIRequest(
         netTotal,
         checkoutResponse?.invoiceid,
@@ -65,30 +67,33 @@ const CheckoutPage = props => {
     let userName = getUserName();
     if (isValidElement(orderPayResoponse?.id) && isValidElement(userName)) {
       let options = {
-        description: 'motherhost.com',
+        description: `Invoice # ${checkoutResponse?.invoiceid?.toString()}`,
+        note: Platform.OS.toLowerCase() === 'ios' ? 'IOSApp' : 'AndroidApp',
         image: require('./../Images/Logo/razerpaylogo.png'),
         currency: 'INR',
         key: 'rzp_live_NRitIpeIamRiYC', // Your api key
         amount: netTotal * 100,
         name: 'Mothersoft Technologies',
-        order_id: orderPayResoponse?.orderid,
+        order_id: orderPayResoponse?.id,
         prefill: {
           email: loginData?.email,
-          contact: '9095094831',
+          contact: loginData?.phonenumber,
           name: userName,
         },
         theme: {color: Colors.buttonBlue},
       };
       await RazorpayCheckout.open(options)
         .then(data => {
-          // setPaymentType('S');
+          console.log('data ==> ', data);
+          setPaymentType('S');
+          setModalVisible(true);
+          dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
-          setorderResponse(null);
         })
         .catch(error => {
           console.log(error);
-          // setPaymentType('F');
-          // setModalVisible(true);
+          setPaymentType('F');
+          setModalVisible(true);
           setorderResponse(null);
         });
     } else {
@@ -104,14 +109,16 @@ const CheckoutPage = props => {
       gateway: 'razorpay',
       date: Date(),
     };
-
     dispatch(
-      fetchAPIAction('addinvoicepayment.php', params, 'POST', props.navigation),
+      fetchAPIAction('addinvoicepayment.php', params, 'POST'),
     );
 
-    //Goto Home screen.
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
-    navigation.reset();
+    navigation.reset({
+      index: 0,
+      routes: [{name: SCREEN_NAMES.DRAWER}],
+    });
+
   };
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -432,41 +439,7 @@ const CheckoutPage = props => {
         });
         return;
       }
-
-      // const finalArray = cartArrayFromSearch.reduce(
-      //   (acc, curr, index) => {
-      //     let lastIndex = index !== cartArrayFromSearch.length - 1;
-      //     acc.pid +=
-      //       (curr.pid ? curr.pid : "") + (lastIndex ? ',' : '');
-      //     acc.billingcycle +=
-      //       (curr.billingcycle ? curr.billingcycle : "") +
-      //       (lastIndex ? ',' : '');
-      //     acc.domain +=
-      //       (curr.domain ? curr.domain : "") +
-      //       (lastIndex ? ',' : '');
-      //     acc.domaintype +=
-      //       (curr.domaintype ? curr.domaintype : "") +
-      //       (lastIndex ? ',' : '');
-      //     acc.regperiod +=
-      //       (curr.regperiod ? curr.regperiod : "") +
-      //       (lastIndex ? ',' : '');
-      //     // acc.eppcode +=
-      //     //   (curr.eppcode ? curr.eppcode : "'" + '' + "'") +
-      //     //   (lastIndex ? ',' : '');
-      //     console.log(acc);
-      //     return acc;
-      //   },
-      //   {
-      //     clientid: getUserId(),
-      //     paymentmethod: 'razorpay', //hardcode
-      //     billingcycle: '',
-      //     domain: '',
-      //     domaintype: '',
-      //     regperiod: '',
-      //     pid: '',
-      //     eppcode: [''], 
-      //   },
-      // );
+    
       let billingcycleArray = [];
       let domainArray = [];
       let regperiodArray = [];
@@ -500,6 +473,76 @@ const CheckoutPage = props => {
       <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
       </TouchableOpacity>
+    );
+  };
+  const paymentStatusModel = () => {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}>
+        <TouchableOpacity
+          style={{flex: 1}}
+          activeOpacity={1}
+          onPressOut={() => {
+            setModalVisible(false);
+          }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: Colors.BLUR_BLACK,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View
+              style={{
+                width: 300,
+                height: 200,
+                backgroundColor:
+                  paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                borderRadius: 10,
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  margin: 5,
+                  backgroundColor: Colors.backgroundColor,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  borderColor: paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                  borderWidth: 1,
+                }}>
+                <Image
+                  style={{
+                    width: 124,
+                    height: 124,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  source={
+                    paymentType === 'S'
+                      ? require('../Images/Common/patyment_success.png')
+                      : require('../Images/Common/payment_failed.png')
+                  }
+                />
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.SEMI_BOLD,
+                    fontSize: 20,
+                    color: paymentType === 'S' ? Colors.GREEN : Colors.RED,
+                  }}>
+                  {paymentType === 'S'
+                    ? 'Payment Successful!'
+                    : 'Payment Failed!'}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     );
   };
   const cartArrayLength = cartArrayFromSearch?.length > 0;
@@ -544,6 +587,7 @@ const CheckoutPage = props => {
           </View>
         )}
       </View>
+      {paymentStatusModel()}
     </View>
   );
 };

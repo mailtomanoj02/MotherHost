@@ -22,9 +22,9 @@ const OneSignalNotificationManager = () => {
           notificationReceivedEvent,
         );
         let notification = notificationReceivedEvent.getNotification();
-        console.log('notification: ', notification);
+        // console.log('notification: ', notification);
         const data = notification.additionalData;
-        console.log('additionalData: ', data);
+        // console.log('additionalData: ', data);
         // Complete with null means don't show a notification.
         notificationReceivedEvent.complete(notification);
       },
@@ -32,7 +32,7 @@ const OneSignalNotificationManager = () => {
 
     //Method for handling notifications opened
     OneSignal.setNotificationOpenedHandler(notification => {
-      console.log('OneSignal: notification opened:', notification);
+      // console.log('OneSignal: notification opened:', notification);
     });
     fetchDeviceState();
   }, [fetchDeviceState]);
