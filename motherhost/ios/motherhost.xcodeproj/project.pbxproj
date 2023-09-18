@@ -8,17 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* motherhostTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* motherhostTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-motherhost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-motherhost.a */; };
+		11CBB2CFE32AE95280DC506D /* libPods-motherhost-motherhostTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2762C808A5949170A54329F /* libPods-motherhost-motherhostTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2CACDECCF9D7490CBF0933C4 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9F54B3C256B4A69B747C37E /* OpenSans-LightItalic.ttf */; };
 		46A06E5928B4447CA56FAAD1 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C121E12FF76B491D9FDE3C5B /* OpenSans-ExtraBold.ttf */; };
 		4F767923DEBE4BCABE7ED78B /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40C614518F4548EFB803BE5B /* OpenSans-Light.ttf */; };
-		5BA21E824217A91BEF1F0AF6 /* libPods-motherhost-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58114553563237C8AA465087 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */; };
 		5E53AFD9DC84448887CE42D5 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26FCF58075754BDC82245E9F /* OpenSans-Regular.ttf */; };
+		6B63FEDB11DD29C39D4FAC85 /* libPods-motherhost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E649D146C10FAA0C9841DA6 /* libPods-motherhost.a */; };
 		758AD88AFA5B47E0AD9ADBBC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC9EC2626EDF4E7F830AF84D /* OpenSans-Bold.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-motherhost-motherhostTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-motherhost-motherhostTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8B49E4DA2A230FB2004243EF /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49E4D92A230FB2004243EF /* NotificationService.swift */; };
 		8B49E4DE2A230FB2004243EF /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B49E4D72A230FB2004243EF /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -27,6 +26,7 @@
 		997CB3DE8B61476EA39F78D4 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F34C001D716B45A4A3225786 /* OpenSans-Italic.ttf */; };
 		B9029716A36C430AA5CC01DA /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEEFEB473FC448F48013ACE5 /* OpenSans-BoldItalic.ttf */; };
 		EAD994B7CCFD4AAE8DC79A0D /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9630DC01CB4947E8B07FACF1 /* OpenSans-SemiBold.ttf */; };
+		EC9D367DDB24D1E7D3215152 /* libPods-motherhost-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D755B71C1E920432C38D11B5 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,37 +64,37 @@
 		00E356EE1AD99517003FC87E /* motherhostTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motherhostTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* motherhostTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = motherhostTests.m; sourceTree = "<group>"; };
-		0770FF4D3704716D9067A0B2 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-motherhost-OneSignalNotificationServiceExtension/Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* motherhost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motherhost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = motherhost/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = motherhost/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = motherhost/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = motherhost/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = motherhost/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-motherhost-motherhostTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost-motherhostTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25214E8E617125AD44C789F8 /* Pods-motherhost-motherhostTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-motherhostTests.debug.xcconfig"; path = "Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests.debug.xcconfig"; sourceTree = "<group>"; };
 		26FCF58075754BDC82245E9F /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-motherhost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost.debug.xcconfig"; path = "Target Support Files/Pods-motherhost/Pods-motherhost.debug.xcconfig"; sourceTree = "<group>"; };
 		3C078C2760C146DE96C2E614 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBoldItalic.ttf"; path = "../assets/fonts/OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		40C614518F4548EFB803BE5B /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-motherhost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost.release.xcconfig"; path = "Target Support Files/Pods-motherhost/Pods-motherhost.release.xcconfig"; sourceTree = "<group>"; };
-		58114553563237C8AA465087 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B7EB9410499542E8C5724F5 /* Pods-motherhost-motherhostTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-motherhostTests.debug.xcconfig"; path = "Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-motherhost.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		46666092B68E8F55CB9E85A5 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-motherhost-OneSignalNotificationServiceExtension/Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		53998D98D4483F8D90597C24 /* Pods-motherhost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost.debug.xcconfig"; path = "Target Support Files/Pods-motherhost/Pods-motherhost.debug.xcconfig"; sourceTree = "<group>"; };
 		61519F8EA6124C848CF36DB1 /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
-		7193E5DF757EB1FF99884018 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-motherhost-OneSignalNotificationServiceExtension/Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		62C76367FF7B7C44D4BF29E9 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-motherhost-OneSignalNotificationServiceExtension/Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		6E649D146C10FAA0C9841DA6 /* libPods-motherhost.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = motherhost/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-motherhost-motherhostTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-motherhostTests.release.xcconfig"; path = "Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests.release.xcconfig"; sourceTree = "<group>"; };
+		87B3906767185F15713F142F /* Pods-motherhost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost.release.xcconfig"; path = "Target Support Files/Pods-motherhost/Pods-motherhost.release.xcconfig"; sourceTree = "<group>"; };
 		8B49E4D22A230ED0004243EF /* motherhost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = motherhost.entitlements; path = motherhost/motherhost.entitlements; sourceTree = "<group>"; };
 		8B49E4D72A230FB2004243EF /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B49E4D92A230FB2004243EF /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		8B49E4DB2A230FB2004243EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BE4E6302A23120500359BC6 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		8E5FB7B21F75E8AACBA0D1DD /* Pods-motherhost-motherhostTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-motherhost-motherhostTests.release.xcconfig"; path = "Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests.release.xcconfig"; sourceTree = "<group>"; };
 		9630DC01CB4947E8B07FACF1 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		A9F54B3C256B4A69B747C37E /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-LightItalic.ttf"; path = "../assets/fonts/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		AEEFEB473FC448F48013ACE5 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-BoldItalic.ttf"; path = "../assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C121E12FF76B491D9FDE3C5B /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		D755B71C1E920432C38D11B5 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9EC2626EDF4E7F830AF84D /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F2762C808A5949170A54329F /* libPods-motherhost-motherhostTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-motherhost-motherhostTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F34C001D716B45A4A3225786 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Italic.ttf"; path = "../assets/fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-motherhost-motherhostTests.a in Frameworks */,
+				11CBB2CFE32AE95280DC506D /* libPods-motherhost-motherhostTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-motherhost.a in Frameworks */,
+				6B63FEDB11DD29C39D4FAC85 /* libPods-motherhost.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,7 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BA21E824217A91BEF1F0AF6 /* libPods-motherhost-OneSignalNotificationServiceExtension.a in Frameworks */,
+				EC9D367DDB24D1E7D3215152 /* libPods-motherhost-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,9 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-motherhost.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-motherhost-motherhostTests.a */,
-				58114553563237C8AA465087 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */,
+				6E649D146C10FAA0C9841DA6 /* libPods-motherhost.a */,
+				D755B71C1E920432C38D11B5 /* libPods-motherhost-OneSignalNotificationServiceExtension.a */,
+				F2762C808A5949170A54329F /* libPods-motherhost-motherhostTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -215,12 +215,12 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-motherhost.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-motherhost.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-motherhost-motherhostTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-motherhost-motherhostTests.release.xcconfig */,
-				0770FF4D3704716D9067A0B2 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				7193E5DF757EB1FF99884018 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */,
+				53998D98D4483F8D90597C24 /* Pods-motherhost.debug.xcconfig */,
+				87B3906767185F15713F142F /* Pods-motherhost.release.xcconfig */,
+				62C76367FF7B7C44D4BF29E9 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				46666092B68E8F55CB9E85A5 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */,
+				25214E8E617125AD44C789F8 /* Pods-motherhost-motherhostTests.debug.xcconfig */,
+				8E5FB7B21F75E8AACBA0D1DD /* Pods-motherhost-motherhostTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -249,12 +249,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "motherhostTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				42D5DA7E05D3D1727FB282A1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				B0BB8DA12180C0E670B17393 /* [CP] Embed Pods Frameworks */,
+				81661843A7F7F0E5AF22AE2A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -270,15 +270,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "motherhost" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				7A19967F32245F3B88F5D820 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 				8B49E4E22A230FB2004243EF /* Embed Foundation Extensions */,
+				73C7189B4DA2C6B9FB4F0FD8 /* [CP] Embed Pods Frameworks */,
+				FE204B0755441CD609062282 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -294,11 +294,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B49E4DF2A230FB2004243EF /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				014186CF794C2CE4A7E4EC5B /* [CP] Check Pods Manifest.lock */,
+				119303031FFC539918994C54 /* [CP] Check Pods Manifest.lock */,
 				8B49E4D32A230FB2004243EF /* Sources */,
 				8B49E4D42A230FB2004243EF /* Frameworks */,
 				8B49E4D52A230FB2004243EF /* Resources */,
-				E982A9FC4DB7E26B167AEBE8 /* [CP] Copy Pods Resources */,
+				A046065F1312C2A1E52D1AE1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -403,24 +403,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		014186CF794C2CE4A7E4EC5B /* [CP] Check Pods Manifest.lock */ = {
+		119303031FFC539918994C54 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -442,7 +425,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		42D5DA7E05D3D1727FB282A1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -464,7 +447,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		73C7189B4DA2C6B9FB4F0FD8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A19967F32245F3B88F5D820 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -486,41 +486,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		81661843A7F7F0E5AF22AE2A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E982A9FC4DB7E26B167AEBE8 /* [CP] Copy Pods Resources */ = {
+		A046065F1312C2A1E52D1AE1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -537,21 +520,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost-OneSignalNotificationServiceExtension/Pods-motherhost-OneSignalNotificationServiceExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		B0BB8DA12180C0E670B17393 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost-motherhostTests/Pods-motherhost-motherhostTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -571,6 +554,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FE204B0755441CD609062282 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-motherhost/Pods-motherhost-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -619,7 +619,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-motherhost-motherhostTests.debug.xcconfig */;
+			baseConfigurationReference = 25214E8E617125AD44C789F8 /* Pods-motherhost-motherhostTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -646,7 +646,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-motherhost-motherhostTests.release.xcconfig */;
+			baseConfigurationReference = 8E5FB7B21F75E8AACBA0D1DD /* Pods-motherhost-motherhostTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -670,7 +670,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-motherhost.debug.xcconfig */;
+			baseConfigurationReference = 53998D98D4483F8D90597C24 /* Pods-motherhost.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -700,7 +700,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-motherhost.release.xcconfig */;
+			baseConfigurationReference = 87B3906767185F15713F142F /* Pods-motherhost.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -865,7 +865,7 @@
 		};
 		8B49E4E02A230FB2004243EF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0770FF4D3704716D9067A0B2 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = 62C76367FF7B7C44D4BF29E9 /* Pods-motherhost-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -892,7 +892,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.motherhost.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.motherhost.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -905,7 +905,7 @@
 		};
 		8B49E4E12A230FB2004243EF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7193E5DF757EB1FF99884018 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = 46666092B68E8F55CB9E85A5 /* Pods-motherhost-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -932,7 +932,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.motherhost.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.motherhost.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;

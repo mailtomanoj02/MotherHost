@@ -341,7 +341,7 @@ const DomainNameScreen = props => {
     );
   };
   const [cartArray, setCartArray] = useState([]);
-  console.log('cartArray==>', cartArray);
+  // console.log('cartArray==>', cartArray);
   const addToCart = () => {
     if (
       cartArrayState?.some(

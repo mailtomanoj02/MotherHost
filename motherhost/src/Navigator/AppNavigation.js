@@ -20,6 +20,9 @@ import InvoiceDetailScreen from '../Components/InvoiceDetailScreen';
 import CheckoutPage from '../Components/CheckoutPage';
 import TicketList from '../Components/TicketList.js';
 import AddTicket from '../Components/AddTicket.js';
+import Authentication from '../Components/Authentication/Authentication';
+import {useSelector} from 'react-redux';
+import {isUserLoggedIn} from '../utils/Utils';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -93,8 +96,18 @@ const HoistingStackNavigator = () => {
 };
 
 const RootStackScreen = () => {
+  const isUserAuthenticated = useSelector(state => state.isUserAuthenticated);
   return (
     <RootStack.Navigator screenOptions={{headerShown: false}}>
+      {!isUserAuthenticated && isUserLoggedIn() ? (
+        <RootStack.Screen
+          name={SCREEN_NAMES.AUTH_SCREEN}
+          component={Authentication}
+          options={{title: '', unmountOnBlur: true}}
+          presentation={'transparentModal'}
+        />
+      ) : null}
+
       <RootStack.Screen
         name={SCREEN_NAMES.DRAWER}
         component={MyDrawer}

@@ -17,6 +17,7 @@ import {
   TICKET_LIST_API_DATA_SUCCESS,
   TICKET_ADD_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
+  SET_AUTHENTICATION_STATUS,
 } from './Type';
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   hostingData: null,
   ticketData: null,
   checkoutData: null,
+  isUserAuthenticated: false,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -121,6 +123,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.error,
+      };
+    case SET_AUTHENTICATION_STATUS:
+      return {
+        ...state,
+        isUserAuthenticated: action.isUserAuthenticated,
       };
     default:
       return state;
