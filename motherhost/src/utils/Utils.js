@@ -103,8 +103,6 @@ export const getPriceBasedOnDomain = domain => {
 export const isNetworkConnectionAvailable = async () => {
 
   const result = await NetInfo.fetch();
-    // console.log("Connection type", state.type);
-    // console.log("Is connected?", result.isConnected);
     return result.isConnected;
 
 }

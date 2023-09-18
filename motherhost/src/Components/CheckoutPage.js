@@ -83,7 +83,6 @@ const CheckoutPage = props => {
       };
       await RazorpayCheckout.open(options)
         .then(data => {
-          console.log('data ==> ', data);
           setPaymentType('S');
           setModalVisible(true);
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
@@ -108,7 +107,7 @@ const CheckoutPage = props => {
     dispatch(
       fetchAPIAction('addinvoicepayment.php', params, 'POST'),
     );
-    
+
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
     navigation.reset({
       index: 0,
@@ -305,7 +304,6 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}
@@ -435,7 +433,7 @@ const CheckoutPage = props => {
         });
         return;
       }
-    
+
       let billingcycleArray = [];
       let domainArray = [];
       let regperiodArray = [];

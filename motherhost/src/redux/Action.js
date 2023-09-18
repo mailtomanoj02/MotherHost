@@ -41,7 +41,6 @@ return async dispatch => {
     fetchAPIRequest(url, params, method)
       .then(res => {
         const data = res?.data;
-        console.log('data ==> ', data);
         if (url === 'getinvoices.php') {
           if (params.action === 'GetInvoices') {
             dispatch({
@@ -111,7 +110,6 @@ return async dispatch => {
             });
           }
         } else if (url === 'getproducts.php') {
-          // console.log(JSON.parse(data))
           dispatch({
             type: GET_PRODUCTS_API_DATA_SUCCESS,
             productData: data,

@@ -27,7 +27,8 @@ export const SCREEN_NAMES = {
   COUPONS: 'Coupons',
   CHECKOUT: 'Checkout',
   TICKETS: 'Tickets',
-  ADD_TICKETS: 'Add_Tickets'
+  ADD_TICKETS: 'Add_Tickets',
+  AUTH_SCREEN:'Auth_screen'
 
 };
 
