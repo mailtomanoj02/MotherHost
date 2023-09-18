@@ -24,7 +24,6 @@ import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 import OneSignalNotificationManager from '../NotificationManager/OneSignalNotification.js';
 const HomeScreen = () => {
   let cartArrayState = useSelector(state => state.cartArrayData);
-  // console.log('cartArrayState==>', cartArrayState);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [domainNameFromSearch, setDomainNameFromSearch] = useState('');
@@ -53,7 +52,7 @@ const HomeScreen = () => {
           navigation.navigate(SCREEN_NAMES.CHECKOUT)
       }
   },[]);
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(fetchAPIAction('gettldprice.php', params));
   }, []);
   const userTrackingView = () => {
@@ -341,7 +340,7 @@ const HomeScreen = () => {
         </View>
         <OneSignalNotificationManager/>
       </ScrollView>
-      
+
     );
   };
 

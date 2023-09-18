@@ -83,7 +83,6 @@ const CheckoutPage = props => {
       };
       await RazorpayCheckout.open(options)
         .then(data => {
-          // console.log('data ==> ', data);
           setPaymentType('S');
           setModalVisible(true);
           invoicePaymentInvoiceAdd(data.razorpay_payment_id);
@@ -305,7 +304,6 @@ const CheckoutPage = props => {
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-              console.log(item);
               changeArrayValue(index, 'changeDuration', item);
               setIsFocus(false);
             }}

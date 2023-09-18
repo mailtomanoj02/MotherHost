@@ -210,13 +210,11 @@ const InvoiceDetailScreen = props => {
 
   const renderDetailView = () => {
     const statusCheck = () => {
-      console.log(status?.toLowerCase());
       return (
         status?.toLowerCase() !== 'paid' &&
         status?.toLowerCase() !== 'cancelled'
       );
     };
-    console.log(statusCheck());
     return (
       <ScrollView style={styles.totalContainerStyle}>
         <Text style={styles.headerStyle}>Mothersoft Technologies</Text>
