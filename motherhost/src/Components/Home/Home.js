@@ -18,12 +18,15 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {fetchAPIAction} from '../../redux/Action';
 import {useDispatch, useSelector} from 'react-redux';
-import {checkIsValidDomain, isValidElement, isValidString} from '../../utils/Helper';
+import {
+  checkIsValidDomain,
+  isValidElement,
+  isValidString,
+} from '../../utils/Helper';
 import {getPricingData, isUserLoggedIn} from '../../utils/Utils';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 import OneSignalNotificationManager from '../NotificationManager/OneSignalNotification.js';
 const HomeScreen = () => {
-  let cartArrayState = useSelector(state => state.cartArrayData);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [domainNameFromSearch, setDomainNameFromSearch] = useState('');
@@ -48,10 +51,14 @@ const HomeScreen = () => {
   let cartAarray = useSelector(state => state.cartArrayData);
 
   useEffect(() => {
-      if(isValidElement(cartAarray) && cartAarray.length > 0 && isUserLoggedIn()) {
-          navigation.navigate(SCREEN_NAMES.CHECKOUT)
-      }
-  },[]);
+    if (
+      isValidElement(cartAarray) &&
+      cartAarray.length > 0 &&
+      isUserLoggedIn()
+    ) {
+      navigation.navigate(SCREEN_NAMES.CHECKOUT);
+    }
+  }, []);
   useEffect(() => {
     dispatch(fetchAPIAction('gettldprice.php', params));
   }, []);
@@ -63,8 +70,8 @@ const HomeScreen = () => {
     let invoiceCount = loginList?.stats?.numdueinvoices;
 
     return (
-      <View style={{flexDirection: 'column'}}>
-        <View style={{flexDirection: 'row'}}>
+      <View style={homeStyle.homeUserTrackingContainerView}>
+        <View style={homeStyle.homeUserInnerView}>
           <HomeUserTrackingView
             title={'Services'}
             count={serviceCount}
@@ -80,7 +87,7 @@ const HomeScreen = () => {
             navigation={navigation}
           />
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={homeStyle.homeUserInnerView}>
           <HomeUserTrackingView
             title={'Tickets'}
             count={ticketCount}
@@ -101,11 +108,17 @@ const HomeScreen = () => {
   };
   const domainInView = () => {
     const priceList = getPricingData();
-    const comPrice = isValidString(priceList.comPrice) ? priceList.comPrice : '1040.99';
-    const netPrice = isValidString(priceList.netPrice) ? priceList.netPrice : '1276.99';
-    const inPrice = isValidString(priceList.inPrice) ? priceList.inPrice : '598.88';
+    const comPrice = isValidString(priceList.comPrice)
+      ? priceList.comPrice
+      : '1040.99';
+    const netPrice = isValidString(priceList.netPrice)
+      ? priceList.netPrice
+      : '1276.99';
+    const inPrice = isValidString(priceList.inPrice)
+      ? priceList.inPrice
+      : '598.88';
     return (
-      <View style={{flexDirection: 'row', margin: 5}}>
+      <View style={homeStyle.domainViewContainerStyle}>
         <DomainHomeView
           img={require('../../Images/Home/domain_in.png')}
           color={Colors.HOME_IN_COLOR}
@@ -277,13 +290,13 @@ const HomeScreen = () => {
   };
 
   const searchView = () => {
-    let params = {
+    let apiParams = {
       action: 'DomainWhois',
       domain: domainNameFromSearch.replace(/ /g, ''),
     };
     const onPress = () => {
       if (checkIsValidDomain(domainNameFromSearch)) {
-        dispatch(fetchAPIAction('whois.php', params));
+        dispatch(fetchAPIAction('whois.php', apiParams));
         navigation.navigate(SCREEN_NAMES.DOMAIN_AVAILABILITY, {
           domainName: domainNameFromSearch,
         });
@@ -304,18 +317,11 @@ const HomeScreen = () => {
             autoCapitalize={false}
           />
           <TouchableOpacity
-            style={{
-              backgroundColor: Colors.ORANGE,
-              flex: 0.1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              height: 40,
-            }}
+            style={homeStyle.searchInputButtonStyle}
             onPress={onPress}>
             <Image
               source={require('./../../Images/Home/search.png')}
-              style={{height: 20, width: 20}}
+              style={homeStyle.searchImageStyle}
             />
           </TouchableOpacity>
         </View>
@@ -338,14 +344,13 @@ const HomeScreen = () => {
           {hostHeader('Security')}
           {securityView()}
         </View>
-        <OneSignalNotificationManager/>
+        <OneSignalNotificationManager />
       </ScrollView>
-
     );
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={homeStyle.rootContainer}>
       <AppBar
         image={require('./../../Images/AppBar/hamburger.png')}
         onPress={'toggleDrawer'}
@@ -357,6 +362,7 @@ const HomeScreen = () => {
 };
 
 const homeStyle = StyleSheet.create({
+  rootContainer: {flex: 1},
   titleContainer: {
     padding: 10,
     borderBottomColor: Colors.black,
@@ -400,8 +406,20 @@ const homeStyle = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
-    color:Colors.black
+    color: Colors.black,
   },
+  searchInputButtonStyle: {
+    backgroundColor: Colors.ORANGE,
+    flex: 0.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    height: 40,
+  },
+  searchImageStyle: {height: 20, width: 20},
+  domainViewContainerStyle: {flexDirection: 'row', margin: 5},
+  homeUserTrackingContainerView: {flexDirection: 'column'},
+  homeUserInnerView: {flexDirection: 'row'},
 });
 
 export default HomeScreen;

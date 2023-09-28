@@ -6,8 +6,9 @@ import {
   Image,
   FlatList,
   Modal,
-  Platform
+  Platform,
 } from 'react-native';
+import React from 'react';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
@@ -59,10 +60,10 @@ const CheckoutPage = props => {
   }, [checkoutResponse]);
 
   const onTapPay = async () => {
-     const  orderPayResoponse = await fetchRazorAPIRequest(
-        netTotal,
-        checkoutResponse?.invoiceid,
-      );
+    const orderPayResoponse = await fetchRazorAPIRequest(
+      netTotal,
+      checkoutResponse?.invoiceid,
+    );
     let userName = getUserName();
     if (isValidElement(orderPayResoponse?.id) && isValidElement(userName)) {
       let options = {
@@ -104,16 +105,13 @@ const CheckoutPage = props => {
       gateway: 'razorpay',
       date: Date(),
     };
-    dispatch(
-      fetchAPIAction('addinvoicepayment.php', params, 'POST'),
-    );
+    dispatch(fetchAPIAction('addinvoicepayment.php', params, 'POST'));
 
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
     navigation.reset({
       index: 0,
       routes: [{name: SCREEN_NAMES.DRAWER}],
     });
-
   };
   const changeArrayValue = (index, value, priceData = null) => {
     setCartArrayFromSearch(prevCartArray => {
@@ -373,7 +371,7 @@ const CheckoutPage = props => {
         value1: `₹ ${netTotal}`,
       },
     ];
-        return (
+    return (
       <View style={[styles.totalCheckoutContainer]}>
         {data.map((value, index) => {
           return (
@@ -440,26 +438,32 @@ const CheckoutPage = props => {
       let pidArray = [];
       let domaintypeArray = [];
       let eppArray = [];
-      for(let i=0; i < cartArrayFromSearch.length; i++){
-          const obj = cartArrayFromSearch[i];
-          pidArray.push(isValidElement(obj?.pid) ? obj?.pid : '');
-          billingcycleArray.push(isValidElement(obj?.billingcycle) ? obj?.billingcycle : '');
-          domainArray.push(isValidElement(obj?.domain) ? obj.domain : '');
-          domaintypeArray.push(isValidElement(obj?.domaintype) ? obj.domaintype : '');
-          regperiodArray.push(isValidElement(obj?.regperiod) ? obj.regperiod : '');
-          eppArray.push('');
+      for (let i = 0; i < cartArrayFromSearch.length; i++) {
+        const obj = cartArrayFromSearch[i];
+        pidArray.push(isValidElement(obj?.pid) ? obj?.pid : '');
+        billingcycleArray.push(
+          isValidElement(obj?.billingcycle) ? obj?.billingcycle : '',
+        );
+        domainArray.push(isValidElement(obj?.domain) ? obj.domain : '');
+        domaintypeArray.push(
+          isValidElement(obj?.domaintype) ? obj.domaintype : '',
+        );
+        regperiodArray.push(
+          isValidElement(obj?.regperiod) ? obj.regperiod : '',
+        );
+        eppArray.push('');
       }
 
       const finalArray = {
-        'clientid': getUserId(),
-        'paymentmethod' : 'razorpay',
-        'billingcycle': billingcycleArray.toString(),
-        'domain' : domainArray.toString(),
-        'domaintype' : domaintypeArray.toString(),
-        'regperiod' : regperiodArray.toString(),
-        'pid' : pidArray.toString(),
-        'eppcode' : eppArray
-      }
+        clientid: getUserId(),
+        paymentmethod: 'razorpay',
+        billingcycle: billingcycleArray.toString(),
+        domain: domainArray.toString(),
+        domaintype: domaintypeArray.toString(),
+        regperiod: regperiodArray.toString(),
+        pid: pidArray.toString(),
+        eppcode: eppArray,
+      };
       dispatch(fetchAPIAction('addorder.php', finalArray));
     };
 
@@ -661,6 +665,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
   },
-  totalContainerStyle:{justifyContent: 'flex-end', marginBottom: 50}
+  totalContainerStyle: {justifyContent: 'flex-end', marginBottom: 50},
 });
 export default CheckoutPage;

@@ -23,7 +23,7 @@ const Colors = {
   LIGHT_RED: '#f8dad8',
   BORDER_RED: '#d70d00',
   BLUR_BLACK: 'rgba(52, 52, 52, 0.8)',
-  BLACK:'#000'
+  BLACK: '#000',
 };
 
 export default Colors;

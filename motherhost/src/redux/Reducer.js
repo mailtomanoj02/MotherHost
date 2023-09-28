@@ -15,9 +15,9 @@ import {
   ADD_CART_ARRAY,
   HOSTING_DATA,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
   SET_AUTHENTICATION_STATUS,
+  LOOKUP_API_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -35,6 +35,7 @@ const initialState = {
   ticketData: null,
   checkoutData: null,
   isUserAuthenticated: false,
+  lookUpData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -129,6 +130,12 @@ export const mainReducer = (state = initialState, action) => {
         ...state,
         isUserAuthenticated: action.isUserAuthenticated,
       };
+    case LOOKUP_API_SUCCESS:
+      return {
+        ...state,
+        isUserAuthenticated: action.isUserAuthenticated,
+      };
+
     default:
       return state;
   }

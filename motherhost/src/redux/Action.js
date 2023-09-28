@@ -10,28 +10,35 @@ import {
   GET_PRODUCTS_API_DATA_SUCCESS,
   GET_WHOIS_API_DATA_SUCCESS,
   INVOICE_DETAIL_API_DATA_SUCCESS,
-  RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS,
   REGISTER_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
+  ADD_CART_ARRAY,
+  LOOKUP_API_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
 import Colors from '../Themes/Colors';
 import {isValidElement} from '../utils/Helper';
 import {SCREEN_NAMES} from '../Config/Constant';
-import {isNetworkConnectionAvailable} from './../utils/Utils'
+import {isNetworkConnectionAvailable} from './../utils/Utils';
 export const requestApiData = () => {
   return {
     type: REQUEST_API_DATA,
   };
 };
 
-export const fetchAPIAction = (url, params, loader = true, method = 'POST', navigation = null,isFromCheckout) => {
-return async dispatch => {
+export const fetchAPIAction = (
+  url,
+  params,
+  loader = true,
+  method = 'POST',
+  navigation = null,
+  isFromCheckout,
+) => {
+  return async dispatch => {
     const isNetworkAvailable = await isNetworkConnectionAvailable();
-    if(!isNetworkAvailable){
+    if (!isNetworkAvailable) {
       showToastMessage('There is no network connection available.', Colors.RED);
       return;
     }
@@ -71,7 +78,7 @@ return async dispatch => {
           if (data) {
             if (data.result === 'success') {
               if (isFromCheckout) {
-                navigation.pop()
+                navigation.pop();
               } else {
                 navigation.reset({
                   index: 0,
@@ -130,12 +137,16 @@ return async dispatch => {
             navigation.goBack();
           }
         } else if (url === 'addinvoicepayment.php') {
-            dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
-
+          dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
         } else if (url === 'addorder.php') {
           dispatch({
             type: CHECKOUT_API_SUCCESS,
             checkoutData: data,
+          });
+        } else if (url === 'domainwhois.php') {
+          dispatch({
+            type: LOOKUP_API_SUCCESS,
+            lookUpData: data,
           });
         }
         if (loader) {
@@ -154,5 +165,5 @@ return async dispatch => {
           dispatch({type: RESPONSE_API_DATA});
         }
       });
-    }
   };
+};

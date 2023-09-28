@@ -28,15 +28,15 @@ export const SCREEN_NAMES = {
   CHECKOUT: 'Checkout',
   TICKETS: 'Tickets',
   ADD_TICKETS: 'Add_Tickets',
-  AUTH_SCREEN:'Auth_screen'
-
+  AUTH_SCREEN: 'Auth_screen',
+  WHO_IS_LOOKUP: 'WHO_IS_LOOKUP',
+  DNS_LOOKUP: 'DNS_LOOKUP',
 };
 
 export const WEBPAGE_REDIRECT_LINK = {
   PRIVACY_POLICY: 'https://www.motherhost.com/legal/privacy-policy/',
   ABOUT_US: 'https://www.motherhost.in/aboutus/',
   CHAT_SUPPORT: 'https://tawk.to/chat/5e06453527773e0d832ae71b/default',
-  TERMS_CONDITIONS:
-    'https://www.motherhost.com/legal/terms-of-services/',
-  WHATSAPP_LINK: 'https://wa.me/919884678464'
+  TERMS_CONDITIONS: 'https://www.motherhost.com/legal/terms-of-services/',
+  WHATSAPP_LINK: 'https://wa.me/919884678464',
 };

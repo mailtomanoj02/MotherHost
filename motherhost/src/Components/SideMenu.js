@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Modal,
   Linking,
-  Share
+  Share,
+  Alert,
 } from 'react-native';
 import {
   FONT_FAMILY,
@@ -61,6 +62,16 @@ const SideMenu = () => {
   let SideDrawerItems = [
     {
       icon: require('../Images/Drawer/about-us.png'),
+      title: 'Whois Lookup',
+      screen: SCREEN_NAMES.WHO_IS_LOOKUP,
+    },
+    {
+      icon: require('../Images/Drawer/about-us.png'),
+      title: 'DNS Lookup',
+      screen: SCREEN_NAMES.DNS_LOOKUP,
+    },
+    {
+      icon: require('../Images/Drawer/about-us.png'),
       title: 'About us',
       screen: SCREEN_NAMES.WEBVIEW_SCREEN,
     },
@@ -87,7 +98,8 @@ const SideMenu = () => {
   ];
   const onShare = async () => {
     try {
-      const url = '\n\niOS: https://apps.apple.com/us/app/motherhost/id1577482366 \n Android: https://play.google.com/store/apps/details?id=com.motherhost.webhosting'
+      const url =
+        '\n\niOS: https://apps.apple.com/us/app/motherhost/id1577482366 \n Android: https://play.google.com/store/apps/details?id=com.motherhost.webhosting';
       const result = await Share.share({
         message:
           'Hello, Checkout this reliable Hosting Provider in India.' + url,
@@ -114,15 +126,13 @@ const SideMenu = () => {
       params.weburl = WEBPAGE_REDIRECT_LINK.PRIVACY_POLICY;
     } else if (item.title === 'Terms & Conditions') {
       params.weburl = WEBPAGE_REDIRECT_LINK.TERMS_CONDITIONS;
-    }  else if (item.title == 'Whatsapp Support'){
-      Linking.openURL(WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK)
+    } else if (item.title === 'Whatsapp Support') {
+      Linking.openURL(WEBPAGE_REDIRECT_LINK.WHATSAPP_LINK);
       return;
-    }
-    else if (item.title == 'Share'){
+    } else if (item.title === 'Share') {
       onShare();
       return;
-    }
-    else {
+    } else {
     }
     navigation.navigate(item.screen, params);
   };
@@ -213,33 +223,35 @@ const SideMenu = () => {
   return (
     <View style={{flex: 1}}>
       <View>
-      <View style={styles.headerViewContainer}>
-        <Image
-          style={styles.logoStyle}
-          source={require('../Images/Logo/Symbol-Logo.png')}
-        />
-        {isUserLoggedIn() ? loggInView() : logoutView()}
-      </View>
-      <LoadDrawerItems />
-      {isUserLoggedIn() ? (
-        <TouchableOpacity
-          style={styles.menuContainer}
-          onPress={() => setShowModal(true)}>
+        <View style={styles.headerViewContainer}>
           <Image
-            source={require('../Images/Drawer/logout.png')}
-            style={styles.menuItemIcon}
+            style={styles.logoStyle}
+            source={require('../Images/Logo/Symbol-Logo.png')}
           />
-          <Text style={styles.menuItemTxt}>Logout</Text>
-        </TouchableOpacity>
-      ) : null}
-      <LogoutModal
-        visible={showModal}
-        onConfirm={handleConfirm}
-        onClose={handleClose}
-      />
+          {isUserLoggedIn() ? loggInView() : logoutView()}
+        </View>
+        <LoadDrawerItems />
+        {isUserLoggedIn() ? (
+          <TouchableOpacity
+            style={styles.menuContainer}
+            onPress={() => setShowModal(true)}>
+            <Image
+              source={require('../Images/Drawer/logout.png')}
+              style={styles.menuItemIcon}
+            />
+            <Text style={styles.menuItemTxt}>Logout</Text>
+          </TouchableOpacity>
+        ) : null}
+        <LogoutModal
+          visible={showModal}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+        />
       </View>
       <View style={styles.versionView}>
-        <Text style={styles.versionTextStyle}>Ver {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})</Text>
+        <Text style={styles.versionTextStyle}>
+          Ver {DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+        </Text>
       </View>
     </View>
   );
@@ -337,14 +349,14 @@ const styles = StyleSheet.create({
     alignContent: 'flex-end',
     margin: 25,
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
-  versionTextStyle:{
+  versionTextStyle: {
     flex: 1,
     fontSize: 12,
     fontFamily: FONT_FAMILY.REGULAR,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default SideMenu;

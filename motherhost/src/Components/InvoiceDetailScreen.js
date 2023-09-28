@@ -6,8 +6,9 @@ import {
   View,
   Modal,
   Image,
-  Platform
+  Platform,
 } from 'react-native';
+import React from 'react';
 import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
@@ -19,7 +20,6 @@ import {isValidElement} from '../utils/Helper';
 import RazorpayCheckout from 'react-native-razorpay';
 import {showToastMessage} from './customUI/FlashMessageComponent/Helper';
 import {fetchRazorAPIRequest} from '../Api/Api';
-import DeviceInfo from 'react-native-device-info';
 const InvoiceDetailScreen = props => {
   let useAddress = getAddress();
   let dispatch = useDispatch();
@@ -46,9 +46,9 @@ const InvoiceDetailScreen = props => {
       0,
     );
     const taxes = ((total * 9) / 100).toFixed(2);
-    const netTotal = parseFloat((taxes * 2) + total).toFixed(2);
-    setTotal(netTotal) ;
-    setTax(taxes * 2)
+    const netTotal = parseFloat(taxes * 2 + total).toFixed(2);
+    setTotal(netTotal);
+    setTax(taxes * 2);
   }, [invoiceDetailsList]);
 
   const invoicePaymentInvoiceAdd = paymentId => {
@@ -59,16 +59,14 @@ const InvoiceDetailScreen = props => {
       gateway: 'razorpay',
       date: Date(),
     };
-    dispatch(
-      fetchAPIAction('addinvoicepayment.php', params, 'POST'),
-    );
+    dispatch(fetchAPIAction('addinvoicepayment.php', params, 'POST'));
     params = {
       action: 'GetInvoice',
       invoiceid: invoiceId,
     };
     setTimeout(() => {
       dispatch(fetchAPIAction('getinvoices.php', params));
-    }, 1000)
+    }, 1000);
   };
 
   const onTapPay = async () => {

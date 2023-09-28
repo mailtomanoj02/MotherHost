@@ -1,11 +1,12 @@
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AppBar from '../AppBar';
 import Colors from '../../Themes/Colors';
 import {FONT_FAMILY} from '../../Config/Constant';
 import {TextInput} from 'react-native-gesture-handler';
-const DomainDetailScreen = (props) => {
-  const domainData =  props.route.params.domain;
-  
+const DomainDetailScreen = props => {
+  const domainData = props.route.params.domain;
+
   const RenderPlaceHolder = ({title, placeHolderValue}) => {
     return (
       <View style={styles.nameServerPlaceHolderView}>
@@ -34,21 +35,19 @@ const DomainDetailScreen = (props) => {
             </Text>
 
             <View style={styles.statusStyle}>
-            <Text style={styles.dateText}>{'Status : ' }</Text>
-            <View style={styles.statusBox}>
-              <Text
-                style={
-                  domainData?.status === 'Active'
-                    ? styles.statusTextColorGreen
-                    : styles.statusTextColorRed
-                }>
-                {domainData.status}
-              </Text>
+              <Text style={styles.dateText}>{'Status : '}</Text>
+              <View style={styles.statusBox}>
+                <Text
+                  style={
+                    domainData?.status === 'Active'
+                      ? styles.statusTextColorGreen
+                      : styles.statusTextColorRed
+                  }>
+                  {domainData.status}
+                </Text>
+              </View>
             </View>
           </View>
-
-          </View>
-      
         </View>
         <Text style={styles.nameServerHeaderTextStyle}>Name Servers</Text>
         <Text style={styles.nameServerDescriptionStyle}>
@@ -57,14 +56,8 @@ const DomainDetailScreen = (props) => {
           for your Domain Name.
         </Text>
         <View>
-          <RenderPlaceHolder
-            title={'Name Server 1:'}
-            placeHolderValue=""
-          />
-          <RenderPlaceHolder
-            title={'Name Server 2:'}
-            placeHolderValue=""
-          />
+          <RenderPlaceHolder title={'Name Server 1:'} placeHolderValue="" />
+          <RenderPlaceHolder title={'Name Server 2:'} placeHolderValue="" />
           <TouchableOpacity style={styles.buttonContainerStyle} disabled={true}>
             <Text style={styles.buttonTextStyle}>UPDATE NAME SERVERS</Text>
           </TouchableOpacity>
@@ -92,7 +85,7 @@ const styles = StyleSheet.create({
   },
   statusStyle: {
     marginTop: 10,
-    flexDirection:'row',
+    flexDirection: 'row',
     fontFamily: FONT_FAMILY.REGULAR,
   },
   hostText: {

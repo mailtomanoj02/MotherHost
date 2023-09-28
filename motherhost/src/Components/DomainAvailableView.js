@@ -1,3 +1,4 @@
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
