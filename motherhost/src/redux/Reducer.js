@@ -133,7 +133,7 @@ export const mainReducer = (state = initialState, action) => {
     case LOOKUP_API_SUCCESS:
       return {
         ...state,
-        isUserAuthenticated: action.isUserAuthenticated,
+        lookUpData: action.lookUpData,
       };
 
     default:

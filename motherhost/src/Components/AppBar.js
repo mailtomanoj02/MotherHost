@@ -84,8 +84,16 @@ const AppBar = props => {
                   })
             }>
             <Image
-              source={route.name === SCREEN_NAMES.CHECKOUT ? require('./../Images/AppBar/shopping-cart-empty.png') : require('./../Images/AppBar/shopping-cart.png')}
-              style={route.name === SCREEN_NAMES.CHECKOUT ? {width: 32, height: 32} : styles.walletCartImageStyle}
+              source={
+                route.name === SCREEN_NAMES.CHECKOUT
+                  ? require('./../Images/AppBar/shopping-cart-empty.png')
+                  : require('./../Images/AppBar/shopping-cart.png')
+              }
+              style={
+                route.name === SCREEN_NAMES.CHECKOUT
+                  ? {width: 32, height: 32}
+                  : styles.walletCartImageStyle
+              }
             />
           </TouchableOpacity>
         </View>

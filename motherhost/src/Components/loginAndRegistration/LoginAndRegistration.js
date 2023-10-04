@@ -12,6 +12,7 @@ import {FONT_FAMILY} from '../../Config/Constant';
 import {useState} from 'react';
 import SignIn from './SignIn';
 import Register from './Register';
+import React from 'react';
 
 const LoginAndRegistration = props => {
   const SCREEN_CONSTANTS = {

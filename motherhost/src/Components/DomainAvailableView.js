@@ -34,7 +34,7 @@ const DomainAvailableView = ({addToCart, domainName}) => {
         </View>
       )}
       {isAvailable ? (
-        <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={styles.domainAvailableContainerStyle}>
           <Text style={styles.amountTextStyle}>{`₹ ${priceData}`}</Text>
           <Text style={styles.perMonthTextStyle}>{'  /mo'}</Text>
           <TouchableOpacity
@@ -89,5 +89,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
+  domainAvailableContainerStyle: {flexDirection: 'row', marginTop: 10},
 });
 export default DomainAvailableView;

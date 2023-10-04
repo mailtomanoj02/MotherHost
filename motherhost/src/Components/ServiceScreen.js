@@ -15,7 +15,7 @@ const renderItem = ({item}) => {
       <Text style={styles.tileHeadingStyle}>{item?.name}</Text>
       <Text style={styles.nameStyle}>{item?.groupname}</Text>
       <Text style={styles.domainStyle}>{item?.domain}</Text>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={styles.serviceDetailContainerStyle}>
         <View>
           <Text
             style={
@@ -139,5 +139,9 @@ const styles = StyleSheet.create({
   },
   statusTextColorRed: {
     color: Colors.RED,
+  },
+  serviceDetailContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

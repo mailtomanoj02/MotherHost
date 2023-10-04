@@ -221,7 +221,7 @@ const SideMenu = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.rootContainerStyle}>
       <View>
         <View style={styles.headerViewContainer}>
           <Image
@@ -258,6 +258,7 @@ const SideMenu = () => {
 };
 
 const styles = StyleSheet.create({
+  rootContainerStyle: {flex: 1},
   headerViewContainer: {
     backgroundColor: Colors.headerBlue,
     padding: 10,

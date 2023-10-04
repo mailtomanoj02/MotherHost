@@ -144,10 +144,7 @@ export const fetchAPIAction = (
             checkoutData: data,
           });
         } else if (url === 'domainwhois.php') {
-          dispatch({
-            type: LOOKUP_API_SUCCESS,
-            lookUpData: data,
-          });
+          return data;
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});

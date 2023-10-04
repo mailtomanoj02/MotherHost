@@ -2,24 +2,24 @@ import {Text, View, StyleSheet, Image, ImageBackground} from 'react-native';
 import AppBar from './AppBar';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
-import {useEffect} from "react";
-import {useSelector} from "react-redux";
-import { getUserName } from '../utils/Utils';
+import React from 'react';
+import {useSelector} from 'react-redux';
+import {getUserName} from '../utils/Utils';
 
 const Wallet = () => {
   const creditBalance = useSelector(state => state.loginData?.credit);
   const name = getUserName();
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.rootContainer}>
       <AppBar />
       <View>
-        <View style={styles.totalContainerStyle}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 0.5}}>
+        <View style={styles.walletContainer}>
+          <View style={styles.walletInnerContainerStyle}>
+            <View style={styles.textViewStyle}>
               <Text style={styles.helloTextStyle}>Hello,</Text>
               <Text style={styles.nameText}>{name}</Text>
             </View>
-            <View style={{flex: 0.5, alignItems: 'flex-end'}}>
+            <View style={styles.cartIconContainerStyle}>
               <Image
                 source={require('../Images/AppBar/appIconWallet.png')}
                 style={styles.appIconImageStyle}
@@ -29,15 +29,10 @@ const Wallet = () => {
           <View>
             <ImageBackground
               source={require('../Images/AppBar/img.png')}
-              style={{height: 125, marginTop: 10}}
-              imageStyle={{borderRadius: 20}}
-            >
-              <Text style={styles.amountStyle}>
-                ₹ {creditBalance}
-              </Text>
-              <Text style={styles.totalBalanceStyle}>
-                Total Balance
-              </Text>
+              style={styles.imageBackgroundStyle}
+              imageStyle={styles.imageStyle}>
+              <Text style={styles.amountStyle}>₹ {creditBalance}</Text>
+              <Text style={styles.totalBalanceStyle}>Total Balance</Text>
             </ImageBackground>
           </View>
         </View>
@@ -47,12 +42,14 @@ const Wallet = () => {
 };
 
 const styles = StyleSheet.create({
-  totalContainerStyle: {
+  rootContainer: {flex: 1},
+  walletContainer: {
     backgroundColor: Colors.white,
     margin: 14,
     borderRadius: 10,
     padding: 10,
   },
+  walletInnerContainerStyle: {flexDirection: 'row'},
   helloTextStyle: {
     fontFamily: FONT_FAMILY.REGULAR,
     color: Colors.DARK_GREY,
@@ -72,14 +69,18 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.SEMI_BOLD,
     fontSize: 40,
     marginLeft: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   totalBalanceStyle: {
     color: Colors.white,
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: 14,
-    marginLeft: 20
+    marginLeft: 20,
   },
+  imageBackgroundStyle: {height: 125, marginTop: 10},
+  imageStyle: {borderRadius: 20},
+  textViewStyle: {flex: 0.5},
+  cartIconContainerStyle: {flex: 0.5, alignItems: 'flex-end'},
 });
 
 export default Wallet;

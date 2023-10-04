@@ -1,5 +1,5 @@
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {Fragment} from 'react';
+import React, {Fragment} from 'react';
 
 const SkeletonLoader = () => {
   const loader = [1, 2, 3, 4, 5, 6];

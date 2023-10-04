@@ -24,7 +24,6 @@ import Authentication from '../Components/Authentication/Authentication';
 import {useSelector} from 'react-redux';
 import {isUserLoggedIn} from '../utils/Utils';
 import WhoIsLookUp from '../Components/Lookup/WhoIsLookUp.js';
-import DNSLookup from '../Components/Lookup/DNSLookup.js';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();

@@ -15,7 +15,7 @@ const WebviewScreen = props => {
     setIsLoading(false);
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.rootContainer}>
       <AppBar />
       <WebView
         source={{
@@ -33,6 +33,9 @@ const WebviewScreen = props => {
 };
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+  },
   loader: {
     position: 'absolute',
     top: 0,

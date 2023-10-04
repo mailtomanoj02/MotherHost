@@ -1,3 +1,4 @@
+import React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
