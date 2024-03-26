@@ -18,6 +18,7 @@ import {
   TICKET_ADD_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
   SET_AUTHENTICATION_STATUS,
+  PROMOTION_API_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   ticketData: null,
   checkoutData: null,
   isUserAuthenticated: false,
+  promotions: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -128,6 +130,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         isUserAuthenticated: action.isUserAuthenticated,
+      };
+    case PROMOTION_API_SUCCESS:
+      return {
+        ...state,
+        promotions: action.promotions,
       };
     default:
       return state;
