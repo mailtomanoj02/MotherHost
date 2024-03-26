@@ -31,6 +31,7 @@ export const SCREEN_NAMES = {
   AUTH_SCREEN: 'Auth_screen',
   WHO_IS_LOOKUP: 'WHO_IS_LOOKUP',
   DNS_LOOKUP: 'DNS_LOOKUP',
+
 };
 
 export const WEBPAGE_REDIRECT_LINK = {

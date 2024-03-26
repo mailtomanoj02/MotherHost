@@ -15,6 +15,7 @@ import {
   CHECKOUT_API_SUCCESS,
   ADD_CART_ARRAY,
   LOOKUP_API_SUCCESS,
+  PROMOTION_API_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -147,6 +148,11 @@ export const fetchAPIAction = (
           });
         } else if (url === 'domainwhois.php') {
           return data;
+        } else if (url === 'getpromotions.php') {
+          dispatch({
+            type: PROMOTION_API_SUCCESS,
+            promotions: data?.promotions?.promotion,
+          });
         }
         if (loader) {
           dispatch({type: RESPONSE_API_DATA});

@@ -18,6 +18,7 @@ import {
   CHECKOUT_API_SUCCESS,
   SET_AUTHENTICATION_STATUS,
   LOOKUP_API_SUCCESS,
+  PROMOTION_API_SUCCESS,
 } from './Type';
 
 const initialState = {
@@ -36,6 +37,7 @@ const initialState = {
   checkoutData: null,
   isUserAuthenticated: false,
   lookUpData: null,
+  promotions: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -135,7 +137,11 @@ export const mainReducer = (state = initialState, action) => {
         ...state,
         lookUpData: action.lookUpData,
       };
-
+    case PROMOTION_API_SUCCESS:
+      return {
+        ...state,
+        promotions: action.promotions,
+      };
     default:
       return state;
   }

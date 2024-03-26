@@ -313,34 +313,39 @@ const CheckoutPage = props => {
       </View>
     );
   };
+  const onClickViewOffers = () => {
+    navigation.navigate(SCREEN_NAMES.COUPONS);
+  };
   const renderOfferView = () => {
     return (
-      <View style={[{flexDirection: 'row'}, styles.totalCheckoutContainer]}>
-        <View style={{flex: 0.5}}>
-          <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.black}}>
-            Offers
-          </Text>
-          <View style={styles.discountInnerViewStyle}>
-            <Image
-              source={require('./../Images/RadioButton/discount.png')}
-              style={{height: 25, width: 25}}
-            />
-            <Text
-              style={{
-                fontFamily: FONT_FAMILY.SEMI_BOLD,
-                marginLeft: 5,
-                color: Colors.black,
-              }}>
-              Select a coupon code
+      <TouchableOpacity onPress={onClickViewOffers}>
+        <View style={[{flexDirection: 'row'}, styles.totalCheckoutContainer]}>
+          <View style={{flex: 0.5}}>
+            <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.black}}>
+              Offers
+            </Text>
+            <View style={styles.discountInnerViewStyle}>
+              <Image
+                source={require('./../Images/RadioButton/discount.png')}
+                style={{height: 25, width: 25}}
+              />
+              <Text
+                style={{
+                  fontFamily: FONT_FAMILY.SEMI_BOLD,
+                  marginLeft: 5,
+                  color: Colors.black,
+                }}>
+                Select a coupon code
+              </Text>
+            </View>
+          </View>
+          <View style={styles.viewOfferContainer}>
+            <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.RED}}>
+              View Offers
             </Text>
           </View>
         </View>
-        <View style={styles.viewOfferContainer}>
-          <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.RED}}>
-            View Offers
-          </Text>
-        </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   const Divider = () => {
@@ -562,6 +567,7 @@ const CheckoutPage = props => {
             </View>
             <View style={styles.totalContainerStyle}>
               {/*{renderOfferView()}*/}
+              {cartArrayLength ? renderOfferView() : null}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0 ? (
                 !isLoading ? (
