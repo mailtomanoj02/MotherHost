@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {FlatList, Text, View, StyleSheet, TouchableOpacity, RefreshControl} from 'react-native';
+import {
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
 import Colors from '../../Themes/Colors';
@@ -33,7 +40,9 @@ const DomainScreen = props => {
     return (
       <TouchableOpacity
         onPress={() =>
-          props.navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN, {domain: item})
+          props.navigation.navigate(SCREEN_NAMES.DOMAIN_DETAIL_SCREEN, {
+            domain: item,
+          })
         }>
         <View style={styles.itemContainer}>
           <View style={styles.innerViewTop}>

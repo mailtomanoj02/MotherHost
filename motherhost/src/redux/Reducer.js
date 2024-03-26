@@ -15,9 +15,9 @@ import {
   ADD_CART_ARRAY,
   HOSTING_DATA,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
   SET_AUTHENTICATION_STATUS,
+  LOOKUP_API_SUCCESS,
   PROMOTION_API_SUCCESS,
 } from './Type';
 
@@ -36,6 +36,7 @@ const initialState = {
   ticketData: null,
   checkoutData: null,
   isUserAuthenticated: false,
+  lookUpData: null,
   promotions: null,
 };
 
@@ -130,6 +131,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         isUserAuthenticated: action.isUserAuthenticated,
+      };
+    case LOOKUP_API_SUCCESS:
+      return {
+        ...state,
+        lookUpData: action.lookUpData,
       };
     case PROMOTION_API_SUCCESS:
       return {

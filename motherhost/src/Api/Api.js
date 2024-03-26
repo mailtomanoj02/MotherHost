@@ -7,6 +7,7 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
     'Content-Type': 'application/json',
   };
   return new Promise((resolve, reject) => {
+    console.log('TEST==>');
     axios
       .request({
         method: method,
@@ -15,16 +16,17 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
         data: params,
       })
       .then(response => {
+        console.log('1');
         resolve(response);
       })
       .catch(error => {
+        console.log('2');
         reject(error);
       });
   });
 };
 
 export const fetchRazorAPIRequest = async (total, invoiceId) => {
- 
   let userName = 'rzp_live_NRitIpeIamRiYC';
   let password = 'QLNnSQS21jYsT5NQm4EVqeBV';
   let razorParams = {
@@ -50,6 +52,24 @@ export const fetchRazorAPIRequest = async (total, invoiceId) => {
     })
     .catch(error => {
       console.log(error);
-
     });
+};
+
+export const fetchlocalApiRequest = async (url, params, method = 'POST') => {
+  let header = {
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const response = await axios.request({
+      method: method,
+      url: BASE_URL + url,
+      headers: header,
+      data: params,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };

@@ -50,7 +50,7 @@ const InvoiceScreen = props => {
           <Text style={styles.idText}>{item.id}</Text>
           <Text style={styles.amountStyle}>{item.amount}</Text>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.invoiceDetailViewStyle}>
           <View>
             <Text style={styles.dateText}>{`Date\t\t: ${item.date}`}</Text>
             <Text style={styles.dateText}>{`Due Date\t: ${item.duedate}`}</Text>
@@ -143,5 +143,9 @@ const styles = StyleSheet.create({
   amountStyle: {
     color: Colors.black,
     fontFamily: FONT_FAMILY.SEMI_BOLD,
+  },
+  invoiceDetailViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

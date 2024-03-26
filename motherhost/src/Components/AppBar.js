@@ -44,18 +44,20 @@ const AppBar = props => {
   return (
     <SafeAreaView>
       <View style={styles.containerStyle}>
-        <TouchableOpacity
-          style={styles.leftPressableStyle}
-          onPress={() => {
-            props.onPress === 'toggleDrawer'
-              ? navigation.toggleDrawer()
-              : navigation.goBack();
-          }}>
-          <Image
-            style={props.image ? styles.hamBurgerStyle : styles.leftIconStyle}
-            source={imageBack}
-          />
-        </TouchableOpacity>
+        {isUserLoggedIn() ? (
+          <TouchableOpacity
+            style={styles.leftPressableStyle}
+            onPress={() => {
+              props.onPress === 'toggleDrawer'
+                ? navigation.toggleDrawer()
+                : navigation.goBack();
+            }}>
+            <Image
+              style={props.image ? styles.hamBurgerStyle : styles.leftIconStyle}
+              source={imageBack}
+            />
+          </TouchableOpacity>
+        ) : null}
         <Image
           style={styles.logoStyle}
           source={require('./../Images/Logo/NameLogo-White.png')}
@@ -72,22 +74,32 @@ const AppBar = props => {
             </TouchableOpacity>
           ) : null}
 
-          <TouchableOpacity
-            style={styles.walletCartButtonStyle}
-            onPress={() =>
-              showMinusCart
-                ? props.localCartArray?.length > 0
-                  ? setShowModal(true)
-                  : null
-                : navigation.navigate(SCREEN_NAMES.CHECKOUT, {
-                    isFromCartIcon: true,
-                  })
-            }>
-            <Image
-              source={route.name === SCREEN_NAMES.CHECKOUT ? require('./../Images/AppBar/shopping-cart-empty.png') : require('./../Images/AppBar/shopping-cart.png')}
-              style={route.name === SCREEN_NAMES.CHECKOUT ? {width: 32, height: 32} : styles.walletCartImageStyle}
-            />
-          </TouchableOpacity>
+          {isUserLoggedIn() ? (
+            <TouchableOpacity
+              style={styles.walletCartButtonStyle}
+              onPress={() =>
+                showMinusCart
+                  ? props.localCartArray?.length > 0
+                    ? setShowModal(true)
+                    : null
+                  : navigation.navigate(SCREEN_NAMES.CHECKOUT, {
+                      isFromCartIcon: true,
+                    })
+              }>
+              <Image
+                source={
+                  route.name === SCREEN_NAMES.CHECKOUT
+                    ? require('./../Images/AppBar/shopping-cart-empty.png')
+                    : require('./../Images/AppBar/shopping-cart.png')
+                }
+                style={
+                  route.name === SCREEN_NAMES.CHECKOUT
+                    ? {width: 32, height: 32}
+                    : styles.walletCartImageStyle
+                }
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
         <ModalPopUp
           visible={showModal}

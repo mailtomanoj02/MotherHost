@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -270,15 +270,8 @@ const DomainNameScreen = props => {
     return (
       <View>
         {selected ? (
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                marginHorizontal: 5,
-                fontFamily: FONT_FAMILY.REGULAR,
-                alignSelf: 'center',
-              }}>
-              WWW.
-            </Text>
+          <View style={styles.textInputContainerStyle}>
+            <Text style={styles.wwwTextStyle}>WWW.</Text>
             <TextInput
               style={styles.textInputStyle}
               placeholder={'example'}
@@ -306,11 +299,7 @@ const DomainNameScreen = props => {
             <Dropdown
               style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
               selectedTextStyle={styles.selectedTextStyle}
-              itemTextStyle={{
-                color: Colors.BLACK,
-                fontFamily: FONT_FAMILY.REGULAR,
-                fontSize: 14,
-              }}
+              itemTextStyle={styles.dropDownTextStyle}
               data={data}
               maxHeight={300}
               labelField="label"
@@ -340,7 +329,6 @@ const DomainNameScreen = props => {
       </View>
     );
   };
-  const [cartArray, setCartArray] = useState([]);
   const addToCart = () => {
     if (
       cartArrayState?.some(
@@ -374,7 +362,6 @@ const DomainNameScreen = props => {
           value: priceListArray[0].value,
         },
       };
-      // setCartArray([...cartArray, arrayParams]);
       dispatch({
         type: ADD_CART_ARRAY,
         cartArrayData: [...cartArrayState, arrayParams],
@@ -384,7 +371,7 @@ const DomainNameScreen = props => {
     }
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.rootContainer}>
       <AppBar />
       <ScreenTitle title={'Domain Name'} />
       <View style={styles.totalContainerStyle}>
@@ -411,14 +398,20 @@ const DomainNameScreen = props => {
       {registerSelected && show && !isLoading ? (
         <DomainAvailableView addToCart={addToCart} domainName={domainSearch} />
       ) : isLoading && registerSelected ? (
-        <ActivityIndicator size={'large'} style={{marginTop: 30}} />
+        <ActivityIndicator
+          size={'large'}
+          style={styles.activityIndicatorStyle}
+        />
       ) : null}
       {transferSelected && eligible === 'available' && !isLoading ? (
         domainAvailableView()
       ) : transferSelected && eligible === 'unAvailable' && !isLoading ? (
         domainUnAvailableView()
       ) : isLoading && transferSelected ? (
-        <ActivityIndicator size={'large'} style={{marginTop: 30}} />
+        <ActivityIndicator
+          size={'large'}
+          style={styles.activityIndicatorStyle}
+        />
       ) : null}
       <View style={styles.submitButtonContainer}>{SubmitButton(true)}</View>
     </View>
@@ -426,6 +419,9 @@ const DomainNameScreen = props => {
 };
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+  },
   radioButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -550,6 +546,18 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 30,
   },
+  wwwTextStyle: {
+    marginHorizontal: 5,
+    fontFamily: FONT_FAMILY.REGULAR,
+    alignSelf: 'center',
+  },
+  textInputContainerStyle: {flexDirection: 'row'},
+  dropDownTextStyle: {
+    color: Colors.BLACK,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontSize: 14,
+  },
+  activityIndicatorStyle: {marginTop: 30},
 });
 
 export default DomainNameScreen;

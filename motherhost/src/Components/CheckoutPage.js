@@ -8,6 +8,7 @@ import {
   Modal,
   Platform,
 } from 'react-native';
+import React from 'react';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';

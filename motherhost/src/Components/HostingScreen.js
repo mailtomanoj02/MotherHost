@@ -1,3 +1,4 @@
+import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AppBar from './AppBar';
 import ScreenTitle from './ScreenTitle';
@@ -30,7 +31,7 @@ const HostingScreen = props => {
   const renderButton = (pid, itemPriceData, description, title) => {
     return (
       <TouchableOpacity
-        style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}
+        style={styles.buttonStyle}
         onPress={() =>
           props.navigation.navigate(SCREEN_NAMES.DOMAIN_NAME_SCREEN, {
             pid: pid,
@@ -142,4 +143,5 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   amountContainerStyle: {flexDirection: 'row', marginTop: 15, flex: 1},
+  buttonStyle: {flexDirection: 'row', justifyContent: 'flex-end', flex: 1},
 });

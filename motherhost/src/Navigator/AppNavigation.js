@@ -23,6 +23,7 @@ import AddTicket from '../Components/AddTicket.js';
 import Authentication from '../Components/Authentication/Authentication';
 import {useSelector} from 'react-redux';
 import {isUserLoggedIn} from '../utils/Utils';
+import WhoIsLookUp from '../Components/Lookup/WhoIsLookUp.js';
 const DomainStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -123,7 +124,11 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <SideMenu {...props} />}
-      initialRouteName={SCREEN_NAMES.HOME_SCREEN}
+      initialRouteName={
+        isUserLoggedIn()
+          ? SCREEN_NAMES.HOME_SCREEN
+          : SCREEN_NAMES.LOGIN_REGISTRATION
+      }
       screenOptions={{headerShown: false, unmountOnBlur: true}}>
       <Drawer.Screen
         name={SCREEN_NAMES.HOME_SCREEN}
@@ -155,10 +160,6 @@ const MyDrawer = () => {
         component={HoistingStackNavigator}
       />
       <Drawer.Screen
-        name={SCREEN_NAMES.LOGIN_REGISTRATION}
-        component={LoginAndRegistration}
-      />
-      <Drawer.Screen
         name={SCREEN_NAMES.DOMAIN_NAME_SCREEN}
         component={DomainNameScreen}
       />
@@ -172,6 +173,21 @@ const MyDrawer = () => {
         name={SCREEN_NAMES.CHECKOUT}
         component={CheckoutPage}
         // options={{unmountOnBlur: false}}
+      />
+      <Drawer.Screen
+        name={SCREEN_NAMES.LOGIN_REGISTRATION}
+        component={LoginAndRegistration}
+        initialParams={{isFromRegister: false, isFromLogin: true}}
+      />
+      <Drawer.Screen
+        name={SCREEN_NAMES.WHO_IS_LOOKUP}
+        component={WhoIsLookUp}
+        initialParams={{screenName: SCREEN_NAMES.WHO_IS_LOOKUP}}
+      />
+      <Drawer.Screen
+        name={SCREEN_NAMES.DNS_LOOKUP}
+        component={WhoIsLookUp}
+        initialParams={{screenName: SCREEN_NAMES.DNS_LOOKUP}}
       />
     </Drawer.Navigator>
   );

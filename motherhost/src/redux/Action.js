@@ -10,11 +10,11 @@ import {
   GET_PRODUCTS_API_DATA_SUCCESS,
   GET_WHOIS_API_DATA_SUCCESS,
   INVOICE_DETAIL_API_DATA_SUCCESS,
-  RAZOR_ORDER_ID_INFO_API_DATA_SUCCESS,
   TICKET_LIST_API_DATA_SUCCESS,
-  TICKET_ADD_API_DATA_SUCCESS,
   REGISTER_API_DATA_SUCCESS,
   CHECKOUT_API_SUCCESS,
+  ADD_CART_ARRAY,
+  LOOKUP_API_SUCCESS,
   PROMOTION_API_SUCCESS,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
@@ -72,6 +72,7 @@ export const fetchAPIAction = (
             serviceData: data.products.product,
           });
         } else if (url === 'validatelogin.php') {
+          console.log('called==>');
           dispatch({
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
@@ -81,6 +82,7 @@ export const fetchAPIAction = (
               if (isFromCheckout) {
                 navigation.pop();
               } else {
+                console.log('Manoj=====>');
                 navigation.reset({
                   index: 0,
                   routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
@@ -144,6 +146,8 @@ export const fetchAPIAction = (
             type: CHECKOUT_API_SUCCESS,
             checkoutData: data,
           });
+        } else if (url === 'domainwhois.php') {
+          return data;
         } else if (url === 'getpromotions.php') {
           dispatch({
             type: PROMOTION_API_SUCCESS,

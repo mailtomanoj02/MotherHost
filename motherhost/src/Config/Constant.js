@@ -29,6 +29,9 @@ export const SCREEN_NAMES = {
   TICKETS: 'Tickets',
   ADD_TICKETS: 'Add_Tickets',
   AUTH_SCREEN: 'Auth_screen',
+  WHO_IS_LOOKUP: 'WHO_IS_LOOKUP',
+  DNS_LOOKUP: 'DNS_LOOKUP',
+
 };
 
 export const WEBPAGE_REDIRECT_LINK = {
