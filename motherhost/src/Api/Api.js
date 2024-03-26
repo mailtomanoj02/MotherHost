@@ -7,6 +7,7 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
     'Content-Type': 'application/json',
   };
   return new Promise((resolve, reject) => {
+    console.log('TEST==>');
     axios
       .request({
         method: method,
@@ -15,9 +16,11 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
         data: params,
       })
       .then(response => {
+        console.log('1');
         resolve(response);
       })
       .catch(error => {
+        console.log('2');
         reject(error);
       });
   });

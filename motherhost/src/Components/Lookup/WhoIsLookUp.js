@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Animated,
 } from 'react-native';
+import {useSelector} from 'react-redux';
+
 import Colors from '../../Themes/Colors';
 import AppBar from '../AppBar';
 import ScreenTitle from '../ScreenTitle';
@@ -15,18 +17,16 @@ import {checkIsValidDomain} from '../../utils/Helper';
 import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 import {fetchlocalApiRequest} from '../../Api/Api';
 import {ScrollView} from 'react-native-gesture-handler';
+import ButtonLoader from '../customUI/ButtonLoader';
 
 const WhoIsLookUp = props => {
   const {screenName} = props.route.params;
-  const [input, setInput] = useState('motherhost.com');
+  const [input, setInput] = useState('');
   const [filteredData, setFilteredData] = useState(null);
   const isWhoIsLookupScreen = screenName === SCREEN_NAMES.WHO_IS_LOOKUP;
-  let apiParams = {
-    serviceName: isWhoIsLookupScreen ? 'WhoisService' : 'DNSService',
-    domainName: input.replace(/ /g, ''),
-  };
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [showLookUpView, setShowLookUpView] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (filteredData !== null) {
@@ -60,23 +60,31 @@ const WhoIsLookUp = props => {
     } else {
       if (rawTextArray) {
         const splittedArray = rawTextArray?.split('\n');
-        const index = splittedArray.findIndex(element =>
+        const index = splittedArray?.findIndex(element =>
           element.includes('>>>'),
         );
-        const target = splittedArray.slice(index).join('\n');
-        result.push(...splittedArray.slice(0, index), target);
+        if (index !== -1) {
+          const target = splittedArray.slice(index).join('\n');
+          result.push(...splittedArray.slice(0, index), target);
+        } else {
+          result.push(...splittedArray);
+        }
       }
     }
 
     return result;
   };
+  let apiParams = {
+    serviceName: isWhoIsLookupScreen ? 'WhoisService' : 'DNSService',
+    domainName: input.replace(/ /g, ''),
+  };
   const onPress = async () => {
     if (checkIsValidDomain(input)) {
+      setIsLoading(true);
       const data = await fetchlocalApiRequest('domainwhois.php', apiParams);
       const resultData = filterResponse(data);
-      console.log(resultData);
       setFilteredData([...resultData]);
-      // setInput ('');
+      setIsLoading(false);
     } else {
       showToastMessage('Please enter a valid domain', Colors.RED);
     }
@@ -157,11 +165,15 @@ const WhoIsLookUp = props => {
             onChangeText={text => setInput(text)}
           />
         </View>
-        <TouchableOpacity style={styles.LookupButtonStyle} onPress={onPress}>
-          <View style={styles.buttonContainerStyle}>
-            <Text style={styles.buttonTextStyle}>Lookup</Text>
-          </View>
-        </TouchableOpacity>
+        {!isLoading ? (
+          <TouchableOpacity style={styles.LookupButtonStyle} onPress={onPress}>
+            <View style={styles.buttonContainerStyle}>
+              <Text style={styles.buttonTextStyle}>Lookup</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <ButtonLoader />
+        )}
       </View>
       {showLookUpView ? (
         lookUpView()

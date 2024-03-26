@@ -71,6 +71,7 @@ export const fetchAPIAction = (
             serviceData: data.products.product,
           });
         } else if (url === 'validatelogin.php') {
+          console.log('called==>');
           dispatch({
             type: LOGIN_API_DATA_SUCCESS,
             loginData: data,
@@ -80,6 +81,7 @@ export const fetchAPIAction = (
               if (isFromCheckout) {
                 navigation.pop();
               } else {
+                console.log('Manoj=====>');
                 navigation.reset({
                   index: 0,
                   routes: [{name: SCREEN_NAMES.HOME_SCREEN}],

@@ -33,7 +33,7 @@ const SideMenu = () => {
     dispatch({type: LOGIN_API_DATA_SUCCESS, loginData: null});
     navigation.reset({
       index: 0,
-      routes: [{name: SCREEN_NAMES.HOME_SCREEN}],
+      routes: [{name: SCREEN_NAMES.LOGIN_REGISTRATION}],
     });
     setShowModal(false);
   };
