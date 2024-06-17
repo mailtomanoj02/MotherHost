@@ -82,18 +82,18 @@ const AppBar = props => {
                   ? props.localCartArray?.length > 0
                     ? setShowModal(true)
                     : null
-                  : navigation.navigate(SCREEN_NAMES.CHECKOUT, {
+                  : navigation.navigate(SCREEN_NAMES.CHECKOUT_STACK_SCREEN, {
                       isFromCartIcon: true,
                     })
               }>
               <Image
                 source={
-                  route.name === SCREEN_NAMES.CHECKOUT
+                  route.name === SCREEN_NAMES.CHECKOUT_STACK_SCREEN
                     ? require('./../Images/AppBar/shopping-cart-empty.png')
                     : require('./../Images/AppBar/shopping-cart.png')
                 }
                 style={
-                  route.name === SCREEN_NAMES.CHECKOUT
+                  route.name === SCREEN_NAMES.CHECKOUT_STACK_SCREEN
                     ? {width: 32, height: 32}
                     : styles.walletCartImageStyle
                 }

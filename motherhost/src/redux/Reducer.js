@@ -19,6 +19,7 @@ import {
   SET_AUTHENTICATION_STATUS,
   LOOKUP_API_SUCCESS,
   PROMOTION_API_SUCCESS,
+  USER_SELECTED_COUPON,
 } from './Type';
 
 const initialState = {
@@ -38,6 +39,7 @@ const initialState = {
   isUserAuthenticated: false,
   lookUpData: null,
   promotions: null,
+  selectedCouponData: null,
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -141,6 +143,11 @@ export const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         promotions: action.promotions,
+      };
+    case USER_SELECTED_COUPON:
+      return {
+        ...state,
+        selectedCouponData: action.payload,
       };
     default:
       return state;

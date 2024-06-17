@@ -25,13 +25,13 @@ export const SCREEN_NAMES = {
   DRAWER: 'Drawer',
   WALLET: 'Wallet',
   COUPONS: 'Coupons',
+  CHECKOUT_STACK_SCREEN: 'Checkout_Stack',
   CHECKOUT: 'Checkout',
   TICKETS: 'Tickets',
   ADD_TICKETS: 'Add_Tickets',
   AUTH_SCREEN: 'Auth_screen',
   WHO_IS_LOOKUP: 'WHO_IS_LOOKUP',
   DNS_LOOKUP: 'DNS_LOOKUP',
-
 };
 
 export const WEBPAGE_REDIRECT_LINK = {

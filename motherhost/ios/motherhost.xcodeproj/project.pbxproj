@@ -676,8 +676,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = motherhost/motherhost.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 53U3QS5DHG;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = motherhost/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Motherhost;
@@ -692,6 +693,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.motherhost;
 				PRODUCT_NAME = motherhost;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -706,8 +708,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = motherhost/motherhost.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 53U3QS5DHG;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = motherhost/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Motherhost;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -721,6 +724,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.motherhost;
 				PRODUCT_NAME = motherhost;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

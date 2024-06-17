@@ -40,7 +40,7 @@ const DomainAvailabilityScreen = props => {
         type: ADD_CART_ARRAY,
         cartArrayData: [...cartArrayState, ...cartArray],
       });
-      props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+      props.navigation.navigate(SCREEN_NAMES.CHECKOUT_STACK_SCREEN);
     }
   };
   return (

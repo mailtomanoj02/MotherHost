@@ -7,6 +7,7 @@ import {
   FlatList,
   Modal,
   Platform,
+  Pressable,
 } from 'react-native';
 import React from 'react';
 import AppBar from './AppBar';
@@ -43,6 +44,9 @@ const CheckoutPage = props => {
   const isLoading = useSelector(state => state.isLoading);
   const [modalVisible, setModalVisible] = useState(false);
   const [paymentType, setPaymentType] = useState('');
+  const [isValidCoupon, setIsValidCoupon] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const selectedCouponState = useSelector(state => state.selectedCouponData);
   useEffect(() => {
     return () => {
       dispatch({type: ADD_CART_ARRAY, cartArrayData: cartArrayFromSearch});
@@ -58,6 +62,23 @@ const CheckoutPage = props => {
       onTapPay();
     }
   }, [checkoutResponse]);
+  useEffect(() => {
+    if (selectedCouponState) {
+      let appliesToIds = selectedCouponState?.appliesto?.split(',');
+      cartArrayFromSearch.map(item => {
+        console.log('item?.pid == ', item?.pid);
+        if (
+          item?.pid &&
+          appliesToIds.includes(item?.pid) &&
+          selectedCouponState?.cycles &&
+          selectedCouponState?.cycles.toLowerCase() ===
+            item?.selectedPrice?.key?.toLowerCase()
+        ) {
+        }
+      });
+    }
+    setSelectedCoupon(selectedCouponState);
+  }, [selectedCouponState]);
 
   const onTapPay = async () => {
     const orderPayResoponse = await fetchRazorAPIRequest(
@@ -316,6 +337,9 @@ const CheckoutPage = props => {
   const onClickViewOffers = () => {
     navigation.navigate(SCREEN_NAMES.COUPONS);
   };
+  const onClickRemoveOffers = () => {
+    setSelectedCoupon(null);
+  };
   const renderOfferView = () => {
     return (
       <TouchableOpacity onPress={onClickViewOffers}>
@@ -348,6 +372,55 @@ const CheckoutPage = props => {
       </TouchableOpacity>
     );
   };
+
+  const renderAppliedOfferView = () => {
+    return (
+      <TouchableOpacity onPress={onClickRemoveOffers}>
+        <View style={[{flexDirection: 'row'}, styles.totalCheckoutContainer]}>
+          <View style={{flex: 0.5}}>
+            <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.black}}>
+              Offers
+            </Text>
+            <View style={styles.discountInnerViewStyle}>
+              <Image
+                source={
+                  isValidCoupon
+                    ? require('./../Images/RadioButton/applleddiscount.png')
+                    : require('./../Images/RadioButton/remove.png')
+                }
+                style={{height: 25, width: 25}}
+              />
+              <Text
+                style={{
+                  fontFamily: FONT_FAMILY.REGULAR,
+                  marginLeft: 5,
+                  color: isValidCoupon ? Colors.GREEN : Colors.RED,
+                  fontSize: 12,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: FONT_FAMILY.BOLD,
+                    color: Colors.black,
+                  }}>
+                  {selectedCoupon?.code?.toUpperCase() + '\n'}
+                </Text>
+                {isValidCoupon
+                  ? `whoo!!! coupon applied.`
+                  : `not applicable for this item(s).`}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.viewOfferContainer}>
+            <Text style={{fontFamily: FONT_FAMILY.BOLD, color: Colors.RED}}>
+              Remove
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   const Divider = () => {
     return (
       <View
@@ -568,6 +641,7 @@ const CheckoutPage = props => {
             <View style={styles.totalContainerStyle}>
               {/*{renderOfferView()}*/}
               {cartArrayLength ? renderOfferView() : null}
+              {selectedCoupon ? renderAppliedOfferView() : null}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0 ? (
                 !isLoading ? (

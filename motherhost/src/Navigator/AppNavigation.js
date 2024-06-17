@@ -29,7 +29,7 @@ const InvoiceStack = createStackNavigator();
 const RootStack = createStackNavigator();
 const HoistingStack = createStackNavigator();
 const TicketStack = createStackNavigator();
-
+const CheckoutStack = createStackNavigator();
 const DomainStackNavigator = () => {
   return (
     <DomainStack.Navigator screenOptions={{headerShown: false}}>
@@ -83,16 +83,32 @@ const HoistingStackNavigator = () => {
         component={DomainNameScreen}
       />
       <HoistingStack.Screen
-        name={SCREEN_NAMES.CHECKOUT}
-        component={CheckoutPage}
+        name={SCREEN_NAMES.CHECKOUT_STACK_SCREEN}
+        component={CheckoutStackNavigator}
         // options={{unmountOnBlur: false}}
       />
+
       <HoistingStack.Screen
         name={SCREEN_NAMES.LOGIN_REGISTRATION}
         component={LoginAndRegistration}
         // options={{unmountOnBlur: false}}
       />
     </HoistingStack.Navigator>
+  );
+};
+
+const CheckoutStackNavigator = () => {
+  return (
+    <CheckoutStack.Navigator screenOptions={{headerShown: false}}>
+      <CheckoutStack.Screen
+        name={SCREEN_NAMES.CHECKOUT}
+        component={CheckoutPage}
+      />
+      <CheckoutStack.Screen
+        name={SCREEN_NAMES.COUPONS}
+        component={CouponsScreen}
+      />
+    </CheckoutStack.Navigator>
   );
 };
 
@@ -168,10 +184,9 @@ const MyDrawer = () => {
         name={SCREEN_NAMES.DOMAIN_AVAILABILITY}
         component={DomainAvailabilityScreen}
       />
-      <Drawer.Screen name={SCREEN_NAMES.COUPONS} component={CouponsScreen} />
       <Drawer.Screen
-        name={SCREEN_NAMES.CHECKOUT}
-        component={CheckoutPage}
+        name={SCREEN_NAMES.CHECKOUT_STACK_SCREEN}
+        component={CheckoutStackNavigator}
         // options={{unmountOnBlur: false}}
       />
       <Drawer.Screen

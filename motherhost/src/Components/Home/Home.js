@@ -56,7 +56,7 @@ const HomeScreen = () => {
       cartAarray.length > 0 &&
       isUserLoggedIn()
     ) {
-      navigation.navigate(SCREEN_NAMES.CHECKOUT);
+      navigation.navigate(SCREEN_NAMES.CHECKOUT_STACK_SCREEN);
     }
   }, []);
   useEffect(() => {

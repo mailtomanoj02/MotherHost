@@ -16,6 +16,7 @@ import {
   ADD_CART_ARRAY,
   LOOKUP_API_SUCCESS,
   PROMOTION_API_SUCCESS,
+  USER_SELECTED_COUPON,
 } from './Type';
 import {fetchAPIRequest} from '../Api/Api';
 import {showToastMessage} from '../Components/customUI/FlashMessageComponent/Helper';
@@ -26,6 +27,13 @@ import {isNetworkConnectionAvailable} from './../utils/Utils';
 export const requestApiData = () => {
   return {
     type: REQUEST_API_DATA,
+  };
+};
+
+export const setCouponData = data => {
+  return {
+    type: USER_SELECTED_COUPON,
+    payload: data,
   };
 };
 

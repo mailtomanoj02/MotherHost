@@ -11,9 +11,10 @@ import ScreenTitle from './ScreenTitle';
 import Colors from '../Themes/Colors';
 import {FONT_FAMILY} from '../Config/Constant';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchAPIAction} from '../redux/Action';
+import {fetchAPIAction, setCouponData} from '../redux/Action';
 import {FlatList} from 'react-native-gesture-handler';
 import {isValidElement, isValidString} from '../utils/Helper';
+import {useNavigation} from '@react-navigation/native';
 
 const CouponsScreen = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const CouponsScreen = () => {
   const [couponList, setCouponList] = useState([]);
   const [searchValue, setSearchedValue] = useState('');
   const [isSearchedList, setIsSearchValue] = useState(false);
+  const navigation = useNavigation();
   useEffect(() => {
     const params = {
       action: 'GetPromotions',
@@ -42,9 +44,15 @@ const CouponsScreen = () => {
   const renderItem = ({item}) => {
     return (
       <View style={styles.flatListContainer}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.topStyleOfCard}>
           <Text style={styles.codeTxtStyle}>{item?.code}</Text>
-          <Text style={styles.applyButtonStyle}>Apply</Text>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(setCouponData(item));
+              navigation.goBack();
+            }}>
+            <Text style={styles.applyButtonStyle}>Apply</Text>
+          </TouchableOpacity>
         </View>
 
         {isValidString(item?.notes) && (
@@ -61,7 +69,7 @@ const CouponsScreen = () => {
   return (
     <View style={styles.container}>
       <AppBar />
-      <ScreenTitle title={'Apple Coupons'} />
+      <ScreenTitle title={'Apply Coupons'} />
       <View style={styles.body}>
         <TextInput
           style={styles.searchTxtStyle}
@@ -81,7 +89,6 @@ const CouponsScreen = () => {
                 params.code = '';
                 setSearchedValue('');
               }
-              console.log('params', params);
               setIsSearchValue(!isSearchedList);
               dispatch(fetchAPIAction('getpromotions.php', params, true));
             }}>
@@ -144,6 +151,7 @@ const styles = StyleSheet.create({
     borderLeftColor: Colors.headerBlue,
     borderLeftWidth: 4,
   },
+  topStyleOfCard: {flexDirection: 'row', justifyContent: 'space-between'},
   codeTxtStyle: {
     fontSize: 18,
     color: Colors.headerBlue,

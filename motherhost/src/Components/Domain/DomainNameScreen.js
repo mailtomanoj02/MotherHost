@@ -151,9 +151,9 @@ const DomainNameScreen = props => {
   const onPressCheckout = () => {
     transferSelected
       ? addToCart()
-      : props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+      : props.navigation.navigate(SCREEN_NAMES.CHECKOUT_STACK_SCREEN);
 
-    props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
+    props.navigation.navigate(SCREEN_NAMES.CHECKOUT_STACK_SCREEN);
   };
 
   const domainAvailableView = () => {
@@ -367,7 +367,6 @@ const DomainNameScreen = props => {
         cartArrayData: [...cartArrayState, arrayParams],
       });
       showToastMessage('Item Added Successfully!!', Colors.GREEN);
-      // props.navigation.navigate(SCREEN_NAMES.CHECKOUT);
     }
   };
   return (
