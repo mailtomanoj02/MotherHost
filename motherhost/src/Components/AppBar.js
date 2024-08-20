@@ -7,7 +7,8 @@ import {SCREEN_NAMES} from '../Config/Constant';
 import {isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {useDispatch} from 'react-redux';
-import {ADD_CART_ARRAY} from '../redux/Type';
+import {ADD_CART_ARRAY, USER_SELECTED_COUPON} from '../redux/Type';
+import {setCouponData} from '../redux/Action';
 const AppBar = props => {
   const dispatch = useDispatch();
   let imageBack = props.image
@@ -39,6 +40,7 @@ const AppBar = props => {
   const handleConfirm = () => {
     props.setLocalCartArray([]);
     dispatch({type: ADD_CART_ARRAY, cartArrayData: []});
+    dispatch(setCouponData(null));
     setShowModal(false);
   };
   return (

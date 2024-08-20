@@ -62,24 +62,69 @@ const CheckoutPage = props => {
       onTapPay();
     }
   }, [checkoutResponse]);
+  console.log('item==>', cartArrayFromSearch);
   useEffect(() => {
     if (selectedCouponState) {
       let appliesToIds = selectedCouponState?.appliesto?.split(',');
-      cartArrayFromSearch.map(item => {
-        console.log('item?.pid == ', item?.pid);
+      cartArrayFromSearch?.map((item, index) => {
         if (
           item?.pid &&
-          appliesToIds.includes(item?.pid) &&
+          appliesToIds.includes(item?.pid?.toString()) &&
           selectedCouponState?.cycles &&
           selectedCouponState?.cycles.toLowerCase() ===
-            item?.selectedPrice?.key?.toLowerCase()
+            item?.billingcycle?.toLowerCase()
         ) {
+          setIsValidCoupon(true);
+          let totalPrice = parseFloat(item?.selectedPrice?.value);
+          let couponValue = parseFloat(selectedCouponState?.value);
+          if (selectedCouponState?.type?.toLowerCase() === 'percentage') {
+            let discountPrice = (couponValue / 100) * totalPrice;
+            totalPrice = totalPrice - discountPrice;
+          } else {
+            totalPrice -= couponValue;
+          }
+          console.log('manoj');
+          setCartArrayFromSearch(prevCartArray => {
+            const updatedCartArray = prevCartArray.map((data, i) => {
+              if (i === index) {
+                return {
+                  ...data,
+                  selectedPrice: {
+                    ...data.selectedPrice,
+                    updatedPrice: totalPrice?.toFixed(2)?.toString(),
+                  },
+                };
+              }
+            });
+            return updatedCartArray;
+          });
+        } else {
+          console.log('called==>');
+          setIsValidCoupon(false);
+          setCartArrayFromSearch(prevCartArray => {
+            const updatedCartArray = prevCartArray?.map((data, i) => {
+              if (i === index) {
+                const updatedData = {
+                  ...data,
+                  selectedPrice: {
+                    ...data.selectedPrice,
+                  },
+                };
+                // Check if updatedPrice exists in selectedPrice and remove it
+                if (updatedData.selectedPrice.hasOwnProperty('updatedPrice')) {
+                  delete updatedData.selectedPrice.updatedPrice;
+                }
+                return updatedData;
+              }
+            });
+            return updatedCartArray;
+          });
         }
       });
     }
+
     setSelectedCoupon(selectedCouponState);
   }, [selectedCouponState]);
-
   const onTapPay = async () => {
     const orderPayResoponse = await fetchRazorAPIRequest(
       netTotal,
@@ -183,7 +228,10 @@ const CheckoutPage = props => {
           totalPrice = totalPrice + parseFloat(item?.price);
         }
         if (isValidElement(item?.selectedPrice?.value)) {
-          totalPrice = totalPrice + parseFloat(item?.selectedPrice?.value);
+          totalPrice =
+            totalPrice + item?.selectedPrice?.updatedPrice
+              ? parseFloat(item?.selectedPrice?.updatedPrice)
+              : parseFloat(item?.selectedPrice?.value);
         }
       });
       setTotalValue(totalPrice.toFixed(2));
@@ -290,6 +338,7 @@ const CheckoutPage = props => {
 
   const renderDescription = (item, index) => {
     const data = item.selectedPriceList;
+    console.log('data==>data', data);
     return (
       <View style={styles.totalCheckoutContainer}>
         <Text
@@ -327,9 +376,30 @@ const CheckoutPage = props => {
               setIsFocus(false);
             }}
           />
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR, color: Colors.BLACK}}>
-            {`₹ ${item?.selectedPrice?.value}`}
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            {item?.selectedPrice?.updatedPrice && (
+              <Text
+                style={{
+                  fontFamily: FONT_FAMILY.REGULAR,
+                  color: Colors.BLACK,
+                  textDecorationLine: 'line-through',
+                }}>
+                {`₹ ${item?.selectedPrice?.value}`}
+              </Text>
+            )}
+            <Text
+              style={{
+                fontFamily: FONT_FAMILY.REGULAR,
+                color: Colors.BLACK,
+                marginLeft: 5,
+              }}>
+              {`₹ ${
+                item?.selectedPrice?.updatedPrice
+                  ? item?.selectedPrice?.updatedPrice
+                  : item?.selectedPrice?.value
+              }`}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -339,6 +409,7 @@ const CheckoutPage = props => {
   };
   const onClickRemoveOffers = () => {
     setSelectedCoupon(null);
+    setIsValidCoupon(false);
   };
   const renderOfferView = () => {
     return (
@@ -640,7 +711,7 @@ const CheckoutPage = props => {
             </View>
             <View style={styles.totalContainerStyle}>
               {/*{renderOfferView()}*/}
-              {cartArrayLength ? renderOfferView() : null}
+              {cartArrayLength && !isValidCoupon ? renderOfferView() : null}
               {selectedCoupon ? renderAppliedOfferView() : null}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0 ? (
