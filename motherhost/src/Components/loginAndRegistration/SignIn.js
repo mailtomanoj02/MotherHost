@@ -7,6 +7,7 @@ import React, {useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAPIAction} from '../../redux/Action';
 import ButtonLoader from '../customUI/ButtonLoader';
+import {showToastMessage} from '../customUI/FlashMessageComponent/Helper';
 const SignIn = ({
   isRegisterPressed,
   isSignInPressed,
@@ -17,10 +18,10 @@ const SignIn = ({
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginDetails, setLoginDetails] = useState({
-    email: 'shanmugamsathish20@gmail.com',
-    password: 'DonS@2010',
-    // email: '',
-    // password: '',
+    // email: 'shanmugamsathish20@gmail.com',
+    // password: 'DonS@2010',
+    email: '',
+    password: '',
   });
   const isLoading = useSelector(state => state.isLoading);
 
@@ -29,19 +30,23 @@ const SignIn = ({
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => {
-          dispatch(
-            fetchAPIAction(
-              'validatelogin.php',
-              {
-                email: loginDetails.email,
-                password2: loginDetails.password,
-              },
-              true,
-              'POST',
-              navigation,
-              isFromCheckout,
-            ),
-          );
+          if (!loginDetails?.email || !loginDetails?.password) {
+            showToastMessage('Please enter email and password', Colors.RED);
+          } else {
+            dispatch(
+              fetchAPIAction(
+                'validatelogin.php',
+                {
+                  email: loginDetails.email,
+                  password2: loginDetails.password,
+                },
+                true,
+                'POST',
+                navigation,
+                isFromCheckout,
+              ),
+            );
+          }
         }}>
         <Text style={styles.buttonTextStyle}>{title}</Text>
       </TouchableOpacity>

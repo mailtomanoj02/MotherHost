@@ -21,7 +21,7 @@ import {isValidString, isValidElement} from '../utils/Helper';
 import {getPriceBasedOnDomain, getUserId, isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY, CHECKOUT_API_SUCCESS} from '../redux/Type';
-import {fetchAPIAction} from '../redux/Action';
+import {fetchAPIAction, setCouponData} from '../redux/Action';
 import {fetchRazorAPIRequest} from '../Api/Api';
 import {getUserName} from '../utils/Utils';
 import RazorpayCheckout from 'react-native-razorpay';
@@ -56,30 +56,72 @@ const CheckoutPage = props => {
   useEffect(() => {
     updateTotalInReceipt();
   }, [cartArrayFromSearch, netTotal]);
-
   useEffect(() => {
     if (isValidElement(checkoutResponse?.invoiceid)) {
       onTapPay();
     }
   }, [checkoutResponse]);
+
   useEffect(() => {
     if (selectedCouponState) {
       let appliesToIds = selectedCouponState?.appliesto?.split(',');
-      cartArrayFromSearch.map(item => {
-        console.log('item?.pid == ', item?.pid);
+      cartArrayFromSearch?.map((item, index) => {
         if (
           item?.pid &&
-          appliesToIds.includes(item?.pid) &&
+          appliesToIds.includes(item?.pid?.toString()) &&
           selectedCouponState?.cycles &&
           selectedCouponState?.cycles.toLowerCase() ===
-            item?.selectedPrice?.key?.toLowerCase()
+            item?.billingcycle?.toLowerCase()
         ) {
+          setIsValidCoupon(true);
+          let totalPrice = parseFloat(item?.selectedPrice?.value);
+          let couponValue = parseFloat(selectedCouponState?.value);
+          if (selectedCouponState?.type?.toLowerCase() === 'percentage') {
+            let discountPrice = (couponValue / 100) * totalPrice;
+            totalPrice = totalPrice - discountPrice;
+          } else {
+            totalPrice -= couponValue;
+          }
+          setCartArrayFromSearch(prevCartArray => {
+            const updatedCartArray = prevCartArray.map((data, i) => {
+              if (i === index) {
+                return {
+                  ...data,
+                  selectedPrice: {
+                    ...data.selectedPrice,
+                    updatedPrice: totalPrice?.toFixed(2)?.toString(),
+                  },
+                };
+              }
+            });
+            return updatedCartArray;
+          });
+        } else {
+          setIsValidCoupon(false);
+          setCartArrayFromSearch(prevCartArray => {
+            const updatedCartArray = prevCartArray?.map((data, i) => {
+              if (i === index) {
+                const updatedData = {
+                  ...data,
+                  selectedPrice: {
+                    ...data.selectedPrice,
+                  },
+                };
+                // Check if updatedPrice exists in selectedPrice and remove it
+                if (updatedData.selectedPrice.hasOwnProperty('updatedPrice')) {
+                  delete updatedData.selectedPrice.updatedPrice;
+                }
+                return updatedData;
+              }
+            });
+            return updatedCartArray;
+          });
         }
       });
     }
+
     setSelectedCoupon(selectedCouponState);
   }, [selectedCouponState]);
-
   const onTapPay = async () => {
     const orderPayResoponse = await fetchRazorAPIRequest(
       netTotal,
@@ -183,7 +225,11 @@ const CheckoutPage = props => {
           totalPrice = totalPrice + parseFloat(item?.price);
         }
         if (isValidElement(item?.selectedPrice?.value)) {
-          totalPrice = totalPrice + parseFloat(item?.selectedPrice?.value);
+          totalPrice =
+            totalPrice + item?.selectedPrice?.updatedPrice &&
+            isValidElement(selectedCouponState)
+              ? parseFloat(item?.selectedPrice?.updatedPrice)
+              : parseFloat(item?.selectedPrice?.value);
         }
       });
       setTotalValue(totalPrice.toFixed(2));
@@ -290,6 +336,7 @@ const CheckoutPage = props => {
 
   const renderDescription = (item, index) => {
     const data = item.selectedPriceList;
+    console.log('data==>data', data);
     return (
       <View style={styles.totalCheckoutContainer}>
         <Text
@@ -319,7 +366,11 @@ const CheckoutPage = props => {
             maxHeight={300}
             labelField="key"
             valueField="value"
-            value={data[0].value}
+            value={
+              isValidElement(item?.selectedPrice?.value)
+                ? item?.selectedPrice?.value
+                : data[0].value
+            }
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
@@ -327,9 +378,32 @@ const CheckoutPage = props => {
               setIsFocus(false);
             }}
           />
-          <Text style={{fontFamily: FONT_FAMILY.REGULAR, color: Colors.BLACK}}>
-            {`₹ ${item?.selectedPrice?.value}`}
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            {item?.selectedPrice?.updatedPrice &&
+              isValidElement(selectedCouponState) && (
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.REGULAR,
+                    color: Colors.BLACK,
+                    textDecorationLine: 'line-through',
+                  }}>
+                  {`₹ ${item?.selectedPrice?.value}`}
+                </Text>
+              )}
+            <Text
+              style={{
+                fontFamily: FONT_FAMILY.REGULAR,
+                color: Colors.BLACK,
+                marginLeft: 5,
+              }}>
+              {`₹ ${
+                item?.selectedPrice?.updatedPrice &&
+                isValidElement(selectedCouponState)
+                  ? item?.selectedPrice?.updatedPrice
+                  : item?.selectedPrice?.value
+              }`}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -339,6 +413,8 @@ const CheckoutPage = props => {
   };
   const onClickRemoveOffers = () => {
     setSelectedCoupon(null);
+    dispatch(setCouponData(null));
+    setIsValidCoupon(false);
   };
   const renderOfferView = () => {
     return (
@@ -541,6 +617,7 @@ const CheckoutPage = props => {
         regperiod: regperiodArray.toString(),
         pid: pidArray.toString(),
         eppcode: eppArray,
+        promocode: selectedCoupon?.code,
       };
       dispatch(fetchAPIAction('addorder.php', finalArray));
     };
@@ -640,7 +717,7 @@ const CheckoutPage = props => {
             </View>
             <View style={styles.totalContainerStyle}>
               {/*{renderOfferView()}*/}
-              {cartArrayLength ? renderOfferView() : null}
+              {cartArrayLength && !isValidCoupon ? renderOfferView() : null}
               {selectedCoupon ? renderAppliedOfferView() : null}
               {cartArrayLength ? renderTotalView() : null}
               {cartArrayLength > 0 ? (
