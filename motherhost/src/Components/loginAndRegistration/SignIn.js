@@ -18,10 +18,10 @@ const SignIn = ({
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginDetails, setLoginDetails] = useState({
-    // email: 'shanmugamsathish20@gmail.com',
-    // password: 'DonS@2010',
-    email: '',
-    password: '',
+    email: 'shanmugamsathish20@gmail.com',
+    password: 'DonS@2010',
+    // email: '',
+    // password: '',
   });
   const isLoading = useSelector(state => state.isLoading);
 

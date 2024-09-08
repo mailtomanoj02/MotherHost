@@ -12,6 +12,12 @@ import com.facebook.soloader.SoLoader;
 import com.motherhost.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
+
+import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -58,6 +64,15 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
+    @Override
+    public Intent registerReceiver(@Nullable BroadcastReceiver receiver, IntentFilter filter) {
+        if (Build.VERSION.SDK_INT >= 34 && getApplicationInfo().targetSdkVersion >= 34) {
+            return super.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else {
+            return super.registerReceiver(receiver, filter);
+        }
+    }
+
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
@@ -65,6 +80,7 @@ public class MainApplication extends Application implements ReactApplication {
    * @param context
    * @param reactInstanceManager
    */
+
   private static void initializeFlipper(
       Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {

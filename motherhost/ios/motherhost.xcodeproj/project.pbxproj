@@ -678,7 +678,7 @@
 				CODE_SIGN_ENTITLEMENTS = motherhost/motherhost.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 53U3QS5DHG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = motherhost/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Motherhost;
@@ -686,6 +686,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -708,15 +709,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = motherhost/motherhost.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 53U3QS5DHG;
 				INFOPLIST_FILE = motherhost/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Motherhost;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
