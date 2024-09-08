@@ -20,7 +20,6 @@ export const fetchAPIRequest = (url, params, method = 'POST') => {
         resolve(response);
       })
       .catch(error => {
-        console.log('2');
         reject(error);
       });
   });

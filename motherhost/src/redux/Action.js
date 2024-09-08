@@ -45,8 +45,10 @@ export const fetchAPIAction = (
   navigation = null,
   isFromCheckout,
 ) => {
+  console.log('fetchAPIRequest1 ==> ', url, params);
   return async dispatch => {
     const isNetworkAvailable = await isNetworkConnectionAvailable();
+    console.log('isNetworkAvailable ==> ', isNetworkAvailable);
     if (!isNetworkAvailable) {
       showToastMessage('There is no network connection available.', Colors.RED);
       return;
@@ -56,6 +58,7 @@ export const fetchAPIAction = (
     }
     fetchAPIRequest(url, params, method)
       .then(res => {
+        console.log('fetchAPIRequest ==> ', url, params);
         const data = res?.data;
         if (url === 'getinvoices.php') {
           if (params.action === 'GetInvoices') {

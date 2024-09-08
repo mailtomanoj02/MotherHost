@@ -21,7 +21,7 @@ import {isValidString, isValidElement} from '../utils/Helper';
 import {getPriceBasedOnDomain, getUserId, isUserLoggedIn} from '../utils/Utils';
 import ModalPopUp from './Modal';
 import {ADD_CART_ARRAY, CHECKOUT_API_SUCCESS} from '../redux/Type';
-import {fetchAPIAction} from '../redux/Action';
+import {fetchAPIAction, setCouponData} from '../redux/Action';
 import {fetchRazorAPIRequest} from '../Api/Api';
 import {getUserName} from '../utils/Utils';
 import RazorpayCheckout from 'react-native-razorpay';
@@ -56,13 +56,12 @@ const CheckoutPage = props => {
   useEffect(() => {
     updateTotalInReceipt();
   }, [cartArrayFromSearch, netTotal]);
-
   useEffect(() => {
     if (isValidElement(checkoutResponse?.invoiceid)) {
       onTapPay();
     }
   }, [checkoutResponse]);
-  console.log('item==>', cartArrayFromSearch);
+
   useEffect(() => {
     if (selectedCouponState) {
       let appliesToIds = selectedCouponState?.appliesto?.split(',');
@@ -83,7 +82,6 @@ const CheckoutPage = props => {
           } else {
             totalPrice -= couponValue;
           }
-          console.log('manoj');
           setCartArrayFromSearch(prevCartArray => {
             const updatedCartArray = prevCartArray.map((data, i) => {
               if (i === index) {
@@ -99,7 +97,6 @@ const CheckoutPage = props => {
             return updatedCartArray;
           });
         } else {
-          console.log('called==>');
           setIsValidCoupon(false);
           setCartArrayFromSearch(prevCartArray => {
             const updatedCartArray = prevCartArray?.map((data, i) => {
@@ -229,7 +226,8 @@ const CheckoutPage = props => {
         }
         if (isValidElement(item?.selectedPrice?.value)) {
           totalPrice =
-            totalPrice + item?.selectedPrice?.updatedPrice
+            totalPrice + item?.selectedPrice?.updatedPrice &&
+            isValidElement(selectedCouponState)
               ? parseFloat(item?.selectedPrice?.updatedPrice)
               : parseFloat(item?.selectedPrice?.value);
         }
@@ -368,7 +366,11 @@ const CheckoutPage = props => {
             maxHeight={300}
             labelField="key"
             valueField="value"
-            value={data[0].value}
+            value={
+              isValidElement(item?.selectedPrice?.value)
+                ? item?.selectedPrice?.value
+                : data[0].value
+            }
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
@@ -377,16 +379,17 @@ const CheckoutPage = props => {
             }}
           />
           <View style={{flexDirection: 'row'}}>
-            {item?.selectedPrice?.updatedPrice && (
-              <Text
-                style={{
-                  fontFamily: FONT_FAMILY.REGULAR,
-                  color: Colors.BLACK,
-                  textDecorationLine: 'line-through',
-                }}>
-                {`₹ ${item?.selectedPrice?.value}`}
-              </Text>
-            )}
+            {item?.selectedPrice?.updatedPrice &&
+              isValidElement(selectedCouponState) && (
+                <Text
+                  style={{
+                    fontFamily: FONT_FAMILY.REGULAR,
+                    color: Colors.BLACK,
+                    textDecorationLine: 'line-through',
+                  }}>
+                  {`₹ ${item?.selectedPrice?.value}`}
+                </Text>
+              )}
             <Text
               style={{
                 fontFamily: FONT_FAMILY.REGULAR,
@@ -394,7 +397,8 @@ const CheckoutPage = props => {
                 marginLeft: 5,
               }}>
               {`₹ ${
-                item?.selectedPrice?.updatedPrice
+                item?.selectedPrice?.updatedPrice &&
+                isValidElement(selectedCouponState)
                   ? item?.selectedPrice?.updatedPrice
                   : item?.selectedPrice?.value
               }`}
@@ -409,6 +413,7 @@ const CheckoutPage = props => {
   };
   const onClickRemoveOffers = () => {
     setSelectedCoupon(null);
+    dispatch(setCouponData(null));
     setIsValidCoupon(false);
   };
   const renderOfferView = () => {
@@ -612,6 +617,7 @@ const CheckoutPage = props => {
         regperiod: regperiodArray.toString(),
         pid: pidArray.toString(),
         eppcode: eppArray,
+        promocode: selectedCoupon?.code,
       };
       dispatch(fetchAPIAction('addorder.php', finalArray));
     };
